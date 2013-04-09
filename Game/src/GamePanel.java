@@ -273,11 +273,17 @@ public class GamePanel extends JPanel implements Runnable{
     	} // if game started
     	else{
     		//Game drawings
-		world.buildWorld(g);
-		player.draw(g);
-		if(player.bullet!=null)
+    		world.buildWorld(g);
+			player.draw(g);
+			if(player.bullet!=null)
 			player.bullet.draw(g);
-		enemy.draw(g);
+			enemy.draw(g);
+		
+			if(player.playerRect.intersects(enemy.enemyRect))
+			{
+				Event charE = new Event(true, enemy);
+				charE.draw(g);
+			}
 		
 		}
 	

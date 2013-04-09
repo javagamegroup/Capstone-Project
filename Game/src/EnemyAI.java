@@ -12,7 +12,7 @@ public class EnemyAI extends Actor implements Runnable {
 	Player target;
 	boolean resting = false;
 	private ArrayList areas;
-	private Rectangle enemyRect;
+	protected Rectangle enemyRect;
 	ArrayList<Wall> walls;
 	
 	int difficulty = 20;
