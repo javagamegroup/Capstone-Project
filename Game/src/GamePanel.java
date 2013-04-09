@@ -327,7 +327,7 @@ public class GamePanel extends JPanel implements Runnable{
         public void keyPressed(KeyEvent e){
             player.keyPressed(e);
             
-            if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+            if(e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_P){
                 gameStarted = false;
             }
         }
