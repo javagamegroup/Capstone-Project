@@ -16,6 +16,7 @@ public class EnemyAI extends Actor implements Runnable {
 	ArrayList<Wall> walls;
 	boolean isAlive = true;
 	int health = 6;
+	Event charE;
 	
 	int difficulty = 20;
 	
@@ -29,6 +30,7 @@ public class EnemyAI extends Actor implements Runnable {
         enemyImage = paul.getImage();
         this.enemyRect = getRect(100, 200, 20,20);
         this.setRect(enemyRect);
+        charE = new Event(true, this.enemyRect);
     }
     
     //Find a path to the target
@@ -82,6 +84,8 @@ public class EnemyAI extends Actor implements Runnable {
             	if(yDirection != 0)
             		setYDirection(0);
             }
+            
+
         }
         
         for (int i = 0; i < areas.size(); i++) {
@@ -98,6 +102,11 @@ public class EnemyAI extends Actor implements Runnable {
     
     public void draw(Graphics g) {
     	g.drawImage(enemyImage, this.rectx(), this.recty(), null);
+		if(isAlive)
+			if(this.enemyRect.intersects(target.playerRect)){
+				charE.draw(g);
+			}
+    	
     	
     }
     
@@ -112,11 +121,11 @@ public class EnemyAI extends Actor implements Runnable {
     public void run(){
         try{
             while(true){
-            	//if(isAlive){
+            	if(isAlive){
                   findPathToTarget();
                     move();
                     Thread.sleep(difficulty);
-            	//}
+            	}
             	
             }
         }catch(Exception ex){

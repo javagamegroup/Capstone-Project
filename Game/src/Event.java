@@ -2,15 +2,16 @@
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 
 public class Event {
 
 	
 	private boolean playerEnemyCollision;
-	EnemyAI enemyChar;
+	Rectangle enemyChar;
 	
-	public Event(boolean PCCollision, EnemyAI enemy)
+	public Event(boolean PCCollision, Rectangle enemy)
 	{
 		playerEnemyCollision = PCCollision;
 		enemyChar = enemy;
@@ -21,7 +22,7 @@ public class Event {
 		if(playerEnemyCollision == true)
 		{
 			g.setColor(Color.white);
-			g.drawString("HEY! I'M WALKIN HERE!", enemyChar.rectx(), enemyChar.recty());
+			g.drawString("HEY! I'M WALKIN HERE!", enemyChar.x, enemyChar.y);
 		}
 	}
 	

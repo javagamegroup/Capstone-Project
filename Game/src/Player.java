@@ -69,6 +69,7 @@ public class Player extends Actor implements Runnable  {
             		setCoord(((Actor) areas.get(6)).x(),((Actor) areas.get(6)).y()-21);
             }
         }
+
        
     }
 
