@@ -1,16 +1,13 @@
-public class Level
+public class Level extends Room
 {
-	private int maxLevWidth = 7;
-	private int maxLevHeight = 7;
 	private int numEnemies;
 	private boolean enemy;
-	private int numDoors = 2;
+	private int numDoors = 1;
 	private char nDoor = '#';
 	private char sDoor = '#';
 	private char eDoor = '#';
 	private char wDoor = '#';
 	private RandomGen rand;
-	protected Level[][] theLevel = new Level[maxLevHeight][maxLevWidth];
 	private boolean finalRoom = false;
 	private boolean firstRoom = false;
 	private boolean startDoor = false;
@@ -27,44 +24,35 @@ public class Level
 	protected char eplayer = '=';
 	protected char wplayer = '=';
 	
-//  default
-//  [1]{[a][b][c][d][e][f][g]}
-//  [2]{[a][b][c][d][e][f][g]}
-//  [3]{[a][b][c][d][e][f][g]}
-//  [4]{[a][b][c][d][e][f][g]}
-//  [5]{[a][b][c][d][e][f][g]}
-//  [6]{[a][b][c][d][e][f][g]}
-//  [7]{[a][b][c][d][e][f][g]}
-//  
-//  [4][d] center room and starting room
-//  
-//  multidimensional arrays someArray[height][width]
-
-	public Level()
-	{
-		room();	
-	}
-	
-	public void room()//setter for the room.
-	{
-		for(int i=0; i<maxLevHeight; i++)
-		{
-			for(int j=0; j<maxLevWidth; j++)
-			{
-				theLevel[i][j] = null;
-			}
-		}
-		theLevel[maxLevWidth/2+1][maxLevHeight/2 +1] = createLevel(true);
-	}
-	
-	private Level createLevel(boolean first)//determines if this is the first room where the player enters into the level.
+	protected Level(boolean first, int dir)//determines if this is the first room where the player enters into the level.
 	{
 		numEnemies = 0;
-		try {rand = new RandomGen(1,4);}
-		catch (Exception e)
+		try 
 		{
-			System.exit(100);
-			e.printStackTrace();
+			rand = new RandomGen();
+			rand.setLimits(2,3);
+		}
+		catch (Exception e){}
+		
+		numDoors += rand.randomInt();
+		
+		switch (dir)
+		{
+			case 0:
+				player = 'x';
+				break;
+			case 1:
+				splayer = 'x';
+				break;
+			case 2:
+				wplayer = 'x';
+				break;
+			case 3:
+				nplayer = 'x';
+				break;
+			case 4:
+				eplayer = 'x';
+				break;
 		}
 		
 		//32x16
@@ -84,63 +72,150 @@ public class Level
 			"#==============================#"+'\n'+
 			"#==============="+splayer+"==============#"+'\n'+
 			"###############"+sDoor+sDoor+"###############"+'\n';
-		return this;
+		
+		int midHeight = (super.maxLevHeight/2) + 1;
+		int midWidth = (super.maxLevWidth/2) + 1;
+		try 
+		{
+			rand.setLimits(0,3);
+			genLevel(true, 0, 1, 4, this, rand.randomInt(), midHeight, midWidth);
+		}
+		catch (Exception e){}
 	}
 	
-	private Level voidFillLevel(Level x)
+	private Level voidFillLevel(Level x, boolean enemies, int numEnemies, int minDoors, int maxDoors, char previousLevel)
 	{
 		//insert and fill level
 		return x;
 	}
 	
-//  check min and max make sure separating is okay.
-//  requires previous room direction?
-//	private Level genLevel(boolean enemies, int numEnemies, int minDoors, int maxDoors, char startDir) throws PreviousRoomException, Exception
-//	{
-//		rand = new RandomGen(minDoors, maxDoors);
-//		this.numEnemies = numEnemies;
-//		this.numDoors = minDoors + rand.randomInt();
-//		if(numDoors == 1)
-//			finalRoom = true;
-//		genLevel(true, numEnemies+rand.randomInt(),1,4);
-//		return this;
-//	}
+//	check min and max make sure separating is okay.
+//	requires previous room direction?
+	private Level genLevel(boolean enemies, int numEnemies, int minDoors, int maxDoors, Level previous, int dir, int yloc, int xloc) throws PreviousLevelException, Exception
+	{
+//		switch (dir)
+//		{
+//			case 0:
+//				previous.south = temp;
+//				break;
+//			case 1:
+//				previous.west = temp;
+//				break;
+//			case 2:
+//				previous.north = temp;
+//				break;
+//			case 3:
+//				previous.east = temp;
+//				break;
+//			default:
+//				throw new PreviousLevelException();
+//		}
+				
+		rand = new RandomGen(minDoors, maxDoors);
+		this.numEnemies = numEnemies;
+		this.numDoors = minDoors + rand.randomInt();
+		
+		try{rand.setLimits(2,5);}
+		catch(Exception e){}
+		
+		if(numDoors == 1)
+		{
+			finalRoom = true;
+			return this;
+		}
+		//already an existing room terminate recursion
+		try
+		{
+			rand.setLimits(-numEnemies,numEnemies);
+			switch(dir)
+			{
+				case 0:
+					super.theLevel[yloc + 1][xloc] = genLevel(true, rand.randomInt(), 1, 4, this, 0, yloc, xloc);// South
+					super.theLevel[yloc][xloc - 1] = genLevel(true, rand.randomInt(), 1, 4, this, 1, yloc, xloc);// West
+					super.theLevel[yloc][xloc +1] = genLevel(true, rand.randomInt(), 1, 4, this, 3, yloc, xloc);// East
+					break;
+				case 1:
+					super.theLevel[yloc + 1][xloc] = genLevel(true, rand.randomInt(), 1, 4, this, 0, yloc, xloc);// South
+					super.theLevel[yloc][xloc - 1] = genLevel(true, rand.randomInt(), 1, 4, this, 1, yloc, xloc);// West
+					super.theLevel[yloc - 1][xloc] = genLevel(true, rand.randomInt(), 1, 4, this, 2, yloc, xloc);// North
+					break;
+				case 2:
+					super.theLevel[yloc][xloc - 1] = genLevel(true, rand.randomInt(), 1, 4, this, 1, yloc, xloc);// West
+					super.theLevel[yloc - 1][xloc] = genLevel(true, rand.randomInt(), 1, 4, this, 2, yloc, xloc);// North
+					super.theLevel[yloc][xloc +1] = genLevel(true, rand.randomInt(), 1, 4, this, 3, yloc, xloc);// East
+					break;
+				case 3:
+					super.theLevel[yloc + 1][xloc] = genLevel(true, rand.randomInt(), 1, 4, this, 0, yloc, xloc);// South
+					super.theLevel[yloc - 1][xloc] = genLevel(true, rand.randomInt(), 1, 4, this, 2, yloc, xloc);// North
+					super.theLevel[yloc][xloc +1] = genLevel(true, rand.randomInt(), 1, 4, this, 3, yloc, xloc);// East
+					break;
+				default:
+					break;
+			}
+		}catch(IndexOutOfBoundsException e){return this;}
+		
+		return this;
+	}
 	
 	public String getLevel()
 	{
 		return level;
 	}
-
-	private void recursiveLevel(Level x, int numN, int numS, int numE, int numW)
+	
+	//possible set incomingDirection to lower case?
+	public void setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
 	{
-//		if(x.north == null && numN >= 0)
-//		{
-//			x.north = new Level();
-//			numN--;
-//			while(x.north.finalRoom != true)
-//			{
-//				if(x.north.numDoors == 1)
-//					x.north.finalRoom = true;
-//			}
-//			x = x.north;
-//			recursiveLevel(x, numN, numS, numE, numW);
-//		}
-//		do recursion south
-//		do recursion east
-//		do recursion west
+		current.player = '=';
+		current.nplayer = '=';
+		current.splayer = '=';
+		current.eplayer = '=';
+		current.wplayer = '=';
+		
+		if(incomingDirection == 'n')
+		{
+			current = current.north;
+			current.splayer = 'x';
+		}
+		else if(incomingDirection == 's')
+		{
+			current = current.south;
+			current.nplayer = 'x';
+		}
+		else if(incomingDirection == 'e')
+		{
+			current = current.east;
+			current.wplayer = 'x';
+		}
+		else if(incomingDirection == 'w')
+		{
+			current = current.west;
+			current.eplayer = 'x';
+		}
+		else throw new InvalidCharacterException();
+		current.player = '=';
 	}
 
 	public void print()
-	{
-		System.out.println(level);
-	}
+	{System.out.println(level);}
 }
-class PreviousRoomException extends Exception 
+
+
+class PreviousLevelException extends Exception 
 {
 	private static final long serialVersionUID = 1L;
 	
-	public PreviousRoomException() { super(); }
-	public PreviousRoomException(String message) { super(message); }
-	public PreviousRoomException(String message, Throwable cause) { super(message, cause); }
-	public PreviousRoomException(Throwable cause) { super(cause); }
+	public PreviousLevelException() { super(); }
+	public PreviousLevelException(String message) { super(message); }
+	public PreviousLevelException(String message, Throwable cause) { super(message, cause); }
+	public PreviousLevelException(Throwable cause) { super(cause); }
+}
+
+class InvalidCharacterException extends Exception 
+{
+	private static final long serialVersionUID = 1L;
+	
+	public InvalidCharacterException() { super(); }
+	public InvalidCharacterException(String message) { super(message); }
+	public InvalidCharacterException(String message, Throwable cause) { super(message, cause); }
+	public InvalidCharacterException(Throwable cause) { super(cause); }
 }
