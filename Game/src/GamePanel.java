@@ -443,4 +443,11 @@ public class GamePanel extends JPanel implements Runnable{
 
 
 
+<<<<<<< HEAD
 } // this is a comment from jian
+=======
+}
+
+
+//Hello My name is cody
+>>>>>>> 1cef0ac23182847b6a84be228d03ceff4723885d
