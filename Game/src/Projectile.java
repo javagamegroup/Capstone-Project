@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
-public class Projectile extends Actor implements Runnable  {
+public class Projectile extends Actor {
 	
 	ImageIcon projectile;
 	Image projectileImage;
@@ -36,18 +36,6 @@ public class Projectile extends Actor implements Runnable  {
         incY(yDirection);
     }
     public void draw(Graphics g) {
-    	g.drawImage(projectileImage, projectileRect.x, projectileRect.y, null);
-    	
-    }
-    
-    public void run(){
-        try{
-            while(true){
-                move();
-                Thread.sleep(7);
-            }
-        }catch(Exception ex){
-            System.err.println(ex.getMessage());
-        }
+    	//g.drawImage(projectileImage, projectileRect.x, projectileRect.y, null);
     }
 }

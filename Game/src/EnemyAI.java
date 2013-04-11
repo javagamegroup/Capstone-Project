@@ -12,8 +12,10 @@ public class EnemyAI extends Actor implements Runnable {
 	Player target;
 	boolean resting = false;
 	private ArrayList areas;
-	protected Rectangle enemyRect;
+	Rectangle enemyRect;
 	ArrayList<Wall> walls;
+	boolean isAlive = true;
+	int health = 6;
 	
 	int difficulty = 20;
 	
@@ -53,6 +55,17 @@ public class EnemyAI extends Actor implements Runnable {
         incX(xDirection);
         incY(yDirection);
         
+    }
+    
+    public void decreaseHealth(){
+    	health -= 1;
+    	if(health<=0)
+    		destroyEnemy();
+    }
+    
+    public void destroyEnemy(){
+    	isAlive = false;
+    	this.enemyRect = null;
     }
     
     public void setCoord(int x, int y){
@@ -99,9 +112,12 @@ public class EnemyAI extends Actor implements Runnable {
     public void run(){
         try{
             while(true){
+            	//if(isAlive){
                   findPathToTarget();
                     move();
                     Thread.sleep(difficulty);
+            	//}
+            	
             }
         }catch(Exception ex){
             System.err.println(ex.getMessage());

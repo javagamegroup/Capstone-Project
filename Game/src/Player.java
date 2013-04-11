@@ -3,6 +3,7 @@
 import java.awt.Image;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
@@ -16,16 +17,18 @@ public class Player extends Actor implements Runnable  {
 	Image playerImage;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
-	Projectile bullet = null;
-
-	
+	Projectile bullet [] = new Projectile [30];
+	int numBullets = 0;
+	int fireRate = 2;
+	Timer timer = new Timer();
 	protected Rectangle playerRect;
-	
-	
-	//protected int xDirection, yDirection;
 	
     public Player(int x, int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList) {
         super(x, y);
+        int i;
+    	for(i=0; i<30; i++){
+    		bullet[i] = null;
+    	}
         this.walls = walls2;
         this.areas = arrayList;
         URL loc = this.getClass().getResource("Resources/sokoban.png");
@@ -106,25 +109,17 @@ public class Player extends Actor implements Runnable  {
 
                 setYDirection(1);
             }
-            if (e.getKeyCode() == e.VK_UP) {
-                bullet = new Projectile(playerRect.x, playerRect.y);
-                bullet.setYDirection(-1);
+            if (e.getKeyCode() == e.VK_UP) { 
+                GamePanel.gun.createBullet('y', -1,playerRect.x, playerRect.y );
 
             } if (e.getKeyCode() == e.VK_DOWN) {
-
-            	bullet = new Projectile(playerRect.x, playerRect.y);
-            	bullet.setYDirection(1);
+            	GamePanel.gun.createBullet('y', 1,playerRect.x, playerRect.y );
 
             }if (e.getKeyCode() == e.VK_LEFT) {
-
-            	bullet = new Projectile(playerRect.x, playerRect.y);
-            	bullet.setXDirection(-1);
+            	GamePanel.gun.createBullet('x', -1,playerRect.x, playerRect.y );
 
             }if (e.getKeyCode() == e.VK_RIGHT) {
-
-            	bullet = new Projectile(playerRect.x, playerRect.y);
-            	bullet.setXDirection(1);
-
+            	GamePanel.gun.createBullet('x', 1,playerRect.x, playerRect.y );
             }
         }
         public void keyReleased(KeyEvent e) {

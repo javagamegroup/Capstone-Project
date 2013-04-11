@@ -43,11 +43,13 @@ public class GamePanel extends JPanel implements Runnable{
      * Game Objects
      *	world and characters
      */
-    Player player = new Player(200, 200, World.walls, World.getAreas());
-    EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
+    static Player player = new Player(200, 200, World.walls, World.getAreas());
+    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
+    static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemy);
     World world;
     Thread p1 = new Thread(player);
     Thread npc = new Thread(enemy);
+    Thread weapon = new Thread(gun);
     
     boolean gameStarted = false;
     boolean achievementsStarted = false;
@@ -159,8 +161,6 @@ public class GamePanel extends JPanel implements Runnable{
     
     private void gameUpdate() {
 		if(running && game != null) {
-			if(player.bullet!=null)
-			player.bullet.move();
 			//enemy.update();
 		}
 	}
@@ -273,17 +273,15 @@ public class GamePanel extends JPanel implements Runnable{
     	} // if game started
     	else{
     		//Game drawings
-    		world.buildWorld(g);
-			player.draw(g);
-			if(player.bullet!=null)
-			player.bullet.draw(g);
+		world.buildWorld(g);
+		player.draw(g);
+		if(enemy.health > 0){
 			enemy.draw(g);
-		
-			if(player.playerRect.intersects(enemy.enemyRect))
-			{
-				Event charE = new Event(true, enemy);
-				charE.draw(g);
-			}
+			
+		}
+		else
+			npc.interrupt();
+		gun.draw(g);
 		
 		}
 	
@@ -312,6 +310,7 @@ public class GamePanel extends JPanel implements Runnable{
 		if(game == null || gameStarted) {
 			game = new Thread(this);
 			p1.start();
+			weapon.start();
 			npc.start();
 			game.start();
 			running = true;
@@ -333,7 +332,7 @@ public class GamePanel extends JPanel implements Runnable{
         public void keyPressed(KeyEvent e){
             player.keyPressed(e);
             
-            if(e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_P){
+            if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
                 gameStarted = false;
             }
         }
