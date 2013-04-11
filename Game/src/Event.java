@@ -9,12 +9,22 @@ public class Event {
 
 	
 	private boolean playerEnemyCollision;
-	Rectangle enemyChar;
+	Rectangle nonPlayerObj1;
+	Rectangle nonPlayerObj2;
 	
-	public Event(boolean PCCollision, Rectangle enemy)
+	
+	
+	public Event(boolean PCCollision, Rectangle NonPlayerObject1)
 	{
 		playerEnemyCollision = PCCollision;
-		enemyChar = enemy;
+		nonPlayerObj1 = NonPlayerObject1;
+	}
+	
+	public Event(boolean PCCollision, Rectangle NonPlayerObject1, Rectangle NonPlayerObject2)
+	{
+		playerEnemyCollision = PCCollision;
+		nonPlayerObj1 = NonPlayerObject1;
+		nonPlayerObj2 = NonPlayerObject2;
 	}
 	
 	public void draw(Graphics g)
@@ -22,7 +32,9 @@ public class Event {
 		if(playerEnemyCollision == true)
 		{
 			g.setColor(Color.white);
-			g.drawString("HEY! I'M WALKIN HERE!", enemyChar.x, enemyChar.y);
+			g.fillRoundRect(nonPlayerObj1.x-40, nonPlayerObj1.y-40, 130, 30, 30, 30);
+			g.setColor(Color.black);
+			g.drawString("HEY! I'M WALKIN HERE!", nonPlayerObj1.x-40, nonPlayerObj1.y-20);
 		}
 	}
 	
