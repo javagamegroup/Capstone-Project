@@ -3,6 +3,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 
 public class Event {
@@ -11,6 +12,7 @@ public class Event {
 	private boolean playerEnemyCollision;
 	Rectangle nonPlayerObj1;
 	Rectangle nonPlayerObj2;
+	ArrayList<Rectangle> Rect;
 	
 	
 	
@@ -18,6 +20,12 @@ public class Event {
 	{
 		playerEnemyCollision = PCCollision;
 		nonPlayerObj1 = NonPlayerObject1;
+	}
+	
+	public Event(boolean PCCollision, ArrayList<Rectangle> Rect)
+	{
+		playerEnemyCollision = PCCollision;
+		this.Rect = Rect;
 	}
 	
 	public Event(boolean PCCollision, Rectangle NonPlayerObject1, Rectangle NonPlayerObject2)
