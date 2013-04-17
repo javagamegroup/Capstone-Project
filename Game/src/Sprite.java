@@ -1,4 +1,5 @@
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -105,8 +106,20 @@ public class Sprite {
 		setCollision();
 	}
 	
+	protected Point getPointPosition() {
+		return position.getLocation();
+	}
+	
+	protected Rectangle getPosition() {
+		return position;
+	}
+	
 	protected void setCollision() {
 		collision = position;
+	}
+	
+	protected Rectangle getCollision() {
+		return collision;
 	}
 	
 	boolean isPointInside(Point pt) {
@@ -190,5 +203,21 @@ public class Sprite {
 		return action;
 	} // update
 	
+	public void draw(Graphics g) {
+	// Draw the current frame
+		if (!hidden)
+		    g.drawImage(image[frame], position.x, position.y, component);
+	}
+	
+	protected Sprite addSprite(BitSet action) {
+		  return null;
+	}
+	
+	protected boolean testCollision(Sprite test) {
+	// Check for collision with another sprite
+		if (test != this)
+			return collision.intersects(test.getCollision()); 
+		return false;
+	}
 	
 }
