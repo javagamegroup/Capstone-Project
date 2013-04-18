@@ -59,8 +59,8 @@ public class EnemyAI extends Actor implements Runnable {
         
     }
     
-    public void decreaseHealth(){
-    	health -= 1;
+    public void decreaseHealth(int x){
+    	health -= x;
     	if(health<=0)
     		destroyEnemy();
     }

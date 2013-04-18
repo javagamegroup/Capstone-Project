@@ -16,11 +16,17 @@ public class Projectile extends Actor {
 	Image projectileImage;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
+	long startBulletTime;
+	boolean isAlive;
+	double lifeSpan;
 	
 	protected Rectangle projectileRect;
 	
-    public Projectile(int x,int y) {
+    public Projectile(int x,int y, double life) {
         super(x, y);
+        startBulletTime = System.currentTimeMillis();
+        isAlive = true;
+        lifeSpan = life;
         URL loc = this.getClass().getResource("Resources/ball.png");
         projectile = new ImageIcon(loc);
         
@@ -34,6 +40,11 @@ public class Projectile extends Actor {
     public void move(){
         incX(xDirection);
         incY(yDirection);
+    }
+    public boolean getLifeSpan(){
+    	if(System.currentTimeMillis() - startBulletTime > lifeSpan)
+    		isAlive = false;
+    	return isAlive;
     }
     public void draw(Graphics g) {
     	//g.drawImage(projectileImage, projectileRect.x, projectileRect.y, null);

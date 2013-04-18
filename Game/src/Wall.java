@@ -17,7 +17,7 @@ public class Wall extends Actor {
         image = iia.getImage();
         this.setImage(image);
         
-        this.objectRect = getRect(x, y, 20,20);
+        this.objectRect = getRect(x, y, 32,32);
 
         this.setRect(objectRect);
 

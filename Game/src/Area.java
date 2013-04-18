@@ -15,7 +15,7 @@ public class Area extends Actor {
         ImageIcon iia = new ImageIcon(loc);
         Image image = iia.getImage();
         this.setImage(image);
-        this.areaRect = getRect(x, y, 20,20);
+        this.areaRect = getRect(x, y, 32,32);
 
         this.setRect(areaRect);
     }

@@ -19,16 +19,17 @@ public class Player extends Actor implements Runnable  {
 	private ArrayList areas;
 	Projectile bullet [] = new Projectile [30];
 	int numBullets = 0;
-	int fireRate = 2;
+	int fireRate = 250;
 	Timer timer = new Timer();
 	protected Rectangle playerRect;
+	double startTime = -1;
+	double bulletLife;
+	int health = 5;
 	
     public Player(int x, int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList) {
         super(x, y);
         int i;
-    	for(i=0; i<30; i++){
-    		bullet[i] = null;
-    	}
+        bulletLife = 2500;
         this.walls = walls2;
         this.areas = arrayList;
         URL loc = this.getClass().getResource("Resources/sokoban.png");
@@ -36,7 +37,7 @@ public class Player extends Actor implements Runnable  {
         
         playerImage = tad.getImage();
         
-        this.playerRect = getRect(x, y, 19,19);
+        this.playerRect = getRect(x, y, 32,32);
 
         this.setRect(playerRect);
     }
@@ -81,7 +82,7 @@ public class Player extends Actor implements Runnable  {
     
  
     public void setCoord(int x, int y){
-    	this.playerRect = getRect(x, y, 20,20);
+    	this.playerRect = getRect(x, y, 32,32);
     	this.setRect(playerRect);
     }
     
@@ -110,17 +111,29 @@ public class Player extends Actor implements Runnable  {
 
                 setYDirection(1);
             }
-            if (e.getKeyCode() == e.VK_UP) { 
-                GamePanel.gun.createBullet('y', -1,playerRect.x, playerRect.y );
+            if (e.getKeyCode() == e.VK_UP) {
+            	if(System.currentTimeMillis() - startTime  > fireRate || startTime == -1){
+            	startTime = System.currentTimeMillis();
+                GamePanel.gun.createBullet('y', -1,playerRect.x, playerRect.y, bulletLife );
+            	}
 
             } if (e.getKeyCode() == e.VK_DOWN) {
-            	GamePanel.gun.createBullet('y', 1,playerRect.x, playerRect.y );
+            	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
+            	startTime = System.currentTimeMillis();
+            	GamePanel.gun.createBullet('y', 1,playerRect.x, playerRect.y, bulletLife);
+            	}
 
             }if (e.getKeyCode() == e.VK_LEFT) {
-            	GamePanel.gun.createBullet('x', -1,playerRect.x, playerRect.y );
+            	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
+            	startTime = System.currentTimeMillis();
+            	GamePanel.gun.createBullet('x', -1,playerRect.x, playerRect.y, bulletLife);
+            	}
 
             }if (e.getKeyCode() == e.VK_RIGHT) {
-            	GamePanel.gun.createBullet('x', 1,playerRect.x, playerRect.y );
+            	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
+            	startTime = System.currentTimeMillis();
+            	GamePanel.gun.createBullet('x', 1,playerRect.x, playerRect.y, bulletLife );
+            	}
             }
         }
         public void keyReleased(KeyEvent e) {
@@ -142,6 +155,16 @@ public class Player extends Actor implements Runnable  {
                 }
 
         }
+
+    public void increaseHealth(){
+    	health += 1;
+    }
+    public void increaseBulletLife(int x){
+    	bulletLife += x;
+    }
+    public void increaseFireRate(int x){
+    	fireRate -= x;
+    }
 
     
     public void run(){

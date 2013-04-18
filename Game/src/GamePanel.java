@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable{
      */
     static Player player = new Player(200, 200, World.walls, World.getAreas());
     static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
-    static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemy);
+    static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemy, 2);
     World world;
     Thread p1 = new Thread(player);
     Thread npc = new Thread(enemy);

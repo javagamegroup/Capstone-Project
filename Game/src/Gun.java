@@ -19,10 +19,12 @@ public class Gun extends Actor implements Runnable  {
 	EnemyAI enemy;
 	private ArrayList areas;
 	int bulletLife = 4;
+	int bulletDamage;
 	
-    public Gun(int x,int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList, EnemyAI sub) {
+    public Gun(int x,int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList, EnemyAI sub, int damage) {
         super(x, y);
         enemy = sub;
+        bulletDamage = damage;
         this.walls = walls2;
         this.areas = arrayList;
         for(int i=0; i<30; i++){
@@ -30,8 +32,8 @@ public class Gun extends Actor implements Runnable  {
     	}
     }
 
-    public void createBullet(char var, int x, int playerX, int playerY){
-    	bullet[numBullets] = new Projectile(playerX, playerY);
+    public void createBullet(char var, int x, int playerX, int playerY, double life){
+    	bullet[numBullets] = new Projectile(playerX, playerY, life);
     	if(var == 'x'){
     		bullet[numBullets].setXDirection(x);
     	}
@@ -46,7 +48,18 @@ public class Gun extends Actor implements Runnable  {
     	bullet[num] = null;
     }
     
+    public void increaseDamage(int x){
+    	bulletDamage += x;
+    }
+    
     public void bulletCollision(){
+    	for(int i =0; i<30; i++){
+    		if(bullet[i] != null)
+    			if(bullet[i].getLifeSpan() == false){
+    				destroyBullet(100, i);
+    			}
+    	}
+    	
     	for (int i = 0; i < walls.size(); i++) {
             Wall wall = (Wall) walls.get(i);
             for(int j =0; j<30; j++){
@@ -70,7 +83,7 @@ public class Gun extends Actor implements Runnable  {
 				if(enemy.enemyRect!=null)
 				if (bullet[j].projectileRect.intersects(enemy.enemyRect)) {
 					destroyBullet(100, j);
-					enemy.decreaseHealth();
+					enemy.decreaseHealth(bulletDamage);
 				}
         }
     }
