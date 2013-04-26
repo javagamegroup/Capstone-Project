@@ -39,13 +39,18 @@ public class GamePanel extends JPanel implements Runnable{
     private Image dbImage;
     private Graphics dbg;
     
+    // Vars for Achievements
+    static Achievements getAchieves = new Achievements();
+	static String [] achivements = null;
+	static String [] earnedAchivements = null;
+    
     /**
      * Game Objects
      *	world and characters
      */
     static Player player = new Player(200, 200, World.walls, World.getAreas());
     static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
-    static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemy, 2);
+    static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemy, 2, getAchieves);
     World world;
     Thread p1 = new Thread(player);
     Thread npc = new Thread(enemy);
@@ -59,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
     boolean difficultyHover; 
     boolean achievementsHover; 
     boolean backHover;
+    boolean resetHover;
     
     // button flags
     boolean startButtonFlag = false;
@@ -72,7 +78,8 @@ public class GamePanel extends JPanel implements Runnable{
     Rectangle quitButton = new Rectangle(350, 450, GWIDTH/4, GHEIGHT/12);
     Rectangle difficultyButton = new Rectangle(350, 250, GWIDTH/4, GHEIGHT/12);
     Rectangle achievementButton = new Rectangle(350, 350, GWIDTH/4, GHEIGHT/12);
-    Rectangle backButton = new Rectangle(25, 50, 75, 25);
+    Rectangle backButton = new Rectangle(25, 550, 75, 25);
+    Rectangle resetButton = new Rectangle(625, 550, 135, 25);
 	
     Color fontColor, backColor, buttonColor;
     String gameTitle;
@@ -252,15 +259,32 @@ public class GamePanel extends JPanel implements Runnable{
     		}
     		else {
     			// Achievement drawings
+    			int startY = 145;
+    			int startX = 120;
+    			int ovalX = 50;
+    			int ovalY = 125;
     			g.setColor(backColor);
-    			g.fill3DRect(0, 0, GWIDTH, GHEIGHT, true);
-    			g.setColor(Color.black);
+    			g.setColor(Color.WHITE);
     			g.setFont(new Font("Arial", Font.BOLD, 28));
-    			g.drawString("ACHIEVEMENTS", 150, 75);	
-    			g.drawOval(50, 125, 50, 50);
-    			g.drawArc(50, 125, 45, 10, 45, 30);
+    			g.drawString("ACHIEVEMENTS", 300, 75);	
+    			achivements = getAchieves.getAllAchievement();
+    			earnedAchivements = getAchieves.getEarnedAchievement();
     			g.setFont(new Font("Arial", Font.BOLD, 20));
-    			g.drawString("Completed Level One            10pt", 125, 150);
+    			g.setColor(Color.GRAY);
+    			for(int i = 0; i<achivements.length; i ++){
+    				for(int j = 0; j<earnedAchivements.length; j ++){
+    					if(achivements[i].equals(earnedAchivements[j])){
+    						g.setColor(Color.WHITE);
+    						break;
+    					}
+    					else g.setColor(Color.GRAY);
+    				}
+    				g.drawString(achivements[i], startX, startY);
+    				g.drawOval(ovalX, ovalY, 20, 20);
+    				startY += 35;
+    				ovalY += 35;
+    				
+    			}
     			if(!backHover)
     				g.setColor(buttonColor);
     			else
@@ -269,6 +293,14 @@ public class GamePanel extends JPanel implements Runnable{
     			g.setFont(new Font("Arial", Font.BOLD, 12));
     			g.setColor(Color.black);
     			g.drawString("Back", backButton.x+15, backButton.y+17);
+    			if(!resetHover)
+    				g.setColor(buttonColor);
+    			else
+    				g.setColor(Color.pink);
+    			g.fillRect(resetButton.x, backButton.y, resetButton.width, resetButton.height);
+    			g.setFont(new Font("Arial", Font.BOLD, 12));
+    			g.setColor(Color.black);
+    			g.drawString("Reset Achiements", resetButton.x+15, resetButton.y+17);
     		}
     	} // if game started
     	else{
@@ -331,7 +363,11 @@ public class GamePanel extends JPanel implements Runnable{
         @Override
         public void keyPressed(KeyEvent e){
             player.keyPressed(e);
-            
+            if(achievementsStarted == true)
+            	if (e.getKeyCode() == e.VK_ESCAPE) {
+            		achievementsStarted = false;
+            	}
+      
             if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
                 gameStarted = false;
             }
@@ -387,6 +423,11 @@ public class GamePanel extends JPanel implements Runnable{
 	            	backHover = true;
 	            else
 	            	backHover = false;
+	            if(mx > resetButton.x && mx < resetButton.x+resetButton.width &&
+	            		my > resetButton.y && my < resetButton.y+resetButton.height)  
+	            	resetHover = true;
+	            else
+	            	resetHover = false;
 
         }
         @Override
@@ -395,8 +436,9 @@ public class GamePanel extends JPanel implements Runnable{
             int my = e.getY();
             
             if(mx > startButton.x && mx < startButton.x+startButton.width &&
-            		my > startButton.y && my < startButton.y+startButton.height)
+            		my > startButton.y && my < startButton.y+startButton.height){
             	gameStarted = true;
+            	getAchieves.storeAchievement("I'm Awesome - Start your first game");}
             
             if(mx > quitButton.x && mx < quitButton.x+quitButton.width &&
             		my > quitButton.y && my < quitButton.y+quitButton.height)
@@ -426,8 +468,11 @@ public class GamePanel extends JPanel implements Runnable{
             if(mx > achievementButton.x && mx < achievementButton.x+achievementButton.width &&
                 	my > achievementButton.y && my < achievementButton.y+achievementButton.height)
             		achievementsStarted = true;
-            		
             
+            if(mx > resetButton.x && mx < resetButton.x+resetButton.width &&
+            		my > resetButton.y && my < resetButton.y+resetButton.height)
+            		getAchieves.resetAchieve();
+            	
                 	
             
             

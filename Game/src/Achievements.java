@@ -16,7 +16,7 @@ public class Achievements {
 		String sCurrentLine = null;
 		String[] achievements = null;
 		try {
-			achievements = new String[getnumAchievement()];
+			achievements = new String[getnumAchievement("src/Achievements/Achieve.txt")];
 			int m = 0;
 			reader = new BufferedReader(new FileReader("src/Achievements/Achieve.txt"));
 			while ((sCurrentLine = reader.readLine()) != null){
@@ -28,14 +28,39 @@ public class Achievements {
 		return achievements;
 	}
 	
-	public int getnumAchievement(){
+	public String [] getEarnedAchievement(){
+		String sCurrentLine = null;
+		String[] achievements = null;
+		try {
+			achievements = new String[getnumAchievement("src/Achievements/EarnedAchieve.txt")];
+			int m = 0;
+			reader = new BufferedReader(new FileReader("src/Achievements/EarnedAchieve.txt"));
+			while ((sCurrentLine = reader.readLine()) != null){
+				achievements[m] = sCurrentLine;
+				m++;
+			}
+			reader.close();
+		} catch (IOException e) {e.printStackTrace();}
+		return achievements;
+	}
+	
+	public int getnumAchievement(String file){
 		int lines = 0;
 		try {
-			reader = new BufferedReader(new FileReader("src/Achievements/Achieve.txt"));
+			reader = new BufferedReader(new FileReader(file));
 			while (reader.readLine() != null) lines++;
 			reader.close();
 		} catch (IOException e) {e.printStackTrace();}
 		return lines;
+	}
+	
+	public void resetAchieve(){
+		try{
+			 
+    		File file = new File("src/Achievements/EarnedAchieve.txt");
+    		file.delete();
+    		out = new PrintWriter(new BufferedWriter(new FileWriter("src/Achievements/EarnedAchieve.txt", true)));
+    		out.close();}catch(Exception e){}
 	}
 	
 	public void storeAchievement(String achieve)
@@ -43,8 +68,8 @@ public class Achievements {
 		String sCurrentLine = null;
 		try 
 		{
-			out = new PrintWriter(new BufferedWriter(new FileWriter("src/Achievements/Achieve.txt", true)));
-			reader = new BufferedReader(new FileReader("src/Achievements/Achieve.txt"));
+			out = new PrintWriter(new BufferedWriter(new FileWriter("src/Achievements/EarnedAchieve.txt", true)));
+			reader = new BufferedReader(new FileReader("src/Achievements/EarnedAchieve.txt"));
 			while ((sCurrentLine = reader.readLine()) != null){
 				if(achieve.equals(sCurrentLine)){
 					reader.close();
@@ -56,6 +81,12 @@ public class Achievements {
 		} catch (IOException e) {e.printStackTrace();}
 		out.println(achieve);
 		out.close();
+		try {
+			reader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

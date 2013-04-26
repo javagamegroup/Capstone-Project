@@ -20,9 +20,11 @@ public class Gun extends Actor implements Runnable  {
 	private ArrayList areas;
 	int bulletLife = 4;
 	int bulletDamage;
+	Achievements getAchieves = null;
 	
-    public Gun(int x,int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList, EnemyAI sub, int damage) {
+    public Gun(int x,int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList, EnemyAI sub, int damage, Achievements getAchieves) {
         super(x, y);
+        this.getAchieves = getAchieves;
         enemy = sub;
         bulletDamage = damage;
         this.walls = walls2;
@@ -84,6 +86,9 @@ public class Gun extends Actor implements Runnable  {
 				if (bullet[j].projectileRect.intersects(enemy.enemyRect)) {
 					destroyBullet(100, j);
 					enemy.decreaseHealth(bulletDamage);
+					if (enemy.health <= 0){
+						getAchieves.storeAchievement("Guns Loaded - Defeat your first enemy");
+					}
 				}
         }
     }

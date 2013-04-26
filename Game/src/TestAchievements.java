@@ -15,7 +15,7 @@ public abstract class TestAchievements {
 		list.storeAchievement("I got a weapon");
 		list.storeAchievement("I beat the game");
 		arcs = list.getAllAchievement();
-		for(int i = 0; i<list.getnumAchievement();i++)
+		for(int i = 0; i<arcs.length;i++)
 		System.out.println(arcs[i]);
 	}
 
