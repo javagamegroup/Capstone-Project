@@ -275,6 +275,7 @@ public class GamePanel extends JPanel implements Runnable{
     				for(int j = 0; j<earnedAchivements.length; j ++){
     					if(achivements[i].equals(earnedAchivements[j])){
     						g.setColor(Color.WHITE);
+    						g.fillOval(ovalX, ovalY, 20, 20);
     						break;
     					}
     					else g.setColor(Color.GRAY);
