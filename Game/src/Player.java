@@ -159,6 +159,9 @@ public class Player extends Actor implements Runnable  {
     public void increaseHealth(){
     	health += 1;
     }
+    public void decreaseHealth(){
+    	health -= 1;
+    }
     public void increaseBulletLife(int x){
     	bulletLife += x;
     }
