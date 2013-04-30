@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
-public class Enemies extends Actor implements Runnable  {
+public class Enemies implements Runnable  {
 	
 	Player target;
 	ArrayList<Wall> walls;
@@ -19,92 +19,103 @@ public class Enemies extends Actor implements Runnable  {
 	int bulletLife = 4;
 	int bulletDamage;
 	Achievements getAchieves = null;
+	EnemyAI [] enemies = null;
+	int numEnemies = 0;
+	int num = 0;
+	Event charE;
+	int difficulty = 20;
 	
-    public Enemies(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play) {
-        super(x, y);
+    public Enemies(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play, int numEnemies) {
         this.walls = walls;
         this.areas = arrayList;
-        for(int i=0; i<30; i++){
-    		bullet[i] = null;
-    	}
+        this.numEnemies = numEnemies;
+        enemies = new EnemyAI[numEnemies];
+        target = play;
     }
 
-    public void createBullet(char var, int x, int playerX, int playerY, double life){
-    	bullet[numBullets] = new Projectile(playerX, playerY, life);
-    	if(var == 'x'){
-    		bullet[numBullets].setXDirection(x);
-    	}
-    	if(var == 'y'){
-    		bullet[numBullets].setYDirection(x);
-    	}
-    	numBullets ++;
-    	if(numBullets ==30) numBullets =0;
+    public void createEnemy(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play){
+    	enemies[num] = new EnemyAI(x, y, walls, arrayList, play);
+    	charE = new Event(true, enemies[num].enemyRect);
+    	num ++;
+    	if(num ==30) num =0;
     }
     
-    public void destroyBullet(int x, int num){
-    	bullet[num] = null;
+    public void destroyEnemy(int num){
+    	enemies[num] = null;
     }
     
-    public void increaseDamage(int x){
-    	bulletDamage += x;
-    }
-    
-    public void bulletCollision(){
-    	for(int i =0; i<30; i++){
-    		if(bullet[i] != null)
-    			if(bullet[i].getLifeSpan() == false){
-    				destroyBullet(100, i);
-    			}
+    public void enemyCollision(){
+    	for(int j =0; j<numEnemies; j++){
+			if(enemies[j] != null){
+		        for (int i = 0; i < walls.size(); i++) {
+		            Wall wall = (Wall) walls.get(i);
+		            if (enemies[j].enemyRect.intersects(wall.objectRect)) {
+		            	if(enemies[j].xDirection != 0)
+		            		enemies[j].setXDirection(0);
+		            	if(enemies[j].yDirection != 0)
+		            		enemies[j].setYDirection(0);
+		            }
+		        }
+			}
     	}
     	
-    	for (int i = 0; i < walls.size(); i++) {
-            Wall wall = (Wall) walls.get(i);
-            for(int j =0; j<30; j++){
-    			if(bullet[j] != null)
-    				if (bullet[j].projectileRect.intersects(wall.objectRect)) {
-    					destroyBullet(100, j);
-    				}
-            }
-        }
-    	for (int i = 0; i < areas.size(); i++) {
-            Area area = (Area) areas.get(i);
-            for(int j =0; j<30; j++){
-    			if(bullet[j] != null)
-    				if (bullet[j].projectileRect.intersects(area.areaRect)) {
-    					destroyBullet(100, j);
-    				}
-            }
-        }
-    	for(int j =0; j<30; j++){
-			if(bullet[j] != null)
-				if(enemy.enemyRect!=null)
-				if (bullet[j].projectileRect.intersects(enemy.enemyRect)) {
-					destroyBullet(100, j);
-					enemy.decreaseHealth(bulletDamage);
-					if (enemy.health <= 0){
-						getAchieves.storeAchievement("Guns Loaded - Defeat your first enemy");
-					}
+    	for(int j =0; j<numEnemies; j++){
+			if(enemies[j] != null){
+		        for (int i = 0; i < areas.size(); i++) {
+		            Area area = (Area) areas.get(i);
+		            if (enemies[j].enemyRect.intersects(area.areaRect)) {
+		            	if(enemies[j].xDirection != 0)
+		            		enemies[j].setXDirection(0);
+		            	if(enemies[j].yDirection != 0)
+		            		enemies[j].setYDirection(0);
+		            }
+		        }
+		    }
+    	}
+    	
+
+    	for(int j =0; j<numEnemies; j++){
+			if(enemies[j] != null){
+				if (enemies[j].enemyRect.intersects(target.playerRect)) {
+					
 				}
-        }
+			}
+		}
+    	
+    	for(int j =0; j<numEnemies; j++){
+			if(enemies[j] != null){
+				if (enemies[j].health <=0)
+					enemies[j] = null;
+			}
+    	}
     }
     
     public void draw(Graphics g) {
-    	for(int i = 0; i<30; i++){
-    		if(bullet[i] != null){
-    			g.drawImage(bullet[i].projectileImage, bullet[i].projectileRect.x, bullet[i].projectileRect.y, null);
+    	for(int i = 0; i<numEnemies; i++){
+    		if(enemies[i]!=null)
+	    		if(enemies[i].health <= 0)
+	    			enemies[i] = null;
+    		if(enemies[i]!=null){
+	    		enemies[i].draw(g);
     		}
     	}
+    }
+    
+    public void setDifficulty(int enemyRunSpeed) {
+    	difficulty = enemyRunSpeed;
+    	
+    	
     }
     
     public void run(){
         try{
             while(true){
-    				for(int i =0; i<30; i++){
-    				if(bullet[i] != null)
-    					bullet[i].move();
+    				for(int i =0; i<numEnemies; i++){
+	    				if(enemies[i] != null)
+	    					enemies[i].update();
     				}
-    			bulletCollision();
-                Thread.sleep(speed);
+    			enemyCollision();
+    			Thread.sleep(difficulty);
             }
         }catch(Exception ex){
             System.err.println(ex.getMessage());

@@ -50,11 +50,13 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
      *	world and characters
      */
     static Player player = new Player(200, 200, World.walls, World.getAreas());
-    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
-    static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemy, 2, getAchieves);
+    static Enemies enemies = new Enemies(70, 70, World.walls, World.getAreas(), player, 3);
+    static EnemyAI enemy = null;
+//    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
+    static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemies, 2, getAchieves);
     World world;
     Thread p1 = new Thread(player);
-    Thread npc = new Thread(enemy);
+    Thread npc = new Thread(enemies);
     Thread weapon = new Thread(gun);
     
     boolean gameStarted = false;
@@ -87,6 +89,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     
     public GamePanel(String gameTitle, Color fontColor, Color backColor, Color buttonColor, boolean sbf, boolean qbf, boolean abf, boolean dbf) 
     {
+    	enemies.createEnemy(70, 70, World.walls, World.getAreas(), player);
+    	enemies.createEnemy(400, 200, World.walls, World.getAreas(), player);
+    	enemies.createEnemy(500, 500, World.walls, World.getAreas(), player);
     	this.gameTitle = gameTitle;
 		
 		this.startButtonFlag = sbf;
@@ -309,17 +314,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		//Game drawings
     		world.buildWorld(g);
     		player.draw(g);
-    		if(enemy.health > 0){
-    			enemy.draw(g);
-			
-    		}
-    		else{
-    			try{
-    				npc.interrupt();
-    				npc.isInterrupted();
-    				throw new InterruptedException();
-    			}catch (InterruptedException e) {e.printStackTrace();}
-    		}
+    		enemies.draw(g);
     		gun.draw(g);
 		
 		}
@@ -370,12 +365,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
         @Override
         public void keyPressed(KeyEvent e){
             player.keyPressed(e);
-            if (e.getKeyCode() == e.VK_R) {
-            	enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
-            	//npc = new Thread(enemy);
-            	game = null;
-            	startGame();
-        	}
             if(achievementsStarted == true)
             	if (e.getKeyCode() == e.VK_ESCAPE) {
             		achievementsStarted = false;
@@ -461,11 +450,11 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
             		my > difficultyButton.y && my < difficultyButton.y+difficultyButton.height)
             {
             	if(!hardDifficulty) {
-            		enemy.setDifficulty(8);
+            		enemies.setDifficulty(8);
             		hardDifficulty = true;
             	}
             	else {
-            		enemy.setDifficulty(20);
+            		enemies.setDifficulty(20);
             		hardDifficulty = false;
             		
             	}

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-public class EnemyAI extends Actor implements Runnable {
+public class EnemyAI extends Actor{
     
 	ImageIcon paul;
 	Image enemyImage;
@@ -28,7 +28,7 @@ public class EnemyAI extends Actor implements Runnable {
         URL paulLoc = this.getClass().getResource("Resources/baggage.png");
        	paul = new ImageIcon(paulLoc);
         enemyImage = paul.getImage();
-        this.enemyRect = getRect(100, 200, 20,20);
+        this.enemyRect = getRect(x, y, 20,20);
         this.setRect(enemyRect);
         charE = new Event(true, this.enemyRect);
     }
@@ -61,8 +61,6 @@ public class EnemyAI extends Actor implements Runnable {
     
     public void decreaseHealth(int x){
     	health -= x;
-    	if(health<=0)
-    		destroyEnemy();
     }
     
     public void destroyEnemy(){
@@ -73,6 +71,12 @@ public class EnemyAI extends Actor implements Runnable {
     public void setCoord(int x, int y){
     	this.enemyRect = getRect(x, y, 20,20);
     	this.setRect(enemyRect);
+    }
+    
+    public void update(){
+    	findPathToTarget();
+    	collision();
+        move();
     }
     
     public void collision(){
@@ -105,31 +109,8 @@ public class EnemyAI extends Actor implements Runnable {
 		if(isAlive)
 			if(this.enemyRect.intersects(target.playerRect)){
 				charE.draw(g);
-			}
-    	
-    	
+			}	
     }
     
-    public void setDifficulty(int enemyRunSpeed) {
-    	difficulty = enemyRunSpeed;
-    	
-    	
-    }
     
-    //In Run method, move in that direction and then wait
-    @Override
-    public void run(){
-        try{
-            while(true){
-            	if(isAlive){
-                  findPathToTarget();
-                    move();
-                    Thread.sleep(difficulty);
-            	}
-            	
-            }
-        }catch(Exception ex){
-            System.err.println(ex.getMessage());
-        }
-    }
 }
