@@ -11,8 +11,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class GamePanel extends JPanel implements Runnable{ 
+public class GamePanel extends JPanel implements Runnable, Serializable{ 
 
 	/**
 	 * 
@@ -312,8 +313,13 @@ public class GamePanel extends JPanel implements Runnable{
     			enemy.draw(g);
 			
     		}
-    		else
-    			npc.interrupt();
+    		else{
+    			try{
+    				npc.interrupt();
+    				npc.isInterrupted();
+    				throw new InterruptedException();
+    			}catch (InterruptedException e) {e.printStackTrace();}
+    		}
     		gun.draw(g);
 		
 		}
@@ -364,6 +370,12 @@ public class GamePanel extends JPanel implements Runnable{
         @Override
         public void keyPressed(KeyEvent e){
             player.keyPressed(e);
+            if (e.getKeyCode() == e.VK_R) {
+            	enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
+            	//npc = new Thread(enemy);
+            	game = null;
+            	startGame();
+        	}
             if(achievementsStarted == true)
             	if (e.getKeyCode() == e.VK_ESCAPE) {
             		achievementsStarted = false;
