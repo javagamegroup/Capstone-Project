@@ -24,12 +24,11 @@ public class Enemies implements Runnable  {
 	int num = 0;
 	Event charE;
 	int difficulty = 20;
+	boolean paused = false;
 	
-    public Enemies(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play, int numEnemies) {
+    public Enemies(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play) {
         this.walls = walls;
         this.areas = arrayList;
-        this.numEnemies = numEnemies;
-        enemies = new EnemyAI[numEnemies];
         target = play;
     }
 
@@ -42,6 +41,10 @@ public class Enemies implements Runnable  {
     
     public void destroyEnemy(int num){
     	enemies[num] = null;
+    }
+    public void setNumEnemies(int num){
+    	numEnemies = num;
+    	enemies = new EnemyAI[numEnemies];
     }
     
     public void enemyCollision(){
@@ -107,15 +110,31 @@ public class Enemies implements Runnable  {
     	
     }
     
+    public void killAllEnemies(){
+    	for(int i = 0; i<numEnemies;i++){
+    		enemies[i] = null;
+    	}
+    	num = 0;
+    }
+    public void paused(){
+    	paused = true;
+    }
+    public void unpaused(){
+    	paused = false;
+    }
+    
     public void run(){
         try{
             while(true){
-    				for(int i =0; i<numEnemies; i++){
-	    				if(enemies[i] != null)
-	    					enemies[i].update();
-    				}
-    			enemyCollision();
-    			Thread.sleep(difficulty);
+            	if(paused==false){
+	    				for(int i =0; i<numEnemies; i++){
+		    				if(enemies[i] != null)
+		    					enemies[i].update();
+	    				}
+	    			enemyCollision();
+	    			Thread.sleep(difficulty);
+            	}
+    			else{Thread.sleep(7);}
             }
         }catch(Exception ex){
             System.err.println(ex.getMessage());

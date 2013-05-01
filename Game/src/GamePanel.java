@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
      *	world and characters
      */
     static Player player = new Player(200, 200, World.walls, World.getAreas());
-    static Enemies enemies = new Enemies(70, 70, World.walls, World.getAreas(), player, 3);
+    static Enemies enemies = new Enemies(70, 70, World.walls, World.getAreas(), player);
     static EnemyAI enemy = null;
 //    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
     static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemies, 2, getAchieves);
@@ -60,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     Thread weapon = new Thread(gun);
     
     boolean gameStarted = false;
+    boolean pauseMenu = false;
     boolean achievementsStarted = false;
     boolean hardDifficulty = false;
     boolean startHover;
@@ -78,6 +79,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     
     //Menu Buttons
     Rectangle startButton = new Rectangle(350, 150, GWIDTH/4, GHEIGHT/12);
+    Rectangle resumeButton = new Rectangle(325, 350, GWIDTH/4, GHEIGHT/12);
+    Rectangle menuButton = new Rectangle(325, 400, GWIDTH/4, GHEIGHT/12);
     Rectangle quitButton = new Rectangle(350, 450, GWIDTH/4, GHEIGHT/12);
     Rectangle difficultyButton = new Rectangle(350, 250, GWIDTH/4, GHEIGHT/12);
     Rectangle achievementButton = new Rectangle(350, 350, GWIDTH/4, GHEIGHT/12);
@@ -89,9 +92,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     
     public GamePanel(String gameTitle, Color fontColor, Color backColor, Color buttonColor, boolean sbf, boolean qbf, boolean abf, boolean dbf) 
     {
-    	enemies.createEnemy(70, 70, World.walls, World.getAreas(), player);
-    	enemies.createEnemy(400, 200, World.walls, World.getAreas(), player);
-    	enemies.createEnemy(500, 500, World.walls, World.getAreas(), player);
     	this.gameTitle = gameTitle;
 		
 		this.startButtonFlag = sbf;
@@ -106,15 +106,29 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	this.addKeyListener(new KeyHandler());
     	this.addMouseListener(new MouseHandler());
         this.addMouseMotionListener(new MouseHandler());
-        world = new World(player, enemy);
+        
         
         setPreferredSize(gameDim);
         setBackground(Color.BLACK);
         setFocusable(true);
         requestFocusInWindow();
+        initialize();
         
         // Handle all key inputs from user
         //addKeyListener(new TAdapter());
+    }
+    
+    public void initialize(){
+    	world = new World(player, enemy);
+    	enemies.killAllEnemies();
+    	enemies.setNumEnemies(3);
+    	//for(int i = 0; i<3; i++){
+    	enemies.createEnemy(70, 70, World.walls, World.getAreas(), player);
+    	enemies.createEnemy(400, 200, World.walls, World.getAreas(), player);
+    	enemies.createEnemy(500, 500, World.walls, World.getAreas(), player);
+    	//}
+    	player.setCoord(200, 200);
+    	
     }
 
   
@@ -309,7 +323,40 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     			g.setColor(Color.black);
     			g.drawString("Reset Achiements", resetButton.x+15, resetButton.y+17);
     		}
-    	} // if game started
+    	} // if game started and Pausemenu is up
+		else if(pauseMenu){//Menu
+    		world.buildWorld(g);
+    		player.draw(g);
+    		enemies.draw(g);
+    		gun.draw(g);
+		    g.setFont(new Font("Arial", Font.BOLD, 26));
+		    g.setColor(Color.GRAY);
+		    g.fillRect(300, 300, 300, 200);
+		    g.setColor(Color.WHITE);
+		    g.drawString("Pause Menu", 325, 325);
+		    
+		    // start button
+		    if(startButtonFlag = true){
+			    if(!startHover)
+			    	g.setColor(buttonColor);
+			    else
+			    	g.setColor(Color.pink);
+			    g.fillRect(resumeButton.x, resumeButton.y, GWIDTH/4, GHEIGHT/14);
+			    g.setFont(new Font("Arial", Font.BOLD, 12));
+			    g.setColor(Color.GRAY);
+			    g.drawString("Resume Game", resumeButton.x+60, resumeButton.y+25);
+			    
+			    // quit button 
+			    if(!quitHover)
+			    	g.setColor(buttonColor);
+			    else
+			    	g.setColor(Color.pink);
+			    g.fillRect(menuButton.x, menuButton.y, GWIDTH/4, GHEIGHT/14);
+			    g.setColor(Color.GRAY);
+			    g.drawString("Return to Main Menu", menuButton.x+60, menuButton.y+25);
+		    }
+			
+		}
     	else{
     		//Game drawings
     		world.buildWorld(g);
@@ -359,7 +406,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     }
     
     
-    
 ////////EVENT LISTENER CLASSES/////////
     public class KeyHandler extends KeyAdapter {
         @Override
@@ -371,7 +417,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
             	}
       
             if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-                gameStarted = false;
+                pauseMenu = true;
+            	player.paused();
+            	enemies.paused();
             }
         }
         @Override
@@ -387,99 +435,136 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
         public void mouseMoved(MouseEvent e){
         	int mx = e.getX(); 
             int my = e.getY();
+            if(gameStarted ==false){
             
-            if(startButtonFlag = true) {
-	            if(mx > startButton.x && mx < startButton.x+startButton.width &&
-	            		my > startButton.y && my < startButton.y+startButton.height)  
-	            	startHover = true;
-	            else
-	            	startHover = false;
-            }    
+	            if(startButtonFlag = true) {
+		            if(mx > startButton.x && mx < startButton.x+startButton.width &&
+		            		my > startButton.y && my < startButton.y+startButton.height)  
+		            	startHover = true;
+		            else
+		            	startHover = false;
+	            }    
+		            
+	            if(quitButtonFlag = true) {    
+		            if(mx > quitButton.x && mx < quitButton.x+quitButton.width &&
+		            		my > quitButton.y && my < quitButton.y+quitButton.height) 
+		            	quitHover = true;
+		            else
+		            	quitHover = false;
+	            }
 	            
-            if(quitButtonFlag = true) {    
-	            if(mx > quitButton.x && mx < quitButton.x+quitButton.width &&
-	            		my > quitButton.y && my < quitButton.y+quitButton.height) 
-	            	quitHover = true;
-	            else
-	            	quitHover = false;
+		        if(difficultyButtonFlag = true) {   
+		            if(mx > difficultyButton.x && mx < difficultyButton.x+difficultyButton.width &&
+		            		my > difficultyButton.y && my < difficultyButton.y+difficultyButton.height)  
+		            	difficultyHover = true;
+		            else
+		            	difficultyHover = false;
+		        }
+		        
+		        if(achievementButtonFlag = true) {
+		            if(mx > achievementButton.x && mx < achievementButton.x+achievementButton.width &&
+		            		my > achievementButton.y && my < achievementButton.y+achievementButton.height)  
+		            	achievementsHover = true;
+		            else
+		            	achievementsHover = false;
+		           
+		            
+		            if(mx > backButton.x && mx < backButton.x+backButton.width &&
+		            		my > backButton.y && my < backButton.y+backButton.height)  
+		            	backHover = true;
+		            else
+		            	backHover = false;
+		            if(mx > resetButton.x && mx < resetButton.x+resetButton.width &&
+		            		my > resetButton.y && my < resetButton.y+resetButton.height)  
+		            	resetHover = true;
+		            else
+		            	resetHover = false;
+		        } 
             }
             
-	        if(difficultyButtonFlag = true) {   
-	            if(mx > difficultyButton.x && mx < difficultyButton.x+difficultyButton.width &&
-	            		my > difficultyButton.y && my < difficultyButton.y+difficultyButton.height)  
-	            	difficultyHover = true;
-	            else
-	            	difficultyHover = false;
-	        }
-	        
-	        if(achievementButtonFlag = true) {
-	            if(mx > achievementButton.x && mx < achievementButton.x+achievementButton.width &&
-	            		my > achievementButton.y && my < achievementButton.y+achievementButton.height)  
-	            	achievementsHover = true;
-	            else
-	            	achievementsHover = false;
-	        }    
-	            
-	            if(mx > backButton.x && mx < backButton.x+backButton.width &&
-	            		my > backButton.y && my < backButton.y+backButton.height)  
-	            	backHover = true;
-	            else
-	            	backHover = false;
-	            if(mx > resetButton.x && mx < resetButton.x+resetButton.width &&
-	            		my > resetButton.y && my < resetButton.y+resetButton.height)  
-	            	resetHover = true;
-	            else
-	            	resetHover = false;
+            if(pauseMenu ==true){
+            	  if(startButtonFlag = true) {
+  		            if(mx > resumeButton.x && mx < resumeButton.x+resumeButton.width &&
+  		            		my > resumeButton.y && my < resumeButton.y+resumeButton.height)  
+  		            	startHover = true;
+  		            else
+  		            	startHover = false;
+  	            }
+            	  if(quitButtonFlag = true) {    
+  		            if(mx > menuButton.x && mx < menuButton.x+menuButton.width &&
+  		            		my > menuButton.y && my < menuButton.y+menuButton.height) 
+  		            	quitHover = true;
+  		            else
+  		            	quitHover = false;
+  	            }
+            }
 
         }
         @Override
         public void mousePressed(MouseEvent e){
             int mx = e.getX(); 
             int my = e.getY();
-            
-            if(mx > startButton.x && mx < startButton.x+startButton.width &&
-            		my > startButton.y && my < startButton.y+startButton.height){
-            	gameStarted = true;
-            	getAchieves.storeAchievement("I'm Awesome - Start your first game");}
-            
-            if(mx > quitButton.x && mx < quitButton.x+quitButton.width &&
-            		my > quitButton.y && my < quitButton.y+quitButton.height)
-            	stopGame();
-            
-            if(mx > difficultyButton.x && mx < difficultyButton.x+difficultyButton.width &&
-            		my > difficultyButton.y && my < difficultyButton.y+difficultyButton.height)
-            {
-            	if(!hardDifficulty) {
-            		enemies.setDifficulty(8);
-            		hardDifficulty = true;
-            	}
-            	else {
-            		enemies.setDifficulty(20);
-            		hardDifficulty = false;
-            		
-            	}
-            		
+            if(gameStarted ==false){
+            	 if(achievementsStarted == true) {
+ 		            if(mx > backButton.x && mx < backButton.x+backButton.width &&
+ 		            		my > backButton.y && my < backButton.y+backButton.height)
+ 		            		achievementsStarted = false;
+
+ 		            if(mx > resetButton.x && mx < resetButton.x+resetButton.width &&
+ 		            		my > resetButton.y && my < resetButton.y+resetButton.height)
+ 		            		getAchieves.resetAchieve();
+ 	            	
+ 	            }
+            	 else{
+  		            if(mx > achievementButton.x && mx < achievementButton.x+achievementButton.width &&
+ 		                	my > achievementButton.y && my < achievementButton.y+achievementButton.height)
+ 		            		achievementsStarted = true;
+		            if(mx > startButton.x && mx < startButton.x+startButton.width &&
+		            		my > startButton.y && my < startButton.y+startButton.height){
+		            	gameStarted = true;
+		            	initialize();
+		            	getAchieves.storeAchievement("I'm Awesome - Start your first game");}
+		            
+		            if(mx > quitButton.x && mx < quitButton.x+quitButton.width &&
+		            		my > quitButton.y && my < quitButton.y+quitButton.height)
+		            	stopGame();
+		            
+		            if(mx > difficultyButton.x && mx < difficultyButton.x+difficultyButton.width &&
+		            		my > difficultyButton.y && my < difficultyButton.y+difficultyButton.height)
+		            {
+		            	if(!hardDifficulty) {
+		            		enemies.setDifficulty(8);
+		            		hardDifficulty = true;
+		            	}
+		            	else {
+		            		enemies.setDifficulty(20);
+		            		hardDifficulty = false;
+		            		
+		            	}
+		            		
+		            }
+            	 }
+	           
+	            
+	        }
+            if(pauseMenu ==true){
+            	   if(mx > resumeButton.x && mx < resumeButton.x+resumeButton.width &&
+   	            		my > resumeButton.y && my < resumeButton.y+resumeButton.height){
+            		   player.unpaused();
+            		   enemies.unpaused();
+            		   pauseMenu = false;
+            	   }
+            	   if(mx > menuButton.x && mx < menuButton.x+menuButton.width &&
+   	            		my > menuButton.y && my < menuButton.y+menuButton.height){
+            		   gameStarted = false;
+            		   pauseMenu = false;
+            		   player.unpaused();
+            		   enemies.unpaused();
+            	   }
             }
             
-            if(mx > backButton.x && mx < backButton.x+backButton.width &&
-            		my > backButton.y && my < backButton.y+backButton.height)
-            		achievementsStarted = false;
-            	
-            
-            	
-            if(mx > achievementButton.x && mx < achievementButton.x+achievementButton.width &&
-                	my > achievementButton.y && my < achievementButton.y+achievementButton.height)
-            		achievementsStarted = true;
-            
-            if(mx > resetButton.x && mx < resetButton.x+resetButton.width &&
-            		my > resetButton.y && my < resetButton.y+resetButton.height)
-            		getAchieves.resetAchieve();
-            	
-                	
-            
-            
-            
         }
+
     }
     ///////END EVENT LISTENER CLASSES/////
 
