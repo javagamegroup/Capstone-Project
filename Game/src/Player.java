@@ -25,6 +25,7 @@ public class Player extends Actor implements Runnable  {
 	double startTime = -1;
 	double bulletLife;
 	int health = 5;
+	public boolean paused = false;
 	
     public Player(int x, int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList) {
         super(x, y);
@@ -159,19 +160,30 @@ public class Player extends Actor implements Runnable  {
     public void increaseHealth(){
     	health += 1;
     }
+    public void decreaseHealth(){
+    	health -= 1;
+    }
     public void increaseBulletLife(int x){
     	bulletLife += x;
     }
     public void increaseFireRate(int x){
     	fireRate -= x;
     }
-
+    public void paused(){
+    	paused = true;
+    }
+    public void unpaused(){
+    	paused = false;
+    }
     
     public void run(){
         try{
             while(true){
-                move();
-                Thread.sleep(7);
+            	if(paused==false){
+	                move();
+	                Thread.sleep(7);
+            	}
+                else{Thread.sleep(7);}
             }
         }catch(Exception ex){
             System.err.println(ex.getMessage());

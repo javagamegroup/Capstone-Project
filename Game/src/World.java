@@ -26,7 +26,7 @@ public class World {
     public World(Player player, EnemyAI enemy) {
     	
     	//this.soko = player;
-    	this.enemy = enemy;
+    	//this.enemy = enemy;
     	initWorld();
     }
     
@@ -48,7 +48,7 @@ public class World {
         world.addAll(getAreas());
         world.addAll(baggs);
         //world.add(soko);
-        world.add(enemy);
+        //world.add(enemy);
         
 
         for (int i = 0; i < world.size(); i++) {

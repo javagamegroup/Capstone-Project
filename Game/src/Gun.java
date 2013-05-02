@@ -10,19 +10,20 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
-public class Gun extends Actor implements Runnable  {
+public class Gun implements Runnable  {
 	
 	Projectile bullet [] = new Projectile [30];
 	int numBullets = 0;
 	int speed = 7;
 	ArrayList<Wall> walls;
-	EnemyAI enemy;
+	Enemies enemy;
 	private ArrayList areas;
 	int bulletLife = 4;
 	int bulletDamage;
+	Achievements getAchieves = null;
 	
-    public Gun(int x,int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList, EnemyAI sub, int damage) {
-        super(x, y);
+    public Gun(int x,int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList, Enemies sub, int damage, Achievements getAchieves) {
+        this.getAchieves = getAchieves;
         enemy = sub;
         bulletDamage = damage;
         this.walls = walls2;
@@ -44,7 +45,7 @@ public class Gun extends Actor implements Runnable  {
     	if(numBullets ==30) numBullets =0;
     }
     
-    public void destroyBullet(int x, int num){
+    public void destroyBullet(int num){
     	bullet[num] = null;
     }
     
@@ -56,7 +57,7 @@ public class Gun extends Actor implements Runnable  {
     	for(int i =0; i<30; i++){
     		if(bullet[i] != null)
     			if(bullet[i].getLifeSpan() == false){
-    				destroyBullet(100, i);
+    				destroyBullet(i);
     			}
     	}
     	
@@ -65,7 +66,7 @@ public class Gun extends Actor implements Runnable  {
             for(int j =0; j<30; j++){
     			if(bullet[j] != null)
     				if (bullet[j].projectileRect.intersects(wall.objectRect)) {
-    					destroyBullet(100, j);
+    					destroyBullet(j);
     				}
             }
         }
@@ -74,16 +75,21 @@ public class Gun extends Actor implements Runnable  {
             for(int j =0; j<30; j++){
     			if(bullet[j] != null)
     				if (bullet[j].projectileRect.intersects(area.areaRect)) {
-    					destroyBullet(100, j);
+    					destroyBullet(j);
     				}
             }
         }
     	for(int j =0; j<30; j++){
-			if(bullet[j] != null)
-				if(enemy.enemyRect!=null)
-				if (bullet[j].projectileRect.intersects(enemy.enemyRect)) {
-					destroyBullet(100, j);
-					enemy.decreaseHealth(bulletDamage);
+				for(int i = 0; i<enemy.numEnemies;i++){
+					if(enemy.enemies[i] !=null)
+						if(bullet[j] != null)
+							if (bullet[j].projectileRect.intersects(enemy.enemies[i].enemyRect)) {
+								destroyBullet(j);
+								enemy.enemies[i].decreaseHealth(bulletDamage);
+								if (enemy.enemies[i].health == 0){
+									getAchieves.storeAchievement("Guns Loaded - Defeat your first enemy");
+								}
+							}
 				}
         }
     }

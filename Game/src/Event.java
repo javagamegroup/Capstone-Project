@@ -39,10 +39,12 @@ public class Event {
 	{
 		if(playerEnemyCollision == true)
 		{
+			
 			g.setColor(Color.white);
 			g.fillRoundRect(nonPlayerObj1.x-40, nonPlayerObj1.y-40, 130, 30, 30, 30);
 			g.setColor(Color.black);
 			g.drawString("HEY! I'M WALKIN HERE!", nonPlayerObj1.x-40, nonPlayerObj1.y-20);
+			
 		}
 	}
 	

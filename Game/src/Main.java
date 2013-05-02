@@ -25,7 +25,7 @@ public final class Main extends JFrame {
     }
 
     public void InitUI() {
-        gp = new GamePanel("Java Capstone Game Alpha!", black, drkGray, cyan, true, true, true, true);
+        gp = new GamePanel("Java Capstone Game Alpha!", black, black, cyan, true, true, true, true);
         add(gp);
         
         
