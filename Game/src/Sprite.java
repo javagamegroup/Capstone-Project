@@ -58,6 +58,10 @@ public class Sprite {
 		  boundsAction = ba;
 	}
 	
+	public void setImage(Image[] img)
+	{
+		this.image = img;
+	}
 	public Point getVelocity() {
 		return velocity;
 	}
