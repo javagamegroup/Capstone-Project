@@ -350,7 +350,6 @@ public class Level
 			current.eplayer = 'x';
 		}
 		else throw new InvalidCharacterException();
-		current.player = '=';
 	}
 
 	private void  recursiveLevel()
