@@ -353,6 +353,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		}
     	} // if game started and Pausemenu is up
 		else if(pauseMenu){//Menu
+			sv.draw(g);
     		world.buildWorld(g);
     		player.draw(g);
     		enemies.draw(g);
