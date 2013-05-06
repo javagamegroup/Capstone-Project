@@ -9,15 +9,21 @@ import java.util.Vector;
 
 public class SpriteVector extends Vector{
 
+	protected ImageBackground Imagebackground;
 	protected Background background;
 	
-	public SpriteVector(Background back) {
+	public SpriteVector(ImageBackground imageBack) {
 		super(50, 10);  						// Calls Vector parent class constructor and sets the default 
 												// storage capacity (50) and amount to increment the storage 
 												// capacity(10) if the vector needs to grow.
-		background = back;
+		Imagebackground = imageBack;
 	}
 	
+	public SpriteVector(Background back)
+	{
+		super(50, 10);
+		background = back;
+	}
 	/**
 	 * Game may use this to get the current background
 	 * @return background object
@@ -26,12 +32,19 @@ public class SpriteVector extends Vector{
 		  return background;
 	}
 	
+	public ImageBackground getImageBackground(){
+		return Imagebackground;
+	}
+	
 	/**
 	 * Game will use this to set the background for the current scene
 	 * @param background object
 	 */
-	public void setBackground(Background back) {
+	public void setBackground(ImageBackground back) {
 		  background = back;
+	}
+	public void setBackground(Background back) {
+		background = back;
 	}
 	
 	/**
@@ -202,7 +215,7 @@ public class SpriteVector extends Vector{
 	 */
 	public void draw(Graphics g) {
 		// Draw the background
-		background.draw(g);
+		Imagebackground.draw(g);
 
 		// Iterate through sprites, drawing each
 		for (int i = 0; i < size(); i++)

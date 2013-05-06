@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	private static final int DELAYS_BEFORE_YIELD = 10;
 	
 	// Double buffering
-    private Image dbImage, background;
+    private Image dbImage, Imagebackground;
     private Graphics dbg;
     
     private Image[] babyTurtleDuck = new Image[6];
@@ -136,8 +136,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	
     	URL backLoc = this.getClass().getResource("Resources/Background_example_1.png");
     	backIcon = new ImageIcon(backLoc);
-    	background = backIcon.getImage();
-    	tracker.addImage(background, 0);
+    	Imagebackground = backIcon.getImage();
+    	tracker.addImage(Imagebackground, 0);
     	world = new World(player, enemy);
     	enemies.killAllEnemies();
     	enemies.setNumEnemies(3);
@@ -161,7 +161,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		catch (InterruptedException e) {
 			return;
 		}
-		sv = new SpriteVector(new ImageBackground(this, background));
+		sv = new SpriteVector(new ImageBackground(this, Imagebackground));
 		while(running){
 			beforeTime = System.nanoTime();
 			
