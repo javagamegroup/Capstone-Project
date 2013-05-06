@@ -143,8 +143,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	enemies.setNumEnemies(3);
     	//for(int i = 0; i<3; i++){
     	enemies.createEnemy(70, 70, World.walls, World.getAreas(), player);
-    	enemies.createEnemy(400, 200, World.walls, World.getAreas(), player);
-    	enemies.createEnemy(500, 500, World.walls, World.getAreas(), player);
+    	enemies.createEnemy(400, 100, World.walls, World.getAreas(), player);
+    	enemies.createEnemy(500, 300, World.walls, World.getAreas(), player);
     	//}
     	player.setCoord(200, 200);
     	

@@ -17,6 +17,7 @@ public class EnemyAI extends Actor{
 	boolean isAlive = true;
 	int health = 6;
 	Event charE;
+	boolean started = false;
 	
 	int difficulty = 20;
 	
@@ -35,22 +36,25 @@ public class EnemyAI extends Actor{
     
     //Find a path to the target
     public void findPathToTarget() {
-    	if(enemyRect.x < target.playerRect.x) 
-    		setXDirection(1);
-    	if(enemyRect.x > target.playerRect.x) 
-    		setXDirection(-1);
-    	if(enemyRect.y < target.playerRect.y) 
-    		setYDirection(1);
-    	if(enemyRect.y > target.playerRect.y) 
-    		setYDirection(-1);
-    	if(enemyRect.x == target.playerRect.x) 
-    		setXDirection(0);
-    	if(enemyRect.x == target.playerRect.x) 
-    		setXDirection(0);
-    	if(enemyRect.y == target.playerRect.y) 
-    		setYDirection(0);
-    	if(enemyRect.y == target.playerRect.y) 
-    		setYDirection(0);
+    	if((enemyRect.x-target.playerRect.x<75&&enemyRect.x-target.playerRect.x>-75)&&(enemyRect.y-target.playerRect.y<75&&enemyRect.y-target.playerRect.y>-75)||started){
+	    	started = true;
+    		if(enemyRect.x < target.playerRect.x) 
+	    		setXDirection(1);
+	    	if(enemyRect.x > target.playerRect.x) 
+	    		setXDirection(-1);
+	    	if(enemyRect.y < target.playerRect.y) 
+	    		setYDirection(1);
+	    	if(enemyRect.y > target.playerRect.y) 
+	    		setYDirection(-1);
+	    	if(enemyRect.x == target.playerRect.x) 
+	    		setXDirection(0);
+	    	if(enemyRect.x == target.playerRect.x) 
+	    		setXDirection(0);
+	    	if(enemyRect.y == target.playerRect.y) 
+	    		setYDirection(0);
+	    	if(enemyRect.y == target.playerRect.y) 
+	    		setYDirection(0);
+    	}
     }
     //Move in that direction
     public void move(){
