@@ -122,7 +122,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
         
         
         setPreferredSize(gameDim);
-        setBackground(Color.BLACK);
         setFocusable(true);
         requestFocusInWindow();
         initialize();

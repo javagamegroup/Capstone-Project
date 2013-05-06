@@ -10,8 +10,6 @@ public final class Main extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 8886604927372324963L;
-
-	private final int OFFSET = 30;
 	
 	Color drkGray = new Color(128, 128, 128);
     Color cyan = new Color(0, 245, 245);
@@ -30,8 +28,8 @@ public final class Main extends JFrame {
         
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(GamePanel.GWIDTH + OFFSET,
-                GamePanel.GHEIGHT + 2*OFFSET);
+        setSize(GamePanel.GWIDTH,
+                GamePanel.GHEIGHT);
         setLocationRelativeTo(null);
         setTitle("Game");
         setResizable(false);
