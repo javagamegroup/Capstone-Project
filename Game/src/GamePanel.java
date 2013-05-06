@@ -8,10 +8,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.net.URL;
 
 public class GamePanel extends JPanel implements Runnable, Serializable{ 
 
@@ -37,8 +39,15 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	private static final int DELAYS_BEFORE_YIELD = 10;
 	
 	// Double buffering
-    private Image dbImage;
+    private Image dbImage, background;
     private Graphics dbg;
+    
+    private Image[] babyTurtleDuck = new Image[6];
+    private ImageIcon backIcon;
+    
+    // MediaTracker
+    private MediaTracker tracker;
+   
     
     // Vars for Achievements
     static Achievements getAchieves = new Achievements();
@@ -54,10 +63,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     static EnemyAI enemy = null;
 //    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
     static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemies, 2, getAchieves);
-    World world;
-    Thread p1 = new Thread(player);
-    Thread npc = new Thread(enemies);
-    Thread weapon = new Thread(gun);
+    private World world;
+    private Thread p1 = new Thread(player);
+    private Thread npc = new Thread(enemies);
+    private Thread weapon = new Thread(gun);
+    private Thread animate;
+    
+    // spriteVector
+    private SpriteVector sv;
     
     boolean gameStarted = false;
     boolean pauseMenu = false;
@@ -119,6 +132,12 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     }
     
     public void initialize(){
+    	tracker = new MediaTracker(this);
+    	
+    	URL backLoc = this.getClass().getResource("Resources/Background_example_1.png");
+    	backIcon = new ImageIcon(backLoc);
+    	background = backIcon.getImage();
+    	tracker.addImage(background, 0);
     	world = new World(player, enemy);
     	enemies.killAllEnemies();
     	enemies.setNumEnemies(3);
@@ -135,6 +154,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     public void run() {
 		long beforeTime, afterTime, diff, sleepTime, overSleepTime = 0;
 		int delays = 0;
+		
+		try{
+			tracker.waitForID(0);
+		}
+		catch (InterruptedException e) {
+			return;
+		}
+		sv = new SpriteVector(new ImageBackground(this, background));
 		while(running){
 			beforeTime = System.nanoTime();
 			
@@ -189,6 +216,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     private void gameUpdate() {
 		if(running && game != null) {
 			//enemy.update();
+			sv.update();
 		}
 	}
     
@@ -359,11 +387,38 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		}
     	else{
     		//Game drawings
-    		world.buildWorld(g);
-    		player.draw(g);
-    		enemies.draw(g);
-    		gun.draw(g);
-		
+    		if((tracker.statusID(0, true) & MediaTracker.ERRORED) != 0) 
+    		{
+    			// Error symbol
+    			g.setColor(Color.red);
+    			g.fillRect(0, 0, GWIDTH, GHEIGHT);
+    			return;
+    		}
+    		if ((tracker.statusID(0, true) & MediaTracker.COMPLETE) != 0) 
+    		{	
+    			sv.draw(g);
+    			world.buildWorld(g);
+	    		player.draw(g);
+	    		enemies.draw(g);
+	    		gun.draw(g);
+    		}
+    		else {
+    			// Draw the title message (while the images load)
+    		      Font        f1 = new Font("TimesRoman", Font.BOLD, 28),
+    		                  f2 = new Font("Helvetica", Font.PLAIN, 16);
+    		      FontMetrics fm1 = g.getFontMetrics(f1), 
+    		                  fm2 = g.getFontMetrics(f2);
+    		      String      s1 = new String("Game"),
+    		                  s2 = new String("Loading images...");
+    		      g.setFont(f1);
+    		      g.drawString(s1, (GWIDTH - fm1.stringWidth(s1)) / 2,
+    		        ((GHEIGHT - fm1.getHeight()) / 2) + fm1.getAscent());
+    		      g.setFont(f2);
+    		      g.drawString(s2, (GWIDTH - fm2.stringWidth(s2)) / 2,
+    		        GHEIGHT - fm2.getHeight() - fm2.getAscent());
+    		}
+	    		
+    		
 		}
 	
 	}

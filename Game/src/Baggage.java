@@ -13,7 +13,8 @@ public class Baggage extends Actor {
         this.setImage(image);
     }
 
-    public void move(int x, int y) {
+    @SuppressWarnings("unused")
+	public void move(int x, int y) {
         int nx = this.x() + x;
         int ny = this.y() + y;
     }

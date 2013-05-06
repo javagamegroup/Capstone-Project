@@ -29,7 +29,6 @@ public class Player extends Actor implements Runnable  {
 	
     public Player(int x, int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList) {
         super(x, y);
-        int i;
         bulletLife = 2500;
         this.walls = walls2;
         this.areas = arrayList;

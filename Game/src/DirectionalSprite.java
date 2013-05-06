@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.util.BitSet;
 
 
+@SuppressWarnings("unused")
 public class DirectionalSprite extends Sprite{
 
 	

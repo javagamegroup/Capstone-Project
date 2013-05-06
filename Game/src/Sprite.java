@@ -16,7 +16,7 @@ public class Sprite {
 				            BA_BOUncE = 2,
 				            BA_DIE = 3;
 	protected Component     component;
-	protected Image[]       image; 
+	protected static Image[]       image; 
 	protected int           frame, 
 							frameInc, 
 				            frameDelay, 
