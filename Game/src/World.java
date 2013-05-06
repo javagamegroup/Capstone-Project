@@ -40,8 +40,8 @@ public class World {
     
     public void buildWorld(Graphics g) {
     	
-        g.setColor(new Color(0, 0, 0));
-        g.fillRect(0, 0, this.getBoardWidth(), this.getBoardHeight());
+       // g.setColor(new Color(0, 0, 0));
+       // g.fillRect(0, 0, this.getBoardWidth(), this.getBoardHeight());
 
         ArrayList<Actor> world = new ArrayList<Actor>();
         world.addAll(walls);
