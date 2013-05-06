@@ -28,7 +28,7 @@ public final class Main extends JFrame {
         
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(GamePanel.GWIDTH,
+        setSize(GamePanel.GWIDTH+6,
                 GamePanel.GHEIGHT);
         setLocationRelativeTo(null);
         setTitle("Game");

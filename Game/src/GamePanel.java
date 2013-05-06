@@ -58,6 +58,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
      * Game Objects
      *	world and characters
      */
+	Level level;
     static Player player = new Player(200, 200, World.walls, World.getAreas());
     static Enemies enemies = new Enemies(70, 70, World.walls, World.getAreas(), player);
     static EnemyAI enemy = null;
@@ -115,6 +116,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		this.fontColor = fontColor;
 		this.backColor = backColor;
 		this.buttonColor = buttonColor;
+		
+		level = new Level(true, 2);
     	
     	this.addKeyListener(new KeyHandler());
     	this.addMouseListener(new MouseHandler());
@@ -137,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	backIcon = new ImageIcon(backLoc);
     	Imagebackground = backIcon.getImage();
     	tracker.addImage(Imagebackground, 0);
-    	world = new World(player, enemy);
+    	world = new World(player, enemy, level.getLevel());
     	enemies.killAllEnemies();
     	enemies.setNumEnemies(3);
     	//for(int i = 0; i<3; i++){

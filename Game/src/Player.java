@@ -45,17 +45,26 @@ public class Player extends Actor implements Runnable  {
     public void collision(){
         for (int i = 0; i < walls.size(); i++) {
             Wall wall = (Wall) walls.get(i);
-            if (this.playerRect.intersects(wall.objectRect)) {
-            	if(playerRect.x> ((Actor) walls.get(32)).x() && xDirection ==1)
-            		setCoord(wall.rectx()-20,this.playerRect.y);
-            	else if(playerRect.x< ((Actor) walls.get(1)).x() && xDirection ==-1)
-            		setCoord(wall.rectx()+20,this.playerRect.y);
-            	else if(playerRect.y> ((Actor) walls.get(49)).y() && yDirection ==1)
-            		setCoord(this.playerRect.x,wall.recty()-20);
-            	else if(playerRect.y< ((Actor) walls.get(35)).y() && yDirection ==-1)
-            		setCoord(this.playerRect.x,wall.recty()+20);            	
+            	if(playerRect.intersects(wall.objectRect) && xDirection ==1){
+            		if(this.playerRect.x<735){}
+            		else
+            			this.xDirection = 0;
+            	}
+            	if(playerRect.intersects(wall.objectRect)  && xDirection ==-1){
+            		if(this.playerRect.x>33){}
+            		else
+            			this.xDirection = 0;
+            	}
+            	if(playerRect.intersects(wall.objectRect) && yDirection ==1)
+            		if(this.playerRect.y<507){}
+            		else
+            			this.yDirection = 0;
+            	if(playerRect.intersects(wall.objectRect) && yDirection ==-1)
+            		if(this.playerRect.y>93){}
+            		else
+            			this.yDirection = 0;
+            	
             }
-        }
         
         for (int i = 0; i < areas.size(); i++) {
             Area area = (Area) areas.get(i);

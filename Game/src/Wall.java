@@ -12,7 +12,7 @@ public class Wall extends Actor {
     public Wall(int x, int y) {
         super(x, y);
 
-        URL loc = this.getClass().getResource("Resources/wall.png");
+        URL loc = this.getClass().getResource("Resources/sokoban.png");
         ImageIcon iia = new ImageIcon(loc);
         image = iia.getImage();
         this.setImage(image);

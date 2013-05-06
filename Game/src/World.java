@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 public class World {
 
-    private final int OFFSET = 30;
-    private final int SPACE = 20;
+    private final int OFFSET = 60;
+    private final int SPACE = 32;
     private final int LEFT_COLLISION = 1;
     private final int RIGHT_COLLISION = 2;
     private final int TOP_COLLISION = 3;
@@ -17,16 +17,18 @@ public class World {
     
     private int w = 0;
     private int h = 0;
+    String level;
     
     private boolean completed = false;
     
     //private Player soko;
     private EnemyAI enemy;
     
-    public World(Player player, EnemyAI enemy) {
+    public World(Player player, EnemyAI enemy, String level) {
     	
     	//this.soko = player;
     	//this.enemy = enemy;
+    	this.level = level;
     	initWorld();
     }
     
@@ -60,30 +62,24 @@ public class World {
     }
     
     public final void initWorld() {
-        String level1 =
-                "#########..#####################\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + ".                              .\n"
-              + ".                              .\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#                              #\n"
-              + "#########..#####################\n";
-        int x = OFFSET;
+        String level1 =level;
+//                "#########..##############\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + ".                       .\n"
+//              + ".                       .\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#                       #\n"
+//              + "#########..##############\n";
+        int x = 0;
         int y = OFFSET;
         
         Wall wall;
@@ -99,7 +95,7 @@ public class World {
                     this.w = x;
                 }
 
-                x = OFFSET;
+                x = 0;
             } else if (item == '#') {
                 wall = new Wall(x, y);
                 walls.add(wall);
