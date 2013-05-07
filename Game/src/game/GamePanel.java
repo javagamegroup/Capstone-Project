@@ -168,15 +168,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		}
     	}
 
-    	world = new World(player, enemy, level.getLevel());
+    	world = new World(player, enemies, level.getLevel());
     	enemies.killAllEnemies();
-    	enemies.setNumEnemies(3);
+    	enemies.setNumEnemies(world.getNumEnemies());
     	//for(int i = 0; i<3; i++){
     	enemies.createEnemy(70, 70, World.walls, World.getAreas(), player);
     	enemies.createEnemy(400, 100, World.walls, World.getAreas(), player);
     	enemies.createEnemy(500, 300, World.walls, World.getAreas(), player);
     	//}
-    	player.setCoord(200, 200);
     	
     }
 

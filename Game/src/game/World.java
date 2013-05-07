@@ -11,6 +11,7 @@ public class World {
     private final int RIGHT_COLLISION = 2;
     private final int TOP_COLLISION = 3;
     private final int BOTTOM_COLLISION = 4;
+    private int numEnemies = 0;
     
     static ArrayList<Wall> walls = new ArrayList<Wall>();
     private ArrayList<Baggage> baggs = new ArrayList<Baggage>();
@@ -23,13 +24,13 @@ public class World {
     
     private boolean completed = false;
     
-    //private Player soko;
-    private EnemyAI enemy;
+    private Player player;
+    private Enemies enemies;
     
-    public World(Player player, EnemyAI enemy, String level) {
+    public World(Player player, Enemies enemy, String level) {
     	
-    	//this.soko = player;
-    	//this.enemy = enemy;
+    	this.player = player;
+    	enemies = enemy;
     	this.level = level;
     	initWorld();
     }
@@ -106,11 +107,19 @@ public class World {
                 b = new Baggage(x, y);
                 baggs.add(b);
                 x += SPACE;
-            } else if (item == '.') {
+            } else if (item == '/') {
                 a = new Area(x, y);
                 getAreas().add(a);
                 x += SPACE;
-            } //else if (item == '@') {
+            }
+            else if (item == 'x') {
+                player.setCoord(x, y);
+                x += SPACE;
+            }
+            else if (item == '.') {
+                //player.setCoord(x, y);
+                x += SPACE;
+            }//else if (item == '@') {
             	//soko = new Player(x, y);
                 //x += SPACE;
                 
@@ -120,7 +129,7 @@ public class World {
                 //x += SPACE;
                 
             //}
-        else if (item == ' ') {
+        else if (item == '=') {
                 x += SPACE;
             }
 
@@ -170,4 +179,10 @@ public class World {
 	public void setAreas(ArrayList<Area> areas) {
 		this.areas = areas;
 	}
+	
+	public int getNumEnemies() {
+		numEnemies = 3;
+		return numEnemies;
+	}
+	
 }
