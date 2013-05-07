@@ -28,6 +28,8 @@ public class TurtleDuck extends DirectionalSprite {
 	}
 	
 	/**
+	 * Call this method from GamePanel's initialize method. 
+	 * 
 	 * image[0][] represents sprite facing right
 	 * image[1][] represents sprite facing down
 	 * image[2][] represents sprite facing left
@@ -95,6 +97,9 @@ public class TurtleDuck extends DirectionalSprite {
 		return action;
 	}
 	
+	/**
+	 * Handles adding new sprites upon actions.
+	 */
 	protected Sprite addSprite(BitSet action) {
 		// Add baby turtle duck
 		if (action.get(TurtleDuck.SA_ADDBABYTURTLEDUCK))
