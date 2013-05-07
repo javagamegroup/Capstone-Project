@@ -78,6 +78,7 @@ public class RandomGen
 		else throw new Exception("Max must be greater than Min");
 		
 		cpu = Runtime.getRuntime().availableProcessors();
+		// seems like this ranDirection array is almost always filled twice
 		ranDirection =  new int[4];
 		for(int i = 0; i < 4; i++)
 			ranDirection[i] = i;
@@ -88,6 +89,7 @@ public class RandomGen
 		this.ranInt = Math.round((float)((this.max - this.min) * r.nextDouble() + this.min));
 		this.ranDouble = (this.max - this.min) * r.nextDouble() + this.min;
 		this.ranLong = Math.round((this.max - this.min) * r.nextDouble() + this.min);
+		// filled in genRandom too
 		ranDirection =  new int[4];
 		for(int i = 0; i < 4; i++)
 			ranDirection[i] = i;

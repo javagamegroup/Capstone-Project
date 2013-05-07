@@ -145,7 +145,7 @@ public class Level
 		xloc = (xBounds/2) + 1;
 		
 		//Debugging Print check//
-		try {rand. setLimits(0,500);} catch (Exception e) {}
+		try {rand.setLimits(0,500);} catch (Exception e) {}
 		System.out.println(rand.randomInt());
 		this.print();
 		//End Debugging check//
@@ -366,6 +366,7 @@ public class Level
 		
 		
 		if(nBoolDoor)
+			// exception thrown here sometimes 
 			this.north = new Level(true, numEnemies.randomInt(), 0,maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
 		if(eBoolDoor)
 			this.east = new Level(true, numEnemies.randomInt(), 0,maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
