@@ -106,7 +106,7 @@ public class Level
 		}
 		player = 'x';
 		
-		//32x16
+		//26x16
 		switch(startDir)
 		{
 			case 0:
@@ -137,7 +137,7 @@ public class Level
 			wDoor+"========================"+eDoor+'\n'+
 			"#========================#"+'\n'+
 			"#========================#"+'\n'+
-			"#========================#"+'\n'+
+			"#=======y================#"+'\n'+
 			"#========================#"+'\n'+
 			"#========================#"+'\n'+
 			"#============"+splayer+"===========#"+'\n'+
@@ -296,20 +296,20 @@ public class Level
 		}
 		
 		this.level =
-				"###############"+nDoor+nDoor+"###############"+'\n'+
-				"#=============="+nplayer+"===============#"+'\n'+
-				"#==============================#"+'\n'+
-				"#==============================#"+'\n'+
-				"#==============================#"+'\n'+
-				"#==============================#"+'\n'+
-				wDoor+wplayer+"============="+player+"=============="+eplayer+eDoor+'\n'+
-				wDoor+"=============================="+eDoor+'\n'+
-				"#==============================#"+'\n'+
-				"#==============================#"+'\n'+
-				"#==============================#"+'\n'+
-				"#==============================#"+'\n'+
-				"#==============="+splayer+"==============#"+'\n'+
-				"###############"+sDoor+sDoor+"###############"+'\n';
+				"############"+nDoor+nDoor+"############"+'\n'+
+				"#==========="+nplayer+"============#"+'\n'+
+				"#========================#"+'\n'+
+				"#============y===========#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				wDoor+wplayer+"=========="+player+"==========="+eplayer+eDoor+'\n'+
+				wDoor+"========================"+eDoor+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#============"+splayer+"===========#"+'\n'+
+				"############"+sDoor+sDoor+"############"+'\n';
 						
 		//Debugging Print check//
 		try {rand. setLimits(0,750);} catch (Exception e) {}
@@ -325,7 +325,7 @@ public class Level
 	}
 	
 	//possible set incomingDirection to lower case?
-	public void setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
+	public Level setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
 	{
 		current.player = '=';
 		current.nplayer = '=';
@@ -337,23 +337,28 @@ public class Level
 		{
 			current = current.north;
 			current.splayer = 'x';
+			current = current.north;
 		}
 		else if(incomingDirection == 's')
 		{
 			current = current.south;
 			current.nplayer = 'x';
+			current = current.south;
 		}
 		else if(incomingDirection == 'e')
 		{
 			current = current.east;
 			current.wplayer = 'x';
+			current = current.east;
 		}
 		else if(incomingDirection == 'w')
 		{
 			current = current.west;
 			current.eplayer = 'x';
+			current = current.west;
 		}
 		else throw new InvalidCharacterException();
+		return current;
 	}
 
 	private void  recursiveLevel()
@@ -381,27 +386,6 @@ public class Level
 	public void print()
 	{System.out.println(level);}
 	
-	private Level setPlayerNorth(Level level)
-	{
-		level = level.north;
-		return level;
-	}
-
-	private Level setPlayerEast(Level level)
-	{
-		level = level.east;
-		return level;
-	}
-	private Level setPlayerSouth(Level level)
-	{
-		level = level.south;
-		return level;
-	}
-	private Level setPlayerWest(Level level)
-	{
-		level = level.west;
-		return level;
-	}
 }
 
 
