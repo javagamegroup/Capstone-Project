@@ -337,25 +337,21 @@ public class Level
 		{
 			current = current.north;
 			current.splayer = 'x';
-			current = current.north;
 		}
 		else if(incomingDirection == 's')
 		{
 			current = current.south;
 			current.nplayer = 'x';
-			current = current.south;
 		}
 		else if(incomingDirection == 'e')
 		{
 			current = current.east;
 			current.wplayer = 'x';
-			current = current.east;
 		}
 		else if(incomingDirection == 'w')
 		{
 			current = current.west;
 			current.eplayer = 'x';
-			current = current.west;
 		}
 		else throw new InvalidCharacterException();
 		return current;
