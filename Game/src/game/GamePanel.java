@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	 *  	@param GWIDTH, GHEIGHT
 	 *  	
 	 */
-	static final int GWIDTH = 800, GHEIGHT = 600;
+	static final int GWIDTH = 832, GHEIGHT = 600;
 	static final Dimension gameDim = new Dimension(GWIDTH, GHEIGHT);
 	/**
 	 * Game Variables
