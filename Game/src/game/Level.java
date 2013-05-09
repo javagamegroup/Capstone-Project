@@ -1,5 +1,7 @@
 package game;
 
+import Exceptions.InvalidCharacterException;
+
 public class Level
 {
 	private int xBounds = 7;
@@ -382,27 +384,4 @@ public class Level
 	public void print()
 	{System.out.println(level);}
 	
-}
-
-
-
-
-class PreviousLevelException extends Exception 
-{
-	private static final long serialVersionUID = 1L;
-	
-	public PreviousLevelException() { super(); }
-	public PreviousLevelException(String message) { super(message); }
-	public PreviousLevelException(String message, Throwable cause) { super(message, cause); }
-	public PreviousLevelException(Throwable cause) { super(cause); }
-}
-
-class InvalidCharacterException extends Exception 
-{
-	private static final long serialVersionUID = 1L;
-	
-	public InvalidCharacterException() { super(); }
-	public InvalidCharacterException(String message) { super(message); }
-	public InvalidCharacterException(String message, Throwable cause) { super(message, cause); }
-	public InvalidCharacterException(Throwable cause) { super(cause); }
 }
