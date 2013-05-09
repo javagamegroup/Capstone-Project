@@ -44,16 +44,11 @@ public class World {
     }
     
     public void buildWorld(Graphics g) {
-    	
-       // g.setColor(new Color(0, 0, 0));
-       // g.fillRect(0, 0, this.getBoardWidth(), this.getBoardHeight());
 
         ArrayList<Actor> world = new ArrayList<Actor>();
         world.addAll(walls);
         world.addAll(getAreas());
         world.addAll(baggs);
-        //world.add(soko);
-        //world.add(enemy);
         
 
         for (int i = 0; i < world.size(); i++) {
@@ -66,22 +61,6 @@ public class World {
     
     public final void initWorld() {
         String level1 =level;
-//                "#########..##############\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + ".                       .\n"
-//              + ".                       .\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#                       #\n"
-//              + "#########..##############\n";
         int x = 0;
         int y = OFFSET;
         
@@ -116,19 +95,10 @@ public class World {
                 player.setCoord(x, y);
                 x += SPACE;
             }
-            else if (item == '.') {
-                //player.setCoord(x, y);
+            else if (item == 'y') {
+            	enemies.createEnemy(x, y, World.walls, World.getAreas(), player);
                 x += SPACE;
-            }//else if (item == '@') {
-            	//soko = new Player(x, y);
-                //x += SPACE;
-                
-           // } 
-        //else if (item == 'e') {
-                //enemy = new EnemyAI(x, y, soko);
-                //x += SPACE;
-                
-            //}
+            }
         else if (item == '=') {
                 x += SPACE;
             }

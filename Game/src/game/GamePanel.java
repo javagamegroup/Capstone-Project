@@ -170,13 +170,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 
     	world = new World(player, enemies, level.getLevel());
     	enemies.killAllEnemies();
-    	enemies.setNumEnemies(world.getNumEnemies());
-    	//for(int i = 0; i<3; i++){
-    	enemies.createEnemy(70, 70, World.walls, World.getAreas(), player);
-    	enemies.createEnemy(400, 100, World.walls, World.getAreas(), player);
-    	enemies.createEnemy(500, 300, World.walls, World.getAreas(), player);
-    	//}
-    	
+    	player.setLevel(false);
     }
 
   
@@ -441,6 +435,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		}
     		if ((tracker.statusID(0, true) & MediaTracker.COMPLETE) != 0) 
     		{	
+    			if(player.nextLevel())
+    				initialize();
     			sv.draw(g);
     			world.buildWorld(g);
 	    		player.draw(g);

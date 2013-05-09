@@ -26,6 +26,7 @@ public class Player extends Actor implements Runnable  {
 	double bulletLife;
 	int health = 5;
 	public boolean paused = false;
+	private boolean moveLevels = false;
 	
     public Player(int x, int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList) {
         super(x, y);
@@ -69,14 +70,14 @@ public class Player extends Actor implements Runnable  {
         for (int i = 0; i < areas.size(); i++) {
             Area area = (Area) areas.get(i);
             if (this.playerRect.intersects(area.areaRect)) {
-            	if(playerRect.x> ((Actor) areas.get(1)).x() && xDirection ==1)
-            		setCoord(((Actor) areas.get(2)).x()+21,((Actor) areas.get(2)).y());
-            	else if(playerRect.x< ((Actor) areas.get(0)).x() && xDirection ==-1)
-            		setCoord(((Actor) areas.get(3)).x()-21,((Actor) areas.get(3)).y());
-            	else if(playerRect.y> ((Actor) areas.get(4)).y() && yDirection ==1)
-            		setCoord(((Actor) areas.get(0)).x(),((Actor) areas.get(0)).y()+21);
-            	else if(playerRect.y< ((Actor) areas.get(2)).y() && yDirection ==-1)
-            		setCoord(((Actor) areas.get(6)).x(),((Actor) areas.get(6)).y()-21);
+            	if(playerRect.x> 500 && xDirection ==1)
+            		this.setLevel(true);
+            	else if(playerRect.x< 400 && xDirection ==-1)
+            		this.setLevel(true);
+            	else if(playerRect.y> 200 && yDirection ==1)
+            		this.setLevel(true);
+            	else if(playerRect.y< 400 && yDirection ==-1)
+            		this.setLevel(true);
             }
         }
 
@@ -182,6 +183,14 @@ public class Player extends Actor implements Runnable  {
     }
     public void unpaused(){
     	paused = false;
+    }
+    
+    public void setLevel(boolean level){
+    	moveLevels = level;
+    }
+    
+    public boolean nextLevel(){
+    	return moveLevels;
     }
     
     public void run(){

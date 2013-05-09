@@ -19,8 +19,8 @@ public class Enemies implements Runnable  {
 	int bulletLife = 4;
 	int bulletDamage;
 	Achievements getAchieves = null;
-	EnemyAI [] enemies = null;
-	int numEnemies = 0;
+	EnemyAI [] enemies = new EnemyAI[10];;
+	int numEnemies = 10;
 	int num = 0;
 	Event charE;
 	int difficulty = 20;
@@ -36,7 +36,7 @@ public class Enemies implements Runnable  {
     	enemies[num] = new EnemyAI(x, y, walls, arrayList, play);
     	charE = new Event(true, enemies[num].enemyRect);
     	num ++;
-    	if(num ==30) num =0;
+    	if(num ==10) num =0;
     }
     
     public void destroyEnemy(int num){
