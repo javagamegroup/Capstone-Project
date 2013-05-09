@@ -128,7 +128,7 @@ public class RandomGen
 		}
 		return num;
 	}
-	
+
 	public int randomInt(){randomize(); return ranInt;}//end randomInt
 	
 	public double randomDouble(){randomize(); return ranDouble;}// end randomDouble
