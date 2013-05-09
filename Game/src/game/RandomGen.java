@@ -78,7 +78,6 @@ public class RandomGen
 		else throw new Exception("Max must be greater than Min");
 		
 		cpu = Runtime.getRuntime().availableProcessors();
-		// seems like this ranDirection array is almost always filled twice
 		ranDirection =  new int[4];
 		for(int i = 0; i < 4; i++)
 			ranDirection[i] = i;

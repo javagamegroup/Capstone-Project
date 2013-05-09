@@ -366,7 +366,6 @@ public class Level
 		
 		
 		if(nBoolDoor)
-			// exception thrown here sometimes 
 			this.north = new Level(true, numEnemies.randomInt(), 0,maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
 		if(eBoolDoor)
 			this.east = new Level(true, numEnemies.randomInt(), 0,maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
