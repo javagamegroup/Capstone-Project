@@ -27,12 +27,12 @@ public class Player extends Actor implements Runnable  {
 	int health = 5;
 	public boolean paused = false;
 	private boolean moveLevels = false;
+	Level level = null;
 	
-    public Player(int x, int y, ArrayList<Wall> walls2, ArrayList<Area> arrayList) {
+    public Player(int x, int y, Level level) {
         super(x, y);
+        this.level = level;
         bulletLife = 2500;
-        this.walls = walls2;
-        this.areas = arrayList;
         URL loc = this.getClass().getResource("/Resources/sokoban.png");
         tad = new ImageIcon(loc);
         
@@ -44,8 +44,8 @@ public class Player extends Actor implements Runnable  {
     }
     
     public void collision(){
-        for (int i = 0; i < walls.size(); i++) {
-            Wall wall = (Wall) walls.get(i);
+        for (int i = 0; i < World.walls.size(); i++) {
+            Wall wall = (Wall) World.walls.get(i);
             	if(playerRect.intersects(wall.objectRect) && xDirection ==1){
             		if(this.playerRect.x<735){}
             		else
@@ -67,17 +67,30 @@ public class Player extends Actor implements Runnable  {
             	
             }
         
-        for (int i = 0; i < areas.size(); i++) {
-            Area area = (Area) areas.get(i);
-            if (this.playerRect.intersects(area.areaRect)) {
+        for (int i = 0; i < World.getAreas().size(); i++) {
+            Area area = (Area) World.getAreas().get(i);
+            if (this.playerRect.intersects(area.areaRect)) 
+            {
             	if(playerRect.x> 500 && xDirection ==1)
+            	{
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('w',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
+            	}
             	else if(playerRect.x< 400 && xDirection ==-1)
+            	{
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('e',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
+            	}
             	else if(playerRect.y> 200 && yDirection ==1)
+            	{
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('s',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
+            	}
             	else if(playerRect.y< 400 && yDirection ==-1)
+            	{
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('n',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
+            	}
             }
         }
 
@@ -94,10 +107,6 @@ public class Player extends Actor implements Runnable  {
     public void setCoord(int x, int y){
     	this.playerRect = getRect(x, y, 32,32);
     	this.setRect(playerRect);
-    }
-    
-    private void checkForCollision() {
-    	
     }
     
     public void draw(Graphics g) {

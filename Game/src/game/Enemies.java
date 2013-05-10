@@ -26,9 +26,7 @@ public class Enemies implements Runnable  {
 	int difficulty = 20;
 	boolean paused = false;
 	
-    public Enemies(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play) {
-        this.walls = walls;
-        this.areas = arrayList;
+    public Enemies(int x, int y,Player play) {
         target = play;
     }
 
@@ -50,8 +48,8 @@ public class Enemies implements Runnable  {
     public void enemyCollision(){
     	for(int j =0; j<numEnemies; j++){
 			if(enemies[j] != null){
-		        for (int i = 0; i < walls.size(); i++) {
-		            Wall wall = (Wall) walls.get(i);
+		        for (int i = 0; i < World.walls.size(); i++) {
+		            Wall wall = (Wall) World.walls.get(i);
 		            if (enemies[j].enemyRect.intersects(wall.objectRect)) {
 		            	if(enemies[j].xDirection != 0)
 		            		enemies[j].setXDirection(0);
@@ -64,8 +62,8 @@ public class Enemies implements Runnable  {
     	
     	for(int j =0; j<numEnemies; j++){
 			if(enemies[j] != null){
-		        for (int i = 0; i < areas.size(); i++) {
-		            Area area = (Area) areas.get(i);
+		        for (int i = 0; i < World.getAreas().size(); i++) {
+		            Area area = (Area) World.getAreas().get(i);
 		            if (enemies[j].enemyRect.intersects(area.areaRect)) {
 		            	if(enemies[j].xDirection != 0)
 		            		enemies[j].setXDirection(0);

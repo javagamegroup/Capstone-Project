@@ -20,17 +20,7 @@ import collectionOfSprites.*;
 
 public class GamePanel extends JPanel implements Runnable, Serializable{ 
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7708339559886723406L;
-	/**
-	 *  JPanel variables
-	 *  int GWIDTH, GHEIGHT
-	 *  Dimension gameDim object 
-	 *  	@param GWIDTH, GHEIGHT
-	 *  	
-	 */
 	static final int GWIDTH = 832, GHEIGHT = 600;
 	static final Dimension gameDim = new Dimension(GWIDTH, GHEIGHT);
 	/**
@@ -71,13 +61,13 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
      * Game Objects
      *	world and characters
      */
-	Level level;
-    static Player player = new Player(200, 200, World.walls, World.getAreas());
-    static Enemies enemies = new Enemies(70, 70, World.walls, World.getAreas(), player);
+	static Level level;
+	static World world;
+    static Player player = new Player(200, 200,level);
+    static Enemies enemies = new Enemies(70, 70,player);
     static EnemyAI enemy = null;
 //    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
     static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemies, 2, getAchieves);
-    private World world;
     private Thread p1 = new Thread(player);
     private Thread npc = new Thread(enemies);
     private Thread weapon = new Thread(gun);
@@ -136,6 +126,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	this.addMouseListener(new MouseHandler());
         this.addMouseMotionListener(new MouseHandler());
         
+    	world = new World(player, enemies);
+        
         
         setPreferredSize(gameDim);
         setFocusable(true);
@@ -167,9 +159,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     			babyTurtleDuck[i][j] = BabyTurtleDuck.image[i][j];
     		}
     	}
-
-    	world = new World(player, enemies, level.getLevel());
     	enemies.killAllEnemies();
+    	world.restartLevel();
     	player.setLevel(false);
     }
 

@@ -61,8 +61,8 @@ public class Gun implements Runnable  {
     			}
     	}
     	
-    	for (int i = 0; i < walls.size(); i++) {
-            Wall wall = (Wall) walls.get(i);
+    	for (int i = 0; i < World.walls.size(); i++) {
+            Wall wall = (Wall) World.walls.get(i);
             for(int j =0; j<30; j++){
     			if(bullet[j] != null)
     				if (bullet[j].projectileRect.intersects(wall.objectRect)) {
@@ -70,8 +70,8 @@ public class Gun implements Runnable  {
     				}
             }
         }
-    	for (int i = 0; i < areas.size(); i++) {
-            Area area = (Area) areas.get(i);
+    	for (int i = 0; i < World.getAreas().size(); i++) {
+            Area area = (Area) World.getAreas().get(i);
             for(int j =0; j<30; j++){
     			if(bullet[j] != null)
     				if (bullet[j].projectileRect.intersects(area.areaRect)) {

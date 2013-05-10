@@ -27,11 +27,10 @@ public class World {
     private Player player;
     private Enemies enemies;
     
-    public World(Player player, Enemies enemy, String level) {
+    public World(Player player, Enemies enemy) {
     	
     	this.player = player;
     	enemies = enemy;
-    	this.level = level;
     	initWorld();
     }
     
@@ -60,7 +59,8 @@ public class World {
     }
     
     public final void initWorld() {
-        String level1 =level;
+
+        String level1 =GamePanel.level.getLevel();
         int x = 0;
         int y = OFFSET;
         
@@ -92,11 +92,11 @@ public class World {
                 x += SPACE;
             }
             else if (item == 'x') {
-                player.setCoord(x, y);
+                GamePanel.player.setCoord(x, y);
                 x += SPACE;
             }
             else if (item == 'y') {
-            	enemies.createEnemy(x, y, World.walls, World.getAreas(), player);
+            	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), player);
                 x += SPACE;
             }
         else if (item == '=') {
@@ -107,29 +107,6 @@ public class World {
         }
         
     }
-
-    
-    
-    public void isCompleted() {
-
-        int num = baggs.size();
-        int compl = 0;
-
-        for (int i = 0; i < num; i++) {
-            Baggage bag = (Baggage) baggs.get(i);
-            for (int j = 0; j < num; j++) {
-                Area area = (Area) getAreas().get(j);
-                if (bag.x() == area.x()
-                        && bag.y() == area.y()) {
-                    compl += 1;
-                }
-            }
-        }
-
-        if (compl == num) {
-            completed = true;
-        }
-    }
     
     public void restartLevel() {
 
@@ -137,9 +114,6 @@ public class World {
         baggs.clear();
         walls.clear();
         initWorld();
-        if (completed) {
-            completed = false;
-        }
     }
 
 	public static ArrayList<Area> getAreas() {
@@ -149,10 +123,5 @@ public class World {
 	public void setAreas(ArrayList<Area> areas) {
 		this.areas = areas;
 	}
-	
-	public int getNumEnemies() {
-		numEnemies = 3;
-		return numEnemies;
-	}
-	
+
 }
