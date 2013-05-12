@@ -75,12 +75,12 @@ public class Player extends Actor implements Runnable  {
             {
             	if(playerRect.x> 500 && xDirection ==1)
             	{
-            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('w',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('e',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
             	}
             	else if(playerRect.x< 400 && xDirection ==-1)
             	{
-            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('e',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('w',GamePanel.level);} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
             	}
             	else if(playerRect.y> 200 && yDirection ==1)
@@ -214,6 +214,7 @@ public class Player extends Actor implements Runnable  {
                 else{Thread.sleep(7);}
             }
         }catch(Exception ex){
+        	ex.printStackTrace();
             System.err.println(ex.getMessage());
         }
     }

@@ -229,15 +229,15 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 			
 			}
 			// Print out game stats
-			log(
-					"beforeTime: 	    " + beforeTime + "\n" +
-					"afterTime:			" + afterTime + "\n" +
-					"diff:				" + diff + "\n"	 +
-					"sleepTime:			" + sleepTime / 1000000L + "\n" +
-					"overSleepTime:		" + overSleepTime / 1000000L + "\n" +
-					"delays:			" + delays + "\n"	
-				
-			);
+//			log(
+//					"beforeTime: 	    " + beforeTime + "\n" +
+//					"afterTime:			" + afterTime + "\n" +
+//					"diff:				" + diff + "\n"	 +
+//					"sleepTime:			" + sleepTime / 1000000L + "\n" +
+//					"overSleepTime:		" + overSleepTime / 1000000L + "\n" +
+//					"delays:			" + delays + "\n"	
+//				
+//			);
 			
 		}
 	}

@@ -28,9 +28,6 @@ public class World {
     private Enemies enemies;
     
     public World(Player player, Enemies enemy) {
-    	
-    	this.player = player;
-    	enemies = enemy;
     	initWorld();
     }
     
@@ -96,7 +93,7 @@ public class World {
                 x += SPACE;
             }
             else if (item == 'y') {
-            	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), player);
+            	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), GamePanel.player);
                 x += SPACE;
             }
         else if (item == '=') {
