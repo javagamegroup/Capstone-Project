@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
+import Exceptions.InvalidCharacterException;
+
 public class Player extends Actor implements Runnable  {
 	
 	ImageIcon tad;
