@@ -63,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
      */
 	static Level level;
 	static World world;
+    static IncreasedBulletPickUp item = null;
     static Player player = new Player(200, 200,level);
     static Enemies enemies = new Enemies(70, 70,player);
     static EnemyAI enemy = null;
@@ -161,7 +162,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	}
     	enemies.killAllEnemies();
     	world.restartLevel();
+    	item = new IncreasedBulletPickUp(200, 200);
     	player.setLevel(false);
+    	
     }
 
   
@@ -429,10 +432,13 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     			if(player.nextLevel())
     				initialize();
     			sv.draw(g);
+    			if(item!=null)
+    			item.draw(g);
     			world.buildWorld(g);
 	    		player.draw(g);
 	    		enemies.draw(g);
 	    		gun.draw(g);
+	    		
     		}
     		else {
     			// Draw the title message (while the images load)

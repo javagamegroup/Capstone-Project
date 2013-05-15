@@ -95,6 +95,11 @@ public class Player extends Actor implements Runnable  {
             	}
             }
         }
+		if(GamePanel.item != null)
+			if (GamePanel.item.itemRect.intersects(playerRect)) {
+				GamePanel.item = null;
+				GamePanel.gun.increaseDamage(10);
+			}
 
        
     }
