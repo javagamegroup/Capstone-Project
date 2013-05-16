@@ -346,7 +346,7 @@ public class Level
 	}
 	
 	//possible set incomingDirection to lower case?
-	public setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
+	public void setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
 	{
 		current.player = '=';
 		current.nplayer = '=';
@@ -356,21 +356,25 @@ public class Level
 		
 		if(incomingDirection == 'n')
 		{
+			current.nplayer = 'x';
 			current = current.north;
 			current.splayer = 'x';
 		}
 		else if(incomingDirection == 's')
 		{
+			current.splayer = 'x';
 			current = current.south;
 			current.nplayer = 'x';
 		}
 		else if(incomingDirection == 'e')
 		{
+			current.eplayer = 'x';
 			current = current.east;
 			current.wplayer = 'x';
 		}
 		else if(incomingDirection == 'w')
 		{
+			current.wplayer = 'x';
 			current = current.west;
 			current.eplayer = 'x';
 		}
