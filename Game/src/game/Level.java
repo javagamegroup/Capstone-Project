@@ -325,11 +325,28 @@ public class Level
 	
 	public String getLevel()
 	{
+		this.level =
+				"############"+nDoor+nDoor+"############"+'\n'+
+				"#==========="+nplayer+"============#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#============y===========#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				wDoor+wplayer+"=========="+player+"==========="+eplayer+eDoor+'\n'+
+				wDoor+"========================"+eDoor+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#========================#"+'\n'+
+				"#============"+splayer+"===========#"+'\n'+
+				"############"+sDoor+sDoor+"############"+'\n';
 		return level;
 	}
 	
 	//possible set incomingDirection to lower case?
-	public Level setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
+	public setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
 	{
 		current.player = '=';
 		current.nplayer = '=';
@@ -358,7 +375,6 @@ public class Level
 			current.eplayer = 'x';
 		}
 		else throw new InvalidCharacterException();
-		return current;
 	}
 
 	private void  recursiveLevel()
