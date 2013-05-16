@@ -346,37 +346,33 @@ public class Level
 	}
 	
 	//possible set incomingDirection to lower case?
-	public void setPlayerEntrance(char incomingDirection, Level current) throws InvalidCharacterException
+	public void setPlayerEntrance(char incomingDirection) throws InvalidCharacterException
 	{
-		current.player = '=';
-		current.nplayer = '=';
-		current.splayer = '=';
-		current.eplayer = '=';
-		current.wplayer = '=';
+		GamePanel.level.player = '=';
+		GamePanel.level.nplayer = '=';
+		GamePanel.level.splayer = '=';
+		GamePanel.level.eplayer = '=';
+		GamePanel.level.wplayer = '=';
 		
 		if(incomingDirection == 'n')
 		{
-			current.nplayer = 'x';
-			current = current.north;
-			current.splayer = 'x';
+			GamePanel.level = GamePanel.level.north;
+			GamePanel.level.splayer = 'x';
 		}
 		else if(incomingDirection == 's')
 		{
-			current.splayer = 'x';
-			current = current.south;
-			current.nplayer = 'x';
+			GamePanel.level = GamePanel.level.south;
+			GamePanel.level.nplayer = 'x';
 		}
 		else if(incomingDirection == 'e')
 		{
-			current.eplayer = 'x';
-			current = current.east;
-			current.wplayer = 'x';
+			GamePanel.level = GamePanel.level.east;
+			GamePanel.level.wplayer = 'x';
 		}
 		else if(incomingDirection == 'w')
 		{
-			current.wplayer = 'x';
-			current = current.west;
-			current.eplayer = 'x';
+			GamePanel.level = GamePanel.level.west;
+			GamePanel.level.eplayer = 'x';
 		}
 		else throw new InvalidCharacterException();
 	}
