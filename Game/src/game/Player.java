@@ -109,22 +109,22 @@ public class Player extends Actor implements Runnable  {
             {
             	if(playerRect.x> 500 && xDirection ==1)
             	{
-            		try {GamePanel.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
             	}
             	else if(playerRect.x< 400 && xDirection ==-1)
             	{
-            		try {GamePanel.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
             	}
             	else if(playerRect.y> 200 && yDirection ==1)
             	{
-            		try {GamePanel.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
             	}
             	else if(playerRect.y< 400 && yDirection ==-1)
             	{
-            		try { GamePanel.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
             		this.setLevel(true);
             	}
             }

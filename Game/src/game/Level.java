@@ -149,9 +149,9 @@ public class Level
 		xloc = (xBounds/2) + 1;
 		
 		//Debugging Print check//
-		try {rand.setLimits(0,500);} catch (Exception e) {}
-		System.out.println(rand.randomInt());
-		this.print();
+//		try {rand.setLimits(0,500);} catch (Exception e) {}
+//		System.out.println(rand.randomInt());
+//		this.print();
 		//End Debugging check//
 		recursiveLevel();
 		
@@ -316,9 +316,9 @@ public class Level
 				"############"+sDoor+sDoor+"############"+'\n';
 						
 		//Debugging Print check//
-		try {rand. setLimits(0,750);} catch (Exception e) {}
-		System.out.println(rand.randomInt());
-		this.print();
+//		try {rand. setLimits(0,750);} catch (Exception e) {}
+//		System.out.println(rand.randomInt());
+//		this.print();
 		//End Debugging check//
 		recursiveLevel();
 	}
@@ -346,33 +346,33 @@ public class Level
 	}
 	
 	//possible set incomingDirection to lower case?
-	public void setPlayerEntrance(char incomingDirection) throws InvalidCharacterException
+	public Level setPlayerEntrance(char incomingDirection) throws InvalidCharacterException
 	{
-		GamePanel.level.player = '=';
-		GamePanel.level.nplayer = '=';
-		GamePanel.level.splayer = '=';
-		GamePanel.level.eplayer = '=';
-		GamePanel.level.wplayer = '=';
+		this.player = '=';
+		this.nplayer = '=';
+		this.splayer = '=';
+		this.eplayer = '=';
+		this.wplayer = '=';
 		
 		if(incomingDirection == 'n')
 		{
-			GamePanel.level = GamePanel.level.north;
-			GamePanel.level.splayer = 'x';
+			this.north.splayer = 'x';
+			return this.north;
 		}
 		else if(incomingDirection == 's')
 		{
-			GamePanel.level = GamePanel.level.south;
-			GamePanel.level.nplayer = 'x';
+			this.south.nplayer = 'x';
+			return this.south;
 		}
 		else if(incomingDirection == 'e')
 		{
-			GamePanel.level = GamePanel.level.east;
-			GamePanel.level.wplayer = 'x';
+			this.east.wplayer = 'x';
+			return this.east;
 		}
 		else if(incomingDirection == 'w')
 		{
-			GamePanel.level = GamePanel.level.west;
-			GamePanel.level.eplayer = 'x';
+			this.west.eplayer = 'x';
+			return this.west;
 		}
 		else throw new InvalidCharacterException();
 	}
