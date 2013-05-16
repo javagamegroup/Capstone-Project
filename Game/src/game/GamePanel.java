@@ -671,18 +671,18 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     
     public DirectionalSprite createTurtleDuck(Point pos, int i, int zOrder)
     {
-    	int frame = 0;
-    	int frameIncrement = 1;
-    	int frameDelay = 0;
-		return new DirectionalSprite(this, turtleDuck, frame, frameIncrement, frameDelay, pos, new Point(rand.nextInt() % 5, rand.nextInt() % 5), zOrder, DirectionalSprite.BA_STOP, 1);
+    	int frame = 1;
+    	int frameIncrement = 2;
+    	int frameDelay = -1;
+		return new DirectionalSprite(this, turtleDuck, frame, frameIncrement, frameDelay, pos, new Point(rand.nextInt() % 5, rand.nextInt() % 2), zOrder, DirectionalSprite.BA_WRAP, 1);
 	}
     
     public DirectionalSprite createBabyTurtleDuck(Point pos, int i, int zOrder)
     {
-    	int frame = 0;
-    	int frameIncrement = 1;
-    	int frameDelay = 0;
-    	return new DirectionalSprite(this, babyTurtleDuck, frame, frameIncrement, frameDelay, pos, new Point(rand.nextInt() % 5, rand.nextInt() % 5), zOrder, DirectionalSprite.BA_STOP, 1);
+    	int frame = 1;
+    	int frameIncrement = 2;
+    	int frameDelay = -1;
+    	return new DirectionalSprite(this, babyTurtleDuck, frame, frameIncrement, frameDelay, pos, new Point(rand.nextInt() % 5, rand.nextInt() % 2), zOrder, DirectionalSprite.BA_WRAP, 1);
     }
 
 }
