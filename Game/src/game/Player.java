@@ -31,6 +31,7 @@ public class Player extends Actor implements Runnable  {
 	Timer timer = new Timer();
 	protected Rectangle playerRect;
 	double startTime = -1;
+	double drawTime = -1;
 	double bulletLife;
 	int health = 5;
 	public boolean paused = false;
@@ -109,23 +110,35 @@ public class Player extends Actor implements Runnable  {
             {
             	if(playerRect.x> 500 && xDirection ==1)
             	{
-            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            		this.setLevel(true);
+            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+            			drawTime = System.currentTimeMillis();
+            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			Main.gp.initialize();
+            		}
             	}
             	else if(playerRect.x< 400 && xDirection ==-1)
             	{
-            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            		this.setLevel(true);
+            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+            			drawTime = System.currentTimeMillis();
+            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			Main.gp.initialize();
+            		}
             	}
             	else if(playerRect.y> 200 && yDirection ==1)
             	{
-            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            		this.setLevel(true);
+            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+            			drawTime = System.currentTimeMillis();
+            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			Main.gp.initialize();
+            		}
             	}
             	else if(playerRect.y< 400 && yDirection ==-1)
             	{
-            		try {GamePanel.level = GamePanel.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            		this.setLevel(true);
+            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+            			drawTime = System.currentTimeMillis();
+            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			Main.gp.initialize();
+            		}
             	}
             }
         }

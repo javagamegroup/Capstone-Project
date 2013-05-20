@@ -16,7 +16,7 @@ public final class Main extends JFrame {
     Color black = new Color(0, 0, 0);
     
     
-    GamePanel gp;
+    static GamePanel gp;
 
     public Main() {
         InitUI();
