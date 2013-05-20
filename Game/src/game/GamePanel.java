@@ -142,7 +142,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     public void initialize(){
     	tracker = new MediaTracker(this);
     	
-    	URL backLoc = this.getClass().getResource("/Resources/Background_example_1.png");
+    	URL backLoc = this.getClass().getResource("/Resources/Background.png");
     	backIcon = new ImageIcon(backLoc);
     	Imagebackground = backIcon.getImage();
     	tracker.addImage(Imagebackground, 0);

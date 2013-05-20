@@ -22,6 +22,6 @@ public class ImageBackground extends Background {
 
 	public void draw(Graphics g) {
 		// Draw background image
-		g.drawImage(image, 0, 0, component);
+		g.drawImage(image, 0, 60, component);
 	}
 }

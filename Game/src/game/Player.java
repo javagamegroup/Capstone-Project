@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MediaTracker;
 import java.awt.Rectangle;
@@ -32,8 +33,9 @@ public class Player extends Actor implements Runnable  {
 	protected Rectangle playerRect;
 	double startTime = -1;
 	double drawTime = -1;
+	double enemyTime = -1;
 	double bulletLife;
-	int health = 5;
+	int health = 100;
 	public boolean paused = false;
 	private boolean moveLevels = false;
 	Level level = null;
@@ -147,6 +149,16 @@ public class Player extends Actor implements Runnable  {
 				GamePanel.item = null;
 				GamePanel.gun.increaseDamage(10);
 			}
+		for(int i = 0; i<GamePanel.enemies.numEnemies;i++){
+			if(GamePanel.enemies.enemies[i]!=null){
+				if(playerRect.intersects(GamePanel.enemies.enemies[i].enemyRect)){
+	            	if(System.currentTimeMillis() - enemyTime > 1000 || enemyTime == -1){
+	                	enemyTime = System.currentTimeMillis();
+	                	decreaseHealth();
+	            	}
+				}
+			}
+		}
 
        
     }
@@ -165,7 +177,12 @@ public class Player extends Actor implements Runnable  {
     
     public void draw(Graphics g) {
     	int i = 0;
-    	
+    	g.setColor(Color.BLACK);
+    	g.drawRect(5, 30, 100, 15);
+    	g.setColor(Color.RED);
+    	g.fillRect(5, 30, health, 15);
+    	g.setColor(Color.GRAY);
+    	g.fillRect(health+5, 30, 100-health, 15);
     	switch(walkWhichWay)
     	{
     	case 0:
@@ -302,10 +319,10 @@ public class Player extends Actor implements Runnable  {
         }
 
     public void increaseHealth(){
-    	health += 1;
+    	health += 10;
     }
     public void decreaseHealth(){
-    	health -= 1;
+    	health -= 10;
     }
     public void increaseBulletLife(int x){
     	bulletLife += x;
