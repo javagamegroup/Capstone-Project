@@ -77,8 +77,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     // spriteVector
     private SpriteVector sv;
     
-    boolean gameStarted = false;
-    boolean pauseMenu = false;
+    static boolean gameStarted = false;
+    static boolean pauseMenu = false;
     boolean achievementsStarted = false;
     boolean hardDifficulty = false;
     boolean startHover;

@@ -167,6 +167,11 @@ public class Player extends Actor implements Runnable  {
     	collision();
         incX(xDirection);
         incY(yDirection);
+        if(health<=0){
+           GamePanel.gameStarted = false;
+ 		   GamePanel.pauseMenu = false;
+ 		   health = 100;
+        }
     }
     
  
