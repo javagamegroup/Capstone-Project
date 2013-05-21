@@ -86,7 +86,7 @@ public class Gun implements Runnable  {
 							if (bullet[j].projectileRect.intersects(enemy.enemies[i].enemyRect)) {
 								destroyBullet(j);
 								enemy.enemies[i].decreaseHealth(bulletDamage);
-								if (enemy.enemies[i].health == 0){
+								if (enemy.enemies[i].health <= 0){
 									getAchieves.storeAchievement("Guns Loaded - Defeat your first enemy");
 								}
 							}

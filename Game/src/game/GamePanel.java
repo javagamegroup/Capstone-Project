@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	private long period = 6*1000000; // miliseconds -> nano
 	private static final int DELAYS_BEFORE_YIELD = 10;
     private Random rand = new Random();
+    private double gameOverTime = -1;
 	
 	// Double buffering
     private Image dbImage, Imagebackground;
@@ -73,11 +74,13 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     private Thread npc = new Thread(enemies);
     private Thread weapon = new Thread(gun);
     private Thread animate;
+    private int num = 1;
     
     // spriteVector
     private SpriteVector sv;
     
     static boolean gameStarted = false;
+    static boolean gameOver = false;
     static boolean pauseMenu = false;
     boolean achievementsStarted = false;
     boolean hardDifficulty = false;
@@ -418,6 +421,18 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		    }
 			
 		}
+		else if(gameOver){//Menu
+			sv.draw(g);
+    		world.buildWorld(g);
+    		player.draw(g);
+    		enemies.draw(g);
+    		gun.draw(g);
+    		g.setColor(Color.BLACK);
+    		g.fillRect(225, 95, 425, 60);
+		    g.setFont(new Font("Arial", Font.BOLD, 70));
+		    g.setColor(Color.WHITE);
+		    g.drawString("GAME OVER", 225, 150);		    
+		}
     	else{
     		//Game drawings
     		if((tracker.statusID(0, true) & MediaTracker.ERRORED) != 0) 
@@ -473,6 +488,15 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		}catch (Exception e){
 			System.err.println(e);
 		}
+    	if(gameOver){
+    		if(num%10==0){
+	    		try {Thread.sleep(2000);} catch (InterruptedException e) {}
+	    		gameOver = false;
+	    		gameStarted = false;
+	    		num ++;
+    		}
+    		else num++;
+    	}
 	}
     
     public void addNotify() {
