@@ -26,6 +26,8 @@ public class Player extends Actor implements Runnable  {
 				player40, player41, player42;
 	public static Image[][] playerImage;
 	public static Image lifeIcon;
+	public static Image manaIcon;
+	public static Image ammoIcon;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
 	Projectile bullet [] = new Projectile [30];
@@ -53,6 +55,12 @@ public class Player extends Actor implements Runnable  {
         URL loc = this.getClass().getResource("/Resources/lifebar_image.png");
         ImageIcon iia = new ImageIcon(loc);
         lifeIcon = iia.getImage();
+        loc = this.getClass().getResource("/Resources/manabar_image.png");
+        iia = new ImageIcon(loc);
+        manaIcon = iia.getImage();
+        loc = this.getClass().getResource("/Resources/ammobar_image.png");
+        iia = new ImageIcon(loc);
+        ammoIcon = iia.getImage();
         this.playerRect = getRect(x, y, 32,32);
 
         this.setRect(playerRect);
@@ -191,6 +199,8 @@ public class Player extends Actor implements Runnable  {
     	int i = 0;
     	//health
     	g.drawImage(lifeIcon, 2, 2, null);
+    	g.drawImage(manaIcon, 2, 22, null);
+    	g.drawImage(ammoIcon, 0, 42, null);
     	g.setColor(Color.WHITE);
     	g.drawRect(19, 2, 101, 16);
     	g.setColor(Color.RED);
