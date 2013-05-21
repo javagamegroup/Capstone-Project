@@ -25,6 +25,7 @@ public class Player extends Actor implements Runnable  {
 				player30, player31, player32,
 				player40, player41, player42;
 	public static Image[][] playerImage;
+	public static Image lifeIcon;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
 	Projectile bullet [] = new Projectile [30];
@@ -49,6 +50,9 @@ public class Player extends Actor implements Runnable  {
         this.level = level;
         bulletLife = 2500;
         playerInit();
+        URL loc = this.getClass().getResource("/Resources/lifebar_image.png");
+        ImageIcon iia = new ImageIcon(loc);
+        lifeIcon = iia.getImage();
         this.playerRect = getRect(x, y, 32,32);
 
         this.setRect(playerRect);
@@ -186,6 +190,7 @@ public class Player extends Actor implements Runnable  {
     public void draw(Graphics g) {
     	int i = 0;
     	//health
+    	g.drawImage(lifeIcon, 2, 2, null);
     	g.setColor(Color.WHITE);
     	g.drawRect(19, 2, 101, 16);
     	g.setColor(Color.RED);
@@ -202,28 +207,25 @@ public class Player extends Actor implements Runnable  {
     	g.setColor(Color.WHITE);
     	g.drawRect(19, 22, 101, 16);
     	g.setColor(Color.BLUE);
-    	g.fillRect(20, 23, health, 15);
-    	g.setColor(Color.GRAY);
-    	g.fillRect(health+20, 23, 100-health, 15);
+    	g.fillRect(20, 23, 100, 15);
+    	//g.setColor(Color.GRAY);
+    	//g.fillRect(health+20, 23, 100-health, 15);
     	g.setColor(Color.BLACK);
     	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-    	if(health>=100)
-    		g.drawString(health+"/" + totalHealth, 45, 36);
-    	else
-    		g.drawString(health+"/" + totalHealth, 50, 36);
+    	//if(health>=100)
+    		g.drawString(100+"/" + totalHealth, 45, 36);
+    	//else
+    		//g.drawString(health+"/" + totalHealth, 50, 36);
     	//gun
     	g.setColor(Color.WHITE);
     	g.drawRect(19, 42, 101, 16);
     	g.setColor(Color.YELLOW);
-    	g.fillRect(20, 43, health, 15);
-    	g.setColor(Color.GRAY);
-    	g.fillRect(health+20, 43, 100-health, 15);
+    	g.fillRect(20, 43, 100, 15);
+    	//g.setColor(Color.GRAY);
+    	//g.fillRect(health+20, 43, 100-health, 15);
     	g.setColor(Color.BLACK);
     	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-    	if(health>=100)
-    		g.drawString(health+"/" + totalHealth, 45, 55);
-    	else
-    		g.drawString(health+"/" + totalHealth, 50, 55);
+    	g.drawString(Character.toString((char) 8734), 62, 55);
     	switch(walkWhichWay)
     	{
     	case 0:
@@ -363,7 +365,7 @@ public class Player extends Actor implements Runnable  {
     	health += 10;
     }
     public void decreaseHealth(){
-    	health -= 50;
+    	health -= 10;
     }
     public void increaseBulletLife(int x){
     	bulletLife += x;

@@ -46,8 +46,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     private Point pos;
     
     // number of sprites you want
-    private int numTDuckSprites = 2;
-    private int numBTDuckSprites = 3;
+    private int numTDuckSprites = 0;
+    private int numBTDuckSprites = 0;
     
     // MediaTracker
     private MediaTracker tracker;
