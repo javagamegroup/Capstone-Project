@@ -44,13 +44,12 @@ public class World {
         ArrayList<Actor> world = new ArrayList<Actor>();
         world.addAll(walls);
         world.addAll(getAreas());
-        world.addAll(baggs);
         
 
         for (int i = 0; i < world.size(); i++) {
 
             Actor item = (Actor) world.get(i);
-
+            	if(item!=null)
                 g.drawImage(item.getImage(), item.x(), item.y(), null);
         }
     }

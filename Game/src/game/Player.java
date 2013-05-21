@@ -226,6 +226,35 @@ public class Player extends Actor implements Runnable  {
     	g.setColor(Color.BLACK);
     	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
     	g.drawString(Character.toString((char) 8734), 62, 55);
+    	//q&e bar item
+    	g.setColor(Color.WHITE);
+    	g.drawRect(300, 2, 40, 40);
+    	g.fill3DRect(306, 45, 13, 13, true);
+    	g.fill3DRect(321, 45, 13, 13, true);
+    	g.setColor(Color.BLACK);
+    	g.drawString("Q", 307, 56);
+    	g.drawString("E", 322, 56);
+    	//gun bar item
+    	g.setColor(Color.WHITE);
+    	g.drawRect(400, 2, 40, 40);
+    	g.fill3DRect(400, 45, 12, 13, true);
+    	g.fill3DRect(414, 45, 12, 6, true);
+    	g.fill3DRect(414, 52, 12, 6, true);
+    	g.fill3DRect(428, 45, 12, 13, true);
+    	g.setColor(Color.BLACK);
+    	g.drawString("<", 401, 57);
+    	g.drawString(">", 430, 57);
+    	g.setFont(new Font("Windsor BT", Font.PLAIN, 10));
+    	g.drawString("^", 417, 53);
+    	g.setFont(new Font("Windsor BT", Font.PLAIN, 8));
+    	g.drawString("V", 417, 57);
+    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+    	//Space bar item
+    	g.setColor(Color.WHITE);
+    	g.drawRect(500, 2, 40, 40);
+    	g.fill3DRect(495, 45, 51, 13, true);
+    	g.setColor(Color.BLACK);
+    	g.drawString("SPACE", 496, 56);
     	switch(walkWhichWay)
     	{
     	case 0:
