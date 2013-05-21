@@ -114,7 +114,7 @@ public class Player extends Actor implements Runnable  {
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
-            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
             			Main.gp.initialize();
             		}
             	}
@@ -122,7 +122,7 @@ public class Player extends Actor implements Runnable  {
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
-            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
             			Main.gp.initialize();
             		}
             	}
@@ -130,7 +130,7 @@ public class Player extends Actor implements Runnable  {
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
-            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
             			Main.gp.initialize();
             		}
             	}
@@ -138,7 +138,7 @@ public class Player extends Actor implements Runnable  {
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
-            			try {GamePanel.level = GamePanel.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
+            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
             			Main.gp.initialize();
             		}
             	}
@@ -168,8 +168,9 @@ public class Player extends Actor implements Runnable  {
         incX(xDirection);
         incY(yDirection);
         if(health<=0){
+ 		   GamePanel.player.paused();
+ 		   GamePanel.enemies.paused();
            GamePanel.gameStarted = false;
- 		   GamePanel.pauseMenu = false;
  		   health = 100;
         }
     }

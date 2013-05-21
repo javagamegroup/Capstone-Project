@@ -13,10 +13,10 @@ public class IncreasedBulletPickUp extends Actor {
 	protected Rectangle itemRect;
     public IncreasedBulletPickUp(int x, int y) {
         super(x, y);
-        URL loc = this.getClass().getResource("/Resources/wall.png");
+        URL loc = this.getClass().getResource("/Resources/pickup_Power.png");
         ImageIcon iia = new ImageIcon(loc);
         item = iia.getImage();
-        this.itemRect = getRect(x, y, 32,32);
+        this.itemRect = getRect(x, y, 12,20);
         this.setImage(item);
     }
 	

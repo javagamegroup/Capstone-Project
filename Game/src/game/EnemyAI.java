@@ -26,10 +26,10 @@ public class EnemyAI extends Actor{
         target = play;
         this.walls = walls;
         this.areas = arrayList;
-        URL paulLoc = this.getClass().getResource("/Resources/baggage.png");
+        URL paulLoc = this.getClass().getResource("/Resources/enemy.png");
        	paul = new ImageIcon(paulLoc);
         enemyImage = paul.getImage();
-        this.enemyRect = getRect(x, y, 20,20);
+        this.enemyRect = getRect(x, y, 44,54);
         this.setRect(enemyRect);
         charE = new Event(true, this.enemyRect);
     }
@@ -54,6 +54,7 @@ public class EnemyAI extends Actor{
 	    		setYDirection(0);
 	    	if(enemyRect.y == target.playerRect.y) 
 	    		setYDirection(0);
+	    	if(GamePanel.player.playerRect.intersects(enemyRect)){setYDirection(0);setXDirection(0);}
     	}
     }
     //Move in that direction
@@ -110,10 +111,6 @@ public class EnemyAI extends Actor{
     
     public void draw(Graphics g) {
     	g.drawImage(enemyImage, this.rectx(), this.recty(), null);
-		if(isAlive)
-			if(this.enemyRect.intersects(target.playerRect)){
-				charE.draw(g);
-			}	
     }
     
     

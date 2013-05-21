@@ -57,7 +57,7 @@ public class World {
     
     public final void initWorld() {
 
-        String level1 =GamePanel.level.getLevel();
+        String level1 =GamePanel.map.level.getLevel();
         int x = 0;
         int y = OFFSET;
         

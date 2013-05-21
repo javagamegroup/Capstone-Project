@@ -67,6 +67,7 @@ public class Level
 						nBoolDoor = true;
 						numDoors --;
 					}
+					break;
 				case 1:
 					if(dir == startDir)
 						break;
@@ -147,7 +148,6 @@ public class Level
 		
 		yloc = (yBounds/2) + 1;
 		xloc = (xBounds/2) + 1;
-		
 		//Debugging Print check//
 //		try {rand.setLimits(0,500);} catch (Exception e) {}
 //		System.out.println(rand.randomInt());
@@ -186,21 +186,25 @@ public class Level
 		{
 			tempY = 2;
 			maxDoors--;
+			if(maxDoors <0)maxDoors = 0;
 		}
 		else if(yloc == 0)
 		{
 			tempY = 0;
 			maxDoors--;
+			if(maxDoors <0)maxDoors = 0;
 		}
 		if(xloc == xBounds)
 		{
 			tempX = 1;
 			maxDoors--;
+			if(maxDoors <0)maxDoors = 0;
 		}
 		else if(xloc == 0)
 		{
 			tempX = 3;
 			maxDoors--;
+			if(maxDoors <0)maxDoors = 0;
 		}
 		try {rand = new RandomGen(minDoors, maxDoors);} catch (Exception e) {}
 		this.numEnemies = numEnemies;
@@ -214,10 +218,7 @@ public class Level
 					
 				case 0:
 					if(dir == startDir)
-					{
-						nDoor = '/';
 						break;
-					}
 					else if(dir == tempY)
 						break;
 					else
@@ -229,10 +230,7 @@ public class Level
 					break;
 				case 1:
 					if(dir == startDir)
-					{
-						eDoor = '/';
 						break;
-					}
 					else if(dir == tempX)
 						break;
 					else
@@ -244,10 +242,7 @@ public class Level
 					break;
 				case 2:
 					if(dir == startDir)
-					{
-						sDoor = '/';
 						break;
-					}
 					else if(dir == tempY)
 						break;
 					else
@@ -259,10 +254,7 @@ public class Level
 					break;
 				case 3:
 					if(dir == startDir)
-					{
-						wDoor = '/';
 						break;
-					}
 					else if(dir == tempX)
 						break;
 					else
@@ -282,16 +274,16 @@ public class Level
 		switch(startDir)
 		{
 			case 0:
-				nDoor ='/';
-				break;
-			case 1:
-				eDoor ='/';
-				break;
-			case 2:
 				sDoor ='/';
 				break;
-			case 3:
+			case 1:
 				wDoor ='/';
+				break;
+			case 2:
+				nDoor ='/';
+				break;
+			case 3:
+				eDoor ='/';
 				break;
 			default:
 				break;
@@ -357,21 +349,25 @@ public class Level
 		if(incomingDirection == 'n')
 		{
 			this.north.splayer = 'x';
+			this.north.player = '=';
 			return this.north;
 		}
 		else if(incomingDirection == 's')
 		{
 			this.south.nplayer = 'x';
+			this.south.player = '=';
 			return this.south;
 		}
 		else if(incomingDirection == 'e')
 		{
 			this.east.wplayer = 'x';
+			this.east.player = '=';
 			return this.east;
 		}
 		else if(incomingDirection == 'w')
 		{
 			this.west.eplayer = 'x';
+			this.west.player = '=';
 			return this.west;
 		}
 		else throw new InvalidCharacterException();
@@ -395,7 +391,7 @@ public class Level
 		if(sBoolDoor)
 			this.south = new Level(true, numEnemies.randomInt(), 0,maxDoors.randomInt(), this, 2 , this.yloc + 1, this.xloc );
 		if(wBoolDoor)
-			this.west = new Level(true, numEnemies.randomInt(), 0,maxDoors.randomInt(), this, 4 , this.yloc, this.xloc - 1);
+			this.west = new Level(true, numEnemies.randomInt(), 0,maxDoors.randomInt(), this, 3 , this.yloc, this.xloc - 1);
 	}
 
 	

@@ -61,10 +61,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
      * Game Objects
      *	world and characters
      */
-	static Level level;
+	static Map map;
 	static World world;
     static IncreasedBulletPickUp item = null;
-    static Player player = new Player(200, 200,level);
+    static Player player = new Player(200, 200,map.level);
     static Enemies enemies = new Enemies(70, 70,player);
     static EnemyAI enemy = null;
 //    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
@@ -121,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		this.backColor = backColor;
 		this.buttonColor = buttonColor;
 		
-		level = new Level(true, 2);
+		map = new Map();
     	
     	this.addKeyListener(new KeyHandler());
     	this.addMouseListener(new MouseHandler());
@@ -616,6 +616,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		            		my > startButton.y && my < startButton.y+startButton.height){
 		            	gameStarted = true;
 		            	initialize();
+	            		   player.unpaused();
+	            		   enemies.unpaused();
 		            	getAchieves.storeAchievement("I'm Awesome - Start your first game");}
 		            
 		            if(mx > quitButton.x && mx < quitButton.x+quitButton.width &&
