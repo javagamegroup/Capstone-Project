@@ -79,8 +79,7 @@ public class World {
                 walls.add(wall);
                 x += SPACE;
             } else if (item == '$') {
-                b = new Baggage(x, y);
-                baggs.add(b);
+            	
                 x += SPACE;
             } else if (item == '/') {
                 a = new Area(x, y);
@@ -95,7 +94,7 @@ public class World {
             	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), GamePanel.player);
                 x += SPACE;
             }
-        else if (item == '=') {
+            else{
                 x += SPACE;
             }
 

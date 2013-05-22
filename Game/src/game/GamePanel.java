@@ -64,7 +64,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
      */
 	static Map map;
 	static World world;
-    static IncreasedBulletPickUp item = null;
+	static Items item = new Items();
+//    static IncreasedBulletPickUp item = null;
     static Player player = new Player(200, 200,map.level);
     static Enemies enemies = new Enemies(70, 70,player);
     static EnemyAI enemy = null;
@@ -100,8 +101,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     
     //Menu Buttons
     Rectangle startButton = new Rectangle(300, 150, GWIDTH/4, GHEIGHT/12);
-    Rectangle resumeButton = new Rectangle(320, 250, GWIDTH/4, GHEIGHT/12);
-    Rectangle menuButton = new Rectangle(320, 315, GWIDTH/4, GHEIGHT/12);
+    Rectangle resumeButton = new Rectangle(200, 450, GWIDTH/4, GHEIGHT/12);
+    Rectangle menuButton = new Rectangle(450, 450, GWIDTH/4, GHEIGHT/12);
     Rectangle quitButton = new Rectangle(300, 450, GWIDTH/4, GHEIGHT/12);
     Rectangle difficultyButton = new Rectangle(300, 250, GWIDTH/4, GHEIGHT/12);
     Rectangle achievementButton = new Rectangle(300, 350, GWIDTH/4, GHEIGHT/12);
@@ -165,7 +166,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	}
     	enemies.killAllEnemies();
     	world.restartLevel();
-    	item = new IncreasedBulletPickUp(200, 200);
+    	//item = new IncreasedBulletPickUp(200, 200);
     	player.setLevel(false);
     	
     }
@@ -183,14 +184,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		}
 		sv = new SpriteVector(new ImageBackground(this, Imagebackground));
 		// For loops to add how many sprites we want to the spritevector
-		for(int i = 0; i < numBTDuckSprites + 1; i++)
+		for(int i = 0; i < numBTDuckSprites ; i++)
 		{
 			// get an empty position to draw sprite
 			Point btdpos = sv.getEmptyPosition(new Dimension(babyTurtleDuck[0][1].getWidth(this), babyTurtleDuck[0][1].getHeight(this)));
 			// add sprites to spritevector
 			sv.add(createBabyTurtleDuck(btdpos, i % 6, 2));
 		}
-		for(int i = 0; i < numTDuckSprites + 1; i++)
+		for(int i = 0; i < numTDuckSprites ; i++)
 		{
 			// get an empty position to draw sprite
 			Point tdpos = sv.getEmptyPosition(new Dimension(turtleDuck[0][0].getWidth(this), turtleDuck[0][0].getHeight(this)));
@@ -395,9 +396,24 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		gun.draw(g);
 		    g.setFont(new Font("Arial", Font.BOLD, 26));
 		    g.setColor(Color.GRAY);
-		    g.fillRect(GWIDTH/9*3, GHEIGHT/6*2, 300, 200);
+		    g.fillRect(180, GHEIGHT/6*2, 500, 300);
 		    g.setColor(Color.WHITE);
 		    g.drawString("Pause Menu", 345, 225);
+		    g.drawString("Bullet Damage", 190, 270);
+		    if(gun.bulletDamage<10)
+		    	g.drawString("  "+Integer.toString(gun.bulletDamage), 550, 270);
+		    else
+		    	g.drawString(Integer.toString(gun.bulletDamage), 550, 270);
+		    g.drawString("Bullet Fire Rate", 190, 310);
+		    if(player.fireRate<10)
+		    	g.drawString("  "+Integer.toString(player.fireRate/10), 550, 310);
+		    else
+		    	g.drawString(Integer.toString(player.fireRate/10), 550, 310);
+		    g.drawString("Player Speed", 190, 350);
+		    if(player.speed<10)
+		    	g.drawString("  "+Integer.toString(player.speed), 550, 350);
+		    else
+		    	g.drawString(Integer.toString(player.speed), 550, 350);
 		    
 		    // start button
 		    if(startButtonFlag = true){

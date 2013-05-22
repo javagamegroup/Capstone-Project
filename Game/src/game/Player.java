@@ -31,7 +31,7 @@ public class Player extends Actor implements Runnable  {
 	public static Image gunIcon;
 	public static Image potionIcon;
 	public static Image bootIcon;
-	private int speed = 1;
+	public int speed = 1;
 	int numHealthPotions = 5;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
@@ -44,12 +44,15 @@ public class Player extends Actor implements Runnable  {
 	double drawTime = -1;
 	double enemyTime = -1;
 	double spacebarTime = -1;
+	int spacebarItem = 40;
 	double bulletLife;
 	int health = 100;
 	int totalHealth = 100;
 	public boolean paused = false;
 	private boolean moveLevels = false;
 	Level level = null;
+	boolean pickedUpItem = false;
+	String itemName = null;
 	
 	private static int walkWhichWay = 0;
 	
@@ -114,21 +117,21 @@ public class Player extends Actor implements Runnable  {
     public void collision(){
         for (int i = 0; i < World.walls.size(); i++) {
             Wall wall = (Wall) World.walls.get(i);
-            	if(playerRect.intersects(wall.objectRect) && xDirection ==1){
+            	if(playerRect.intersects(wall.objectRect) && xDirection >=1){
             		if(this.playerRect.x<735){}
             		else
             			this.xDirection = 0;
             	}
-            	if(playerRect.intersects(wall.objectRect)  && xDirection ==-1){
+            	if(playerRect.intersects(wall.objectRect)  && xDirection <=-1){
             		if(this.playerRect.x>33){}
             		else
             			this.xDirection = 0;
             	}
-            	if(playerRect.intersects(wall.objectRect) && yDirection ==1)
+            	if(playerRect.intersects(wall.objectRect) && yDirection >=1)
             		if(this.playerRect.y<507){}
             		else
             			this.yDirection = 0;
-            	if(playerRect.intersects(wall.objectRect) && yDirection ==-1)
+            	if(playerRect.intersects(wall.objectRect) && yDirection <=-1)
             		if(this.playerRect.y>93){}
             		else
             			this.yDirection = 0;
@@ -139,7 +142,7 @@ public class Player extends Actor implements Runnable  {
             Area area = (Area) World.getAreas().get(i);
             if (this.playerRect.intersects(area.areaRect)) 
             {
-            	if(playerRect.x> 500 && xDirection ==1)
+            	if(playerRect.x> 500 && xDirection >=1)
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
@@ -147,7 +150,7 @@ public class Player extends Actor implements Runnable  {
             			Main.gp.initialize();
             		}
             	}
-            	else if(playerRect.x< 400 && xDirection ==-1)
+            	else if(playerRect.x< 400 && xDirection <=-1)
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
@@ -155,7 +158,7 @@ public class Player extends Actor implements Runnable  {
             			Main.gp.initialize();
             		}
             	}
-            	else if(playerRect.y> 200 && yDirection ==1)
+            	else if(playerRect.y> 200 && yDirection >=1)
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
@@ -163,7 +166,7 @@ public class Player extends Actor implements Runnable  {
             			Main.gp.initialize();
             		}
             	}
-            	else if(playerRect.y< 400 && yDirection ==-1)
+            	else if(playerRect.y< 400 && yDirection <=-1)
             	{
             		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
             			drawTime = System.currentTimeMillis();
@@ -173,10 +176,13 @@ public class Player extends Actor implements Runnable  {
             	}
             }
         }
-		if(GamePanel.item != null)
-			if (GamePanel.item.itemRect.intersects(playerRect)) {
+        for(int i = 0;i<30;i++)
+		if(GamePanel.item.item[i] != null)
+			if (GamePanel.item.item[i].itemRect.intersects(playerRect)) {
 				GamePanel.item = null;
 				GamePanel.gun.increaseDamage(10);
+				pickedUpItem = true;
+				itemName = "Steroids: Dame Increased by 2";
 			}
 		for(int i = 0; i<GamePanel.enemies.numEnemies;i++){
 			if(GamePanel.enemies.enemies[i]!=null){
@@ -280,8 +286,14 @@ public class Player extends Actor implements Runnable  {
     	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
     	g.drawImage(gunIcon, 412, 12, null);
     	//Space bar item
-    	g.setColor(Color.WHITE);
+    	g.setColor(Color.GRAY);
     	g.fill3DRect(500, 2, 40, 40, true);
+    	g.setColor(Color.WHITE);
+    	if(spacebarTime==-1||System.currentTimeMillis() - spacebarTime > 60000)
+    		spacebarItem = 40;
+    	else
+    		spacebarItem = (int) (((System.currentTimeMillis() - spacebarTime)/1000)/1.5);
+    	g.fill3DRect(500, 42-spacebarItem, 40, spacebarItem, true);
     	g.fill3DRect(495, 45, 51, 13, true);
     	g.setColor(Color.BLACK);
     	g.drawString("SPACE", 496, 56);

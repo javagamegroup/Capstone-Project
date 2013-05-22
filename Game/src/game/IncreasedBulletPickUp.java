@@ -10,7 +10,7 @@ public class IncreasedBulletPickUp extends Actor {
 
 	
 	Image item;
-	protected Rectangle itemRect;
+	public Rectangle itemRect;
     public IncreasedBulletPickUp(int x, int y) {
         super(x, y);
         URL loc = this.getClass().getResource("/Resources/pickup_Power.png");
@@ -22,6 +22,5 @@ public class IncreasedBulletPickUp extends Actor {
 	
     public void draw(Graphics g) {
     	g.drawImage(item, itemRect.x, itemRect.y, null);
-    	
     }
 }
