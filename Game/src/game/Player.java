@@ -28,6 +28,11 @@ public class Player extends Actor implements Runnable  {
 	public static Image lifeIcon;
 	public static Image manaIcon;
 	public static Image ammoIcon;
+	public static Image gunIcon;
+	public static Image potionIcon;
+	public static Image bootIcon;
+	private int speed = 1;
+	int numHealthPotions = 5;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
 	Projectile bullet [] = new Projectile [30];
@@ -38,6 +43,7 @@ public class Player extends Actor implements Runnable  {
 	double startTime = -1;
 	double drawTime = -1;
 	double enemyTime = -1;
+	double spacebarTime = -1;
 	double bulletLife;
 	int health = 100;
 	int totalHealth = 100;
@@ -61,6 +67,15 @@ public class Player extends Actor implements Runnable  {
         loc = this.getClass().getResource("/Resources/ammobar_image.png");
         iia = new ImageIcon(loc);
         ammoIcon = iia.getImage();
+        loc = this.getClass().getResource("/Resources/gun_image.png");
+        iia = new ImageIcon(loc);
+        gunIcon = iia.getImage();
+        loc = this.getClass().getResource("/Resources/potion_image.png");
+        iia = new ImageIcon(loc);
+        potionIcon = iia.getImage();
+        loc = this.getClass().getResource("/Resources/boot_image.png");
+        iia = new ImageIcon(loc);
+        bootIcon = iia.getImage();
         this.playerRect = getRect(x, y, 32,32);
 
         this.setRect(playerRect);
@@ -187,6 +202,8 @@ public class Player extends Actor implements Runnable  {
            GamePanel.gameOver = true;
  		   health = 100;
         }
+        if(System.currentTimeMillis() - spacebarTime > 10000)
+        	speed = 1;
     }
     
  
@@ -238,15 +255,17 @@ public class Player extends Actor implements Runnable  {
     	g.drawString(Character.toString((char) 8734), 62, 55);
     	//q&e bar item
     	g.setColor(Color.WHITE);
-    	g.drawRect(300, 2, 40, 40);
+    	g.fill3DRect(300, 2, 40, 40, true);
     	g.fill3DRect(306, 45, 13, 13, true);
     	g.fill3DRect(321, 45, 13, 13, true);
     	g.setColor(Color.BLACK);
     	g.drawString("Q", 307, 56);
     	g.drawString("E", 322, 56);
+    	g.drawImage(potionIcon, 313, 12, null);
+    	g.drawString(Integer.toString(numHealthPotions), 330, 13);
     	//gun bar item
     	g.setColor(Color.WHITE);
-    	g.drawRect(400, 2, 40, 40);
+    	g.fill3DRect(400, 2, 40, 40, true);
     	g.fill3DRect(400, 45, 12, 13, true);
     	g.fill3DRect(414, 45, 12, 6, true);
     	g.fill3DRect(414, 52, 12, 6, true);
@@ -259,12 +278,14 @@ public class Player extends Actor implements Runnable  {
     	g.setFont(new Font("Windsor BT", Font.PLAIN, 8));
     	g.drawString("V", 417, 57);
     	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+    	g.drawImage(gunIcon, 412, 12, null);
     	//Space bar item
     	g.setColor(Color.WHITE);
-    	g.drawRect(500, 2, 40, 40);
+    	g.fill3DRect(500, 2, 40, 40, true);
     	g.fill3DRect(495, 45, 51, 13, true);
     	g.setColor(Color.BLACK);
     	g.drawString("SPACE", 496, 56);
+    	g.drawImage(bootIcon, 505, 12, null);
     	switch(walkWhichWay)
     	{
     	case 0:
@@ -340,19 +361,19 @@ public class Player extends Actor implements Runnable  {
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == e.VK_A) {
             	walkWhichWay = 3;
-                setXDirection(-1);
+                setXDirection(-speed);
 
             } if (e.getKeyCode() == e.VK_D) {
             	walkWhichWay = 1;
-                setXDirection(1);
+                setXDirection(speed);
 
             }if (e.getKeyCode() == e.VK_W) {
             	walkWhichWay = 4;
-                setYDirection(-1);
+                setYDirection(-speed);
 
             }if (e.getKeyCode() == e.VK_S) {
             	walkWhichWay = 2;
-                setYDirection(1);
+                setYDirection(speed);
             }
             if (e.getKeyCode() == e.VK_UP) {
             	if(System.currentTimeMillis() - startTime  > fireRate || startTime == -1){
@@ -376,6 +397,19 @@ public class Player extends Actor implements Runnable  {
             	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
             	GamePanel.gun.createBullet('x', 1,playerRect.x, playerRect.y, bulletLife );
+            	}
+            }
+            if (e.getKeyCode() == e.VK_Q||e.getKeyCode() == e.VK_E) {
+            	if(numHealthPotions>0){
+            		if(health<totalHealth)
+            			increaseHealth();
+            		numHealthPotions --;
+            	}
+            }
+            if (e.getKeyCode() == e.VK_SPACE) {
+            	if(System.currentTimeMillis() - spacebarTime > 60000 || spacebarTime == -1){
+            	spacebarTime = System.currentTimeMillis();
+            	speed = 2;
             	}
             }
         }
