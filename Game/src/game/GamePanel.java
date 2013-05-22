@@ -99,14 +99,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     boolean ESCkeyPressed = false;
     
     //Menu Buttons
-    Rectangle startButton = new Rectangle(350, 150, GWIDTH/4, GHEIGHT/12);
-    Rectangle resumeButton = new Rectangle(325, 350, GWIDTH/4, GHEIGHT/12);
-    Rectangle menuButton = new Rectangle(325, 400, GWIDTH/4, GHEIGHT/12);
-    Rectangle quitButton = new Rectangle(350, 450, GWIDTH/4, GHEIGHT/12);
-    Rectangle difficultyButton = new Rectangle(350, 250, GWIDTH/4, GHEIGHT/12);
-    Rectangle achievementButton = new Rectangle(350, 350, GWIDTH/4, GHEIGHT/12);
-    Rectangle backButton = new Rectangle(25, 550, 75, 25);
-    Rectangle resetButton = new Rectangle(625, 550, 135, 25);
+    Rectangle startButton = new Rectangle(300, 150, GWIDTH/4, GHEIGHT/12);
+    Rectangle resumeButton = new Rectangle(320, 250, GWIDTH/4, GHEIGHT/12);
+    Rectangle menuButton = new Rectangle(320, 315, GWIDTH/4, GHEIGHT/12);
+    Rectangle quitButton = new Rectangle(300, 450, GWIDTH/4, GHEIGHT/12);
+    Rectangle difficultyButton = new Rectangle(300, 250, GWIDTH/4, GHEIGHT/12);
+    Rectangle achievementButton = new Rectangle(300, 350, GWIDTH/4, GHEIGHT/12);
+    Rectangle backButton = new Rectangle(25, 525, 75, 25);
+    Rectangle resetButton = new Rectangle(625, 525, 135, 25);
 	
     Color fontColor, backColor, buttonColor;
     String gameTitle;
@@ -284,7 +284,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	    		//Menu
 			    g.setFont(new Font("Arial", Font.BOLD, 26));
 			    g.setColor(Color.WHITE);
-			    g.drawString(gameTitle, 275, 75);
+			    g.drawString(gameTitle, 225, 75);
 			    
 			    // difficulty button
 			    if(difficultyButtonFlag = true) {
@@ -376,15 +376,15 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     			g.fillRect(backButton.x, backButton.y, backButton.width, backButton.height);
     			g.setFont(new Font("Arial", Font.BOLD, 12));
     			g.setColor(Color.black);
-    			g.drawString("Back", backButton.x+15, backButton.y+17);
+    			g.drawString("Back", backButton.x+22, backButton.y+17);
     			if(!resetHover)
     				g.setColor(buttonColor);
     			else
     				g.setColor(Color.pink);
-    			g.fillRect(resetButton.x, backButton.y, resetButton.width, resetButton.height);
+    			g.fillRect(resetButton.x, resetButton.y, resetButton.width, resetButton.height);
     			g.setFont(new Font("Arial", Font.BOLD, 12));
     			g.setColor(Color.black);
-    			g.drawString("Reset Achiements", resetButton.x+15, resetButton.y+17);
+    			g.drawString("Reset Achiements", resetButton.x+15, resetButton.y+16);
     		}
     	} // if game started and Pausemenu is up
 		else if(pauseMenu){//Menu
@@ -395,9 +395,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		gun.draw(g);
 		    g.setFont(new Font("Arial", Font.BOLD, 26));
 		    g.setColor(Color.GRAY);
-		    g.fillRect(300, 300, 300, 200);
+		    g.fillRect(GWIDTH/9*3, GHEIGHT/6*2, 300, 200);
 		    g.setColor(Color.WHITE);
-		    g.drawString("Pause Menu", 325, 325);
+		    g.drawString("Pause Menu", 345, 225);
 		    
 		    // start button
 		    if(startButtonFlag = true){
@@ -417,7 +417,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 			    	g.setColor(Color.pink);
 			    g.fillRect(menuButton.x, menuButton.y, GWIDTH/4, GHEIGHT/14);
 			    g.setColor(Color.GRAY);
-			    g.drawString("Return to Main Menu", menuButton.x+60, menuButton.y+25);
+			    g.drawString("Return to Main Menu", menuButton.x+40, menuButton.y+25);
 		    }
 			
 		}

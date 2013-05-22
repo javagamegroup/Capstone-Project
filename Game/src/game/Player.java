@@ -202,7 +202,7 @@ public class Player extends Actor implements Runnable  {
            GamePanel.gameOver = true;
  		   health = 100;
         }
-        if(System.currentTimeMillis() - spacebarTime > 10000)
+        if(System.currentTimeMillis() - spacebarTime > 5000)
         	speed = 1;
     }
     
