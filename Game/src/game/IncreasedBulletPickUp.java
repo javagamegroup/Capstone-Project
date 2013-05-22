@@ -23,4 +23,7 @@ public class IncreasedBulletPickUp extends Actor {
     public void draw(Graphics g) {
     	g.drawImage(item, itemRect.x, itemRect.y, null);
     }
+    public Rectangle getRect(){
+		return itemRect;
+    }
 }

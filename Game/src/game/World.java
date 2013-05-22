@@ -79,7 +79,9 @@ public class World {
                 walls.add(wall);
                 x += SPACE;
             } else if (item == '$') {
-            	
+            	i++;
+            	item = level1.charAt(i);
+            	GamePanel.item.createItem(x, y, item);
                 x += SPACE;
             } else if (item == '/') {
                 a = new Area(x, y);

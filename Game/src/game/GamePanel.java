@@ -166,7 +166,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	}
     	enemies.killAllEnemies();
     	world.restartLevel();
-    	//item = new IncreasedBulletPickUp(200, 200);
+    	item.createItem(200, 200, 'a');
     	player.setLevel(false);
     	
     }

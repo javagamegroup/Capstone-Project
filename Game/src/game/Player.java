@@ -177,13 +177,10 @@ public class Player extends Actor implements Runnable  {
             }
         }
         for(int i = 0;i<30;i++)
-		if(GamePanel.item.item[i] != null)
-			if (GamePanel.item.item[i].itemRect.intersects(playerRect)) {
-				GamePanel.item = null;
-				GamePanel.gun.increaseDamage(10);
-				pickedUpItem = true;
-				itemName = "Steroids: Dame Increased by 2";
-			}
+			if(GamePanel.item.item[i] != null)
+				if (GamePanel.item.getRect(i).intersects(playerRect)) {
+					GamePanel.item.destroyItem(i);
+				}
 		for(int i = 0; i<GamePanel.enemies.numEnemies;i++){
 			if(GamePanel.enemies.enemies[i]!=null){
 				if(playerRect.intersects(GamePanel.enemies.enemies[i].enemyRect)){
