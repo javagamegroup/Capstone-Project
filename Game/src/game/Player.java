@@ -142,45 +142,48 @@ public class Player extends Actor implements Runnable  {
             Area area = (Area) World.getAreas().get(i);
             if (this.playerRect.intersects(area.areaRect)) 
             {
-            	if(playerRect.x> 500 && xDirection >=1)
-            	{
-            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
-            			drawTime = System.currentTimeMillis();
-            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            			Main.gp.initialize();
-            		}
+            	//if(GamePanel.enemies.totalEnemies==0){
+	            	if(playerRect.x> 500 && xDirection >=1)
+	            	{
+	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+	            			drawTime = System.currentTimeMillis();
+	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			Main.gp.initialize();
+	            		}
+	            	}
+	            	else if(playerRect.x< 400 && xDirection <=-1)
+	            	{
+	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+	            			drawTime = System.currentTimeMillis();
+	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			Main.gp.initialize();
+	            		}
+	            	}
+	            	else if(playerRect.y> 200 && yDirection >=1)
+	            	{
+	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+	            			drawTime = System.currentTimeMillis();
+	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			Main.gp.initialize();
+	            		}
+	            	}
+	            	else if(playerRect.y< 400 && yDirection <=-1)
+	            	{
+	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
+	            			drawTime = System.currentTimeMillis();
+	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			Main.gp.initialize();
+	            		}
+	            	}
             	}
-            	else if(playerRect.x< 400 && xDirection <=-1)
-            	{
-            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
-            			drawTime = System.currentTimeMillis();
-            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            			Main.gp.initialize();
-            		}
-            	}
-            	else if(playerRect.y> 200 && yDirection >=1)
-            	{
-            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
-            			drawTime = System.currentTimeMillis();
-            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            			Main.gp.initialize();
-            		}
-            	}
-            	else if(playerRect.y< 400 && yDirection <=-1)
-            	{
-            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
-            			drawTime = System.currentTimeMillis();
-            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
-            			Main.gp.initialize();
-            		}
-            	}
-            }
+            //}
         }
         for(int i = 0;i<30;i++)
 			if(GamePanel.item.item[i] != null)
 				if (GamePanel.item.getRect(i).intersects(playerRect)) {
 					GamePanel.item.destroyItem(i);
 				}
+        
 		for(int i = 0; i<GamePanel.enemies.numEnemies;i++){
 			if(GamePanel.enemies.enemies[i]!=null){
 				if(playerRect.intersects(GamePanel.enemies.enemies[i].enemyRect)){

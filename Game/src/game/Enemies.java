@@ -21,6 +21,7 @@ public class Enemies implements Runnable  {
 	Achievements getAchieves = null;
 	EnemyAI [] enemies = new EnemyAI[10];;
 	int numEnemies = 10;
+	int totalEnemies = 0;
 	int num = 0;
 	Event charE;
 	int difficulty = 20;
@@ -34,11 +35,13 @@ public class Enemies implements Runnable  {
     	enemies[num] = new EnemyAI(x, y, walls, arrayList, play);
     	charE = new Event(true, enemies[num].enemyRect);
     	num ++;
+    	totalEnemies ++;
     	if(num ==10) num =0;
     }
     
     public void destroyEnemy(int num){
     	enemies[num] = null;
+    	totalEnemies --;
     }
     public void setNumEnemies(int num){
     	numEnemies = num;
@@ -86,7 +89,7 @@ public class Enemies implements Runnable  {
     	for(int j =0; j<numEnemies; j++){
 			if(enemies[j] != null){
 				if (enemies[j].health <=0)
-					enemies[j] = null;
+					destroyEnemy(j);
 			}
     	}
     }
@@ -95,7 +98,7 @@ public class Enemies implements Runnable  {
     	for(int i = 0; i<numEnemies; i++){
     		if(enemies[i]!=null)
 	    		if(enemies[i].health <= 0)
-	    			enemies[i] = null;
+	    			destroyEnemy(i);
     		if(enemies[i]!=null){
 	    		enemies[i].draw(g);
     		}
@@ -113,6 +116,7 @@ public class Enemies implements Runnable  {
     		enemies[i] = null;
     	}
     	num = 0;
+    	totalEnemies = 0;
     }
     public void paused(){
     	paused = true;
