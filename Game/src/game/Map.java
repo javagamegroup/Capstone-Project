@@ -19,7 +19,7 @@ public class Map
 //  
 //  multidimensional arrays someArray[height][width]
 	
-	protected Map()//setter for the Map.
+	protected Map(int minEnemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items )//setter for the Map.
 	{
 		for(int i=0; i<maxLevHeight; i++)
 		{
@@ -28,7 +28,7 @@ public class Map
 				theLevel[i][j] = null;
 			}
 		}
-		level = new Level(true, 2);
+		level = new Level(true, 2, minEnemies, maxEnemies, enemies, minItems, maxItems, items);
 	}
 	
 	protected void setMapDimensions(int width, int height)//setter for the Map.

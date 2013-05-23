@@ -126,7 +126,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		this.backColor = backColor;
 		this.buttonColor = buttonColor;
 		
-		map = new Map();
+		map = new Map(1,10,new char['a'],1,10,new char['a']);
     	
     	this.addKeyListener(new KeyHandler());
     	this.addMouseListener(new MouseHandler());
