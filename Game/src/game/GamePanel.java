@@ -65,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	static Map map;
 	static World world;
 	static Items item = new Items();
+	static Obstacles obs = new Obstacles();
 //    static IncreasedBulletPickUp item = null;
     static Player player = new Player(200, 200,map.level);
     static Enemies enemies = new Enemies(70, 70,player);
@@ -167,6 +168,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	enemies.killAllEnemies();
     	world.restartLevel();
     	item.createItem(200, 200, 'a');
+    	obs.createObs(400, 400, 'a');
     	player.setLevel(false);
     	
     }
@@ -474,7 +476,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     				initialize();
     			sv.draw(g);
     			if(item!=null)
-    			item.draw(g);
+    				item.draw(g);
+    			if(obs!=null)
+        			obs.draw(g);
     			world.buildWorld(g);
 	    		player.draw(g);
 	    		enemies.draw(g);

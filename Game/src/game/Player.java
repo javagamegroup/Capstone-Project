@@ -206,6 +206,18 @@ public class Player extends Actor implements Runnable  {
 				if (GamePanel.item.getRect(i).intersects(playerRect)) {
 					GamePanel.item.destroyItem(i);
 				}
+        for(int i = 0;i<30;i++)
+			if(GamePanel.obs.obs[i] != null)
+				if (GamePanel.obs.getRect(i).intersects(playerRect)) {
+	            	if(playerRect.x> GamePanel.obs.getRect(i).x+31 && xDirection >=1)
+            			this.xDirection = 0;
+	            	else if(playerRect.x+32< GamePanel.obs.getRect(i).x+1  && xDirection <=-1)
+            			this.xDirection = 0;
+	            	else if(playerRect.y> GamePanel.obs.getRect(i).y+31 && yDirection >=1)
+            			this.yDirection = 0;
+	            	else if(playerRect.y< GamePanel.obs.getRect(i).y+1 && yDirection <=-1)
+            			this.yDirection = 0;
+				}
         
 		for(int i = 0; i<GamePanel.enemies.numEnemies;i++){
 			if(GamePanel.enemies.enemies[i]!=null){
