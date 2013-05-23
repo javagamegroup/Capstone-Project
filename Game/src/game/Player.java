@@ -31,6 +31,10 @@ public class Player extends Actor implements Runnable  {
 	public static Image gunIcon;
 	public static Image potionIcon;
 	public static Image bootIcon;
+	
+	private static int numPoses = 5; // size of first dimension of player image array
+	private static int numFramesPerPose = 4; // size of second dimension of player image array
+	
 	public int speed = 1;
 	int numHealthPotions = 5;
 	ArrayList<Wall> walls;
@@ -38,9 +42,12 @@ public class Player extends Actor implements Runnable  {
 	Projectile bullet [] = new Projectile [30];
 	int numBullets = 0;
 	int fireRate = 250;
+	int frameRate = 2;
+	int i = 0;
 	Timer timer = new Timer();
 	protected Rectangle playerRect;
 	double startTime = -1;
+	double animationStartTime = -1;
 	double drawTime = -1;
 	double enemyTime = -1;
 	double spacebarTime = -1;
@@ -90,13 +97,13 @@ public class Player extends Actor implements Runnable  {
     }
     public static void playerInit()
     {
-    	playerImage = new Image[5][3];
+    	playerImage = new Image[numPoses][numFramesPerPose];
     	
     	java.net.URL imgURL;
 		ImageIcon playerIcon;
 		String path;
 		
-		for(int d = 0; d < 3; d++)
+		for(int d = 0; d < numFramesPerPose; d++)
 		{
 			path = "/Resources/theDude.png"; 
 			imgURL = Player.class.getResource(path);
@@ -104,8 +111,8 @@ public class Player extends Actor implements Runnable  {
 			playerImage[0][d] = playerIcon.getImage();
 		}
 		
-		for(int i = 1; i < 5; i++) {
-			for(int j = 0; j < 3; j++) {
+		for(int i = 1; i < numPoses; i++) {
+			for(int j = 0; j < numFramesPerPose; j++) {
 				path = "/Resources/player" + i + j + ".png"; 
 				imgURL = Player.class.getResource(path);
 				playerIcon = new ImageIcon(imgURL);
@@ -219,7 +226,7 @@ public class Player extends Actor implements Runnable  {
     }
     
     public void draw(Graphics g) {
-    	int i = 0;
+    	
     	//health
     	g.drawImage(lifeIcon, 2, 2, null);
     	g.drawImage(manaIcon, 2, 22, null);
@@ -298,72 +305,83 @@ public class Player extends Actor implements Runnable  {
     	g.setColor(Color.BLACK);
     	g.drawString("SPACE", 496, 56);
     	g.drawImage(bootIcon, 505, 12, null);
+    	
     	switch(walkWhichWay)
     	{
     	case 0:
-    		if(i != 3)
-			{
-				g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
-				i++;
-			}
-			else
-			{
-				i = 0;
-				g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
-				i++;
-			}	
+    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+            	animationStartTime = System.currentTimeMillis();
+            	if(i != 3)
+            	{
+            		g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
+            		i++;
+            	}
+            	else
+            	{
+            		i = 0;
+            		g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
+            	}            		
+            }
     		break;
     	case 1:
-    		if(i != 3)
-			{
-				g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
-				i++;
-			}
-			else
-			{
-				i = 0;
-				g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
-				i++;
-			}	
+    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+            	animationStartTime = System.currentTimeMillis();
+            	if(i != 3)
+            	{
+            		g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
+            		i++;
+            	}
+            	else
+            	{
+            		i = 0;
+            		g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
+            	}            		
+            }
     		break;
     	case 2:
-    		if(i != 3)
-			{
-				g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
-				i++;
-			}
-			else
-			{
-				i = 0;
-				g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
-				i++;
-			}	
+    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+            	animationStartTime = System.currentTimeMillis();
+            	if(i != 3)
+            	{
+            		g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
+            		i++;
+            	}
+            	else
+            	{
+            		i = 0;
+            		g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
+            	}            		
+            }
     		break;
     	case 3:
-    		if(i != 3)
-			{
-				g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
-				i++;
-			}
-			else
-			{
-				i = 0;
-				g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
-				i++;
-			}	
+    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+            	animationStartTime = System.currentTimeMillis();
+            	if(i != 3)
+            	{
+            		g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
+            		i++;
+            	}
+            	else
+            	{
+            		i = 0;
+            		g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
+            	}            		
+            }
     		break;
     	case 4:
-			if(i != 3)
-			{
-				g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
-				i++;
-			}
-			else
-			{
-				i = 0;
-				g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
-				i++;
-			}	
+    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+            	animationStartTime = System.currentTimeMillis();
+            	if(i != 3)
+            	{
+            		g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
+            		i++;
+            	}
+            	else
+            	{
+            		i = 0;
+            		g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
+            	}            		
+            }
 			break;
   //  	default:
   //  		System.out.println("walkWhichWay equals something besides 0 - 4");
