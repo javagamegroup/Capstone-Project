@@ -35,6 +35,8 @@ public class Player extends Actor implements Runnable  {
 	private static int numPoses = 5; // size of first dimension of player image array
 	private static int numFramesPerPose = 4; // size of second dimension of player image array
 	
+	private boolean moving = false;
+	
 	public int speed = 1;
 	int numHealthPotions = 5;
 	ArrayList<Wall> walls;
@@ -256,7 +258,9 @@ public class Player extends Actor implements Runnable  {
             }
     		break;
     	case 1:
-    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+    		if(moving == false)
+    			g.drawImage(playerImage[1][0], playerRect.x, playerRect.y, null);
+    		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
             	if(i != 3)
             	{
@@ -268,10 +272,12 @@ public class Player extends Actor implements Runnable  {
             		i = 0;
             		g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
             	}            		
-            }
+			}
     		break;
     	case 2:
-    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+    		if(moving == false)
+    			g.drawImage(playerImage[2][0], playerRect.x, playerRect.y, null);
+    		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
             	if(i != 3)
             	{
@@ -286,7 +292,9 @@ public class Player extends Actor implements Runnable  {
             }
     		break;
     	case 3:
-    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+    		if(moving == false)
+    			g.drawImage(playerImage[3][0], playerRect.x, playerRect.y, null);
+    		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
             	if(i != 3)
             	{
@@ -301,7 +309,9 @@ public class Player extends Actor implements Runnable  {
             }
     		break;
     	case 4:
-    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+    		if(moving == false)
+    			g.drawImage(playerImage[4][0], playerRect.x, playerRect.y, null);
+    		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
             	if(i != 3)
             	{
@@ -322,46 +332,54 @@ public class Player extends Actor implements Runnable  {
     
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == e.VK_A) {
+            	moving = true;
             	walkWhichWay = 3;
                 setXDirection(-speed);
 
             } if (e.getKeyCode() == e.VK_D) {
+            	moving = true;
             	walkWhichWay = 1;
                 setXDirection(speed);
 
             }if (e.getKeyCode() == e.VK_W) {
+            	moving = true;
             	walkWhichWay = 4;
                 setYDirection(-speed);
 
             }if (e.getKeyCode() == e.VK_S) {
+            	moving = true;
             	walkWhichWay = 2;
                 setYDirection(speed);
             }
             if (e.getKeyCode() == e.VK_UP) {
+            	walkWhichWay = 4;
             	if(System.currentTimeMillis() - startTime  > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
                 GamePanel.gun.createBullet('y', -1,playerRect.x, playerRect.y, bulletLife );
             	}
 
             } if (e.getKeyCode() == e.VK_DOWN) {
+            	walkWhichWay = 2;
             	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
             	GamePanel.gun.createBullet('y', 1,playerRect.x, playerRect.y, bulletLife);
             	}
 
             }if (e.getKeyCode() == e.VK_LEFT) {
+            	walkWhichWay = 3;
             	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
             	GamePanel.gun.createBullet('x', -1,playerRect.x-10, playerRect.y+20, bulletLife);
             	}
 
             }if (e.getKeyCode() == e.VK_RIGHT) {
+            	walkWhichWay = 1;
             	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
             	GamePanel.gun.createBullet('x', 1,playerRect.x+50, playerRect.y+20, bulletLife );
             	}
             }
-            if (e.getKeyCode() == e.VK_Q||e.getKeyCode() == e.VK_E) {
+            if (e.getKeyCode() == e.VK_Q || e.getKeyCode() == e.VK_E) {
             	if(numHealthPotions>0){
             		if(health<totalHealth)
             			increaseHealth();
@@ -377,21 +395,29 @@ public class Player extends Actor implements Runnable  {
         }
         public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == e.VK_A) {
+                	moving = false;
                 	walkWhichWay = 0;
                     setXDirection(0);
 
                 } if (e.getKeyCode() == e.VK_D) {
+                	moving = false;
                 	walkWhichWay = 0;
                     setXDirection(0);
 
                 }if (e.getKeyCode() == e.VK_W) {
+                	moving = false;
                 	walkWhichWay = 0;
                     setYDirection(0);
 
                 }if (e.getKeyCode() == e.VK_S) {
+                	moving = false;
                 	walkWhichWay = 0;
                     setYDirection(0);
 
+                }
+                if (e.getKeyCode() == e.VK_UP || e.getKeyCode() == e.VK_DOWN || e.getKeyCode() == e.VK_RIGHT || e.getKeyCode() == e.VK_LEFT)
+                {
+                	walkWhichWay = 0;
                 }
 
         }
