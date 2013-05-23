@@ -438,11 +438,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 			
 		}
 		else if(gameOver){//Menu
-			sv.draw(g);
-    		world.buildWorld(g);
-    		player.draw(g);
-    		enemies.draw(g);
-    		gun.draw(g);
     		g.setColor(Color.BLACK);
     		g.fillRect(225, 95, 425, 60);
 		    g.setFont(new Font("Arial", Font.BOLD, 70));
@@ -451,6 +446,21 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		}
     	else{
     		//Game drawings
+    		player.drawTopMenuBar(g);
+        	if(enemies.totalEnemies==0){
+                for (int i = 0; i < World.getAreas().size(); i++) {
+                    Area area = (Area) World.getAreas().get(i);
+                    area.setImage(0);
+                    g.drawImage(area.getImage(), area.x(), area.y(), null);
+                }
+        	}
+        	else{
+        		for (int i = 0; i < World.getAreas().size(); i++) {
+                    Area area = (Area) World.getAreas().get(i);
+                    area.setImage(1);
+                    g.drawImage(area.getImage(), area.x(), area.y(), null);
+        		}	
+        	}
     		if((tracker.statusID(0, true) & MediaTracker.ERRORED) != 0) 
     		{
     			// Error symbol

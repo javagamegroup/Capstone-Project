@@ -93,7 +93,9 @@ public class World {
                 x += SPACE;
             }
             else if (item == 'y') {
-            	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), GamePanel.player);
+            	i++;
+            	item = level1.charAt(i);
+            	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), GamePanel.player, item);
                 x += SPACE;
             }
             else{

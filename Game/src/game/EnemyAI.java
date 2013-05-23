@@ -84,6 +84,13 @@ public class EnemyAI extends Actor{
         move();
     }
     
+    public Rectangle getRect(){
+		return enemyRect;
+    }
+    public int getHealth(){
+		return health;
+    }
+    
     public void collision(){
         for (int i = 0; i < walls.size(); i++) {
             Wall wall = (Wall) walls.get(i);

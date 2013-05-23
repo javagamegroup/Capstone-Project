@@ -7,16 +7,30 @@ import javax.swing.ImageIcon;
 public class Area extends Actor {
 
     Rectangle areaRect;
+    Image imageOpenDoor;
+    Image imageCloseDoor;
 
 	public Area(int x, int y) {
         super(x, y);
 
         URL loc = this.getClass().getResource("/Resources/door.png");
         ImageIcon iia = new ImageIcon(loc);
-        Image image = iia.getImage();
-        this.setImage(image);
+        imageOpenDoor = iia.getImage();
+        this.setImage(imageOpenDoor);
+        loc = this.getClass().getResource("/Resources/firstdoor.png");
+        iia = new ImageIcon(loc);
+        imageCloseDoor = iia.getImage();
+        this.setImage(imageCloseDoor);
         this.areaRect = getRect(x, y, 32,32);
 
         this.setRect(areaRect);
     }
+	
+	public void setImage(int num){
+		if(num==0){
+			this.setImage(imageOpenDoor);
+		}
+		else
+			this.setImage(imageCloseDoor);
+	}
 }

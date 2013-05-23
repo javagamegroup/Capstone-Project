@@ -49,6 +49,12 @@ public class Gun implements Runnable  {
     	bullet[num] = null;
     }
     
+    public void destroyallBullets(){
+    	for(int i = 0;i<30;i++){
+    		destroyBullet(i);
+    	}
+    }
+    
     public void increaseDamage(int x){
     	bulletDamage += x;
     }
@@ -83,10 +89,10 @@ public class Gun implements Runnable  {
 				for(int i = 0; i<enemy.numEnemies;i++){
 					if(enemy.enemies[i] !=null)
 						if(bullet[j] != null)
-							if (bullet[j].projectileRect.intersects(enemy.enemies[i].enemyRect)) {
+							if (bullet[j].projectileRect.intersects(enemy.getRect(i))) {
 								destroyBullet(j);
-								enemy.enemies[i].decreaseHealth(bulletDamage);
-								if (enemy.enemies[i].health <= 0){
+								enemy.decreaseHealth(i, bulletDamage);
+								if (enemy.enemies[i] == null){
 									getAchieves.storeAchievement("Guns Loaded - Defeat your first enemy");
 								}
 							}
@@ -113,6 +119,7 @@ public class Gun implements Runnable  {
                 Thread.sleep(speed);
             }
         }catch(Exception ex){
+        	ex.printStackTrace();
             System.err.println(ex.getMessage());
         }
     }

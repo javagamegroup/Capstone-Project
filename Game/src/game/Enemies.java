@@ -19,7 +19,8 @@ public class Enemies implements Runnable  {
 	int bulletLife = 4;
 	int bulletDamage;
 	Achievements getAchieves = null;
-	EnemyAI [] enemies = new EnemyAI[10];;
+	Object [] enemies = new Object[10];
+	int [] enemyNums = new int[10];
 	int numEnemies = 10;
 	int totalEnemies = 0;
 	int num = 0;
@@ -28,19 +29,32 @@ public class Enemies implements Runnable  {
 	boolean paused = false;
 	
     public Enemies(int x, int y,Player play) {
+        for(int i=0; i<10; i++){
+    		enemies[i] = null;
+    		enemyNums[i] = -1;
+    	}
         target = play;
     }
 
-    public void createEnemy(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play){
-    	enemies[num] = new EnemyAI(x, y, walls, arrayList, play);
-    	charE = new Event(true, enemies[num].enemyRect);
-    	num ++;
-    	totalEnemies ++;
+    public void createEnemy(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play, char z){
+    	switch(z)
+    	{
+    	case 'a': 
+    		enemies[num] = new EnemyAI(x, y, walls, arrayList, play);
+    		enemyNums[num] = 0;
+    		num ++;
+        	totalEnemies ++;
+    		break;
+    	default:
+    		break;
+    	
+    	}
     	if(num ==10) num =0;
     }
     
     public void destroyEnemy(int num){
     	enemies[num] = null;
+    	enemyNums[num] = -1;
     	totalEnemies --;
     }
     public void setNumEnemies(int num){
@@ -49,59 +63,50 @@ public class Enemies implements Runnable  {
     }
     
     public void enemyCollision(){
-    	for(int j =0; j<numEnemies; j++){
-			if(enemies[j] != null){
-		        for (int i = 0; i < World.walls.size(); i++) {
-		            Wall wall = (Wall) World.walls.get(i);
-		            if (enemies[j].enemyRect.intersects(wall.objectRect)) {
-		            	if(enemies[j].xDirection != 0)
-		            		enemies[j].setXDirection(0);
-		            	if(enemies[j].yDirection != 0)
-		            		enemies[j].setYDirection(0);
-		            }
-		        }
-			}
-    	}
-    	
-    	for(int j =0; j<numEnemies; j++){
-			if(enemies[j] != null){
-		        for (int i = 0; i < World.getAreas().size(); i++) {
-		            Area area = (Area) World.getAreas().get(i);
-		            if (enemies[j].enemyRect.intersects(area.areaRect)) {
-		            	if(enemies[j].xDirection != 0)
-		            		enemies[j].setXDirection(0);
-		            	if(enemies[j].yDirection != 0)
-		            		enemies[j].setYDirection(0);
-		            }
-		        }
-		    }
-    	}
-    	
-
-    	for(int j =0; j<numEnemies; j++){
-			if(enemies[j] != null){
-				if (enemies[j].enemyRect.intersects(target.playerRect)) {
-					
-				}
-			}
-		}
-    	
-    	for(int j =0; j<numEnemies; j++){
-			if(enemies[j] != null){
-				if (enemies[j].health <=0)
-					destroyEnemy(j);
-			}
-    	}
+//    	for(int j =0; j<numEnemies; j++){
+//			if(enemies[j] != null){
+//		        for (int i = 0; i < World.walls.size(); i++) {
+//		            Wall wall = (Wall) World.walls.get(i);
+//		            if (enemies[j].enemyRect.intersects(wall.objectRect)) {
+//		            	if(enemies[j].xDirection != 0)
+//		            		enemies[j].setXDirection(0);
+//		            	if(enemies[j].yDirection != 0)
+//		            		enemies[j].setYDirection(0);
+//		            }
+//		        }
+//			}
+//    	}
+//    	
+//    	for(int j =0; j<numEnemies; j++){
+//			if(enemies[j] != null){
+//		        for (int i = 0; i < World.getAreas().size(); i++) {
+//		            Area area = (Area) World.getAreas().get(i);
+//		            if (enemies[j].enemyRect.intersects(area.areaRect)) {
+//		            	if(enemies[j].xDirection != 0)
+//		            		enemies[j].setXDirection(0);
+//		            	if(enemies[j].yDirection != 0)
+//		            		enemies[j].setYDirection(0);
+//		            }
+//		        }
+//		    }
+//    	}
     }
     
     public void draw(Graphics g) {
     	for(int i = 0; i<numEnemies; i++){
-    		if(enemies[i]!=null)
-	    		if(enemies[i].health <= 0)
-	    			destroyEnemy(i);
-    		if(enemies[i]!=null){
-	    		enemies[i].draw(g);
-    		}
+        	switch(enemyNums[i])
+        	{
+        	case 0: 
+        		if(enemies[i]!=null)
+    	    		if(((EnemyAI) enemies[i]).getHealth() <= 0)
+    	    			destroyEnemy(i);
+        		if(enemies[i]!=null){
+        			((EnemyAI) enemies[i]).draw(g);
+        		}
+        	default:
+        		break;
+        	
+        	}
     	}
     }
     
@@ -114,24 +119,73 @@ public class Enemies implements Runnable  {
     public void killAllEnemies(){
     	for(int i = 0; i<numEnemies;i++){
     		enemies[i] = null;
+    		enemyNums[i] = -1;
     	}
     	num = 0;
     	totalEnemies = 0;
     }
+    
     public void paused(){
     	paused = true;
     }
+    
     public void unpaused(){
     	paused = false;
     }
+    
+    public Rectangle getRect(int x){
+    	switch(enemyNums[x])
+    	{
+    	case 0: 
+    		return ((EnemyAI) enemies[x]).getRect();
+    	default:
+    		break;
+    	
+    	}
+		return null;
+    }
+    
+    public void decreaseHealth(int x, int damage){
+    	switch(enemyNums[x])
+    	{
+    	case 0: 
+    		((EnemyAI) enemies[x]).decreaseHealth(damage);
+    		if(((EnemyAI) enemies[x]).getHealth() <= 0)
+    			destroyEnemy(x);
+    	default:
+    		break;
+    	
+    	}
+    }
+    
+    public int getHealth(int x){
+    	switch(enemyNums[x])
+    	{
+    	case 0: 
+    		return ((EnemyAI) enemies[x]).getHealth();
+    	default:
+    		break;
+    	
+    	}
+		return -1;
+    }
+    
+    
     
     public void run(){
         try{
             while(true){
             	if(paused==false){
 	    				for(int i =0; i<numEnemies; i++){
-		    				if(enemies[i] != null)
-		    					enemies[i].update();
+	    					switch(enemyNums[i])
+	    		        	{
+	    		        	case 0: 
+	    		        		if(enemies[i]!=null)
+	    		        			((EnemyAI) enemies[i]).update();
+	    		        	default:
+	    		        		break;
+	    		        	
+	    		        	}
 	    				}
 	    			enemyCollision();
 	    			Thread.sleep(difficulty);

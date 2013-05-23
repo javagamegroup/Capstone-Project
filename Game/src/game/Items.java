@@ -24,12 +24,12 @@ public class Items {
     	case 'a': 
     		item[num] = new IncreasedBulletPickUp(x, y);
     		itemNums[num] = 0;
+    		num ++;
     		break;
     	default:
     		break;
     	
     	}
-    	num ++;
     	if(num ==30) num =0;
     }
     
