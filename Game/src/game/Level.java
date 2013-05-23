@@ -65,6 +65,7 @@ public class Level
 	
 	public Level(boolean first, int startDir, int minEmemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items)//determines if this is the first room where the player enters into the level.
 	{
+		this.player = 'x';
 		firstRoom = true;
 		this.numEnemies = 0;
 		this.numItems = 0;
@@ -198,7 +199,7 @@ public class Level
 	private Level(boolean enemy, int minEnemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minDoors, int maxDoors, Level previous, int startDir, int y, int x)
 	{
 		this.enemy = enemy;
-		this.player = '=';
+		this.player = 'x';
 		this.minEnemies = minEnemies;
 		this.maxEnemies = maxEnemies;
 		this.items = new char[items.length];
@@ -391,6 +392,7 @@ public class Level
 					 if(probRate > probability.randomDouble())
 					 {
 						 tempString.setCharAt(stringPos, 'y');
+						 tempString.insert(stringPos+1, 'a');
 						 i++;
 					 }
 					 break;
@@ -437,6 +439,7 @@ public class Level
 					if(probRate > probability.randomDouble())
 					{
 						tempString.setCharAt(stringPos, '$');
+						tempString.insert(stringPos+1, 'a');
 						i++;
 					}
 					break;
@@ -444,6 +447,7 @@ public class Level
 					if(probRate > probability.randomDouble())
 					{
 						tempString.setCharAt(stringPos, '$');
+						tempString.insert(stringPos+1, 'a');
 						i++;
 					}
 					break;
@@ -465,7 +469,7 @@ public class Level
 	}
 	
 	public String getLevel()
-	{	return level;	}
+	{	return this.level;	}
 	
 	//possible set incomingDirection to lower case?
 	public Level setPlayerEntrance(char incomingDirection) throws InvalidCharacterException
@@ -479,25 +483,21 @@ public class Level
 		if(incomingDirection == 'n')
 		{
 			this.north.splayer = 'x';
-			this.north.player = '=';
 			return this.north;
 		}
 		else if(incomingDirection == 's')
 		{
 			this.south.nplayer = 'x';
-			this.south.player = '=';
 			return this.south;
 		}
 		else if(incomingDirection == 'e')
 		{
 			this.east.wplayer = 'x';
-			this.east.player = '=';
 			return this.east;
 		}
 		else if(incomingDirection == 'w')
 		{
 			this.west.eplayer = 'x';
-			this.west.player = '=';
 			return this.west;
 		}
 		else throw new InvalidCharacterException();
