@@ -14,7 +14,7 @@ public class Gun implements Runnable  {
 	
 	Projectile bullet [] = new Projectile [30];
 	int numBullets = 0;
-	int speed = 7;
+	int speed = 5;
 	ArrayList<Wall> walls;
 	Enemies enemy;
 	private ArrayList areas;
@@ -34,6 +34,7 @@ public class Gun implements Runnable  {
     }
 
     public void createBullet(char var, int x, int playerX, int playerY, double life){
+    	
     	bullet[numBullets] = new Projectile(playerX, playerY, life);
     	if(var == 'x'){
     		bullet[numBullets].setXDirection(x);

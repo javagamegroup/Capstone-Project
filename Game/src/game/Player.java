@@ -149,41 +149,55 @@ public class Player extends Actor implements Runnable  {
             Area area = (Area) World.getAreas().get(i);
             if (this.playerRect.intersects(area.areaRect)) 
             {
-            	//if(GamePanel.enemies.totalEnemies==0){
-	            	if(playerRect.x> 500 && xDirection >=1)
+            	if(GamePanel.enemies.totalEnemies==0){
+	            	if(playerRect.x> 700 && xDirection >=1)
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
+	            			GamePanel.gun.destroyallBullets();
 	            		}
 	            	}
-	            	else if(playerRect.x< 400 && xDirection <=-1)
+	            	else if(playerRect.x< 200 && xDirection <=-1)
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
+	            			GamePanel.gun.destroyallBullets();
 	            		}
 	            	}
-	            	else if(playerRect.y> 200 && yDirection >=1)
+	            	else if(playerRect.y> 500 && yDirection >=1)
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
+	            			GamePanel.gun.destroyallBullets();
 	            		}
 	            	}
-	            	else if(playerRect.y< 400 && yDirection <=-1)
+	            	else if(playerRect.y< 200 && yDirection <=-1)
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
+	            			GamePanel.gun.destroyallBullets();
 	            		}
 	            	}
+            }
+            else{
+	            	if(playerRect.x> 700 && xDirection >=1)
+	            			this.xDirection = 0;
+	            	else if(playerRect.x< 200  && xDirection <=-1)
+	            			this.xDirection = 0;
+	            	else if(playerRect.y> 500 && yDirection >=1)
+	            			this.yDirection = 0;
+	            	else if(playerRect.y< 200 && yDirection <=-1)
+	            			this.yDirection = 0;
             	}
-            //}
+            }
         }
         for(int i = 0;i<30;i++)
 			if(GamePanel.item.item[i] != null)
@@ -193,7 +207,7 @@ public class Player extends Actor implements Runnable  {
         
 		for(int i = 0; i<GamePanel.enemies.numEnemies;i++){
 			if(GamePanel.enemies.enemies[i]!=null){
-				if(playerRect.intersects(GamePanel.enemies.enemies[i].enemyRect)){
+				if(playerRect.intersects(GamePanel.enemies.getRect(i))){
 	            	if(System.currentTimeMillis() - enemyTime > 1000 || enemyTime == -1){
 	                	enemyTime = System.currentTimeMillis();
 	                	decreaseHealth();
@@ -201,8 +215,6 @@ public class Player extends Actor implements Runnable  {
 				}
 			}
 		}
-
-       
     }
 
     public void move(){
@@ -226,86 +238,6 @@ public class Player extends Actor implements Runnable  {
     }
     
     public void draw(Graphics g) {
-    	
-    	//health
-    	g.drawImage(lifeIcon, 2, 2, null);
-    	g.drawImage(manaIcon, 2, 22, null);
-    	g.drawImage(ammoIcon, 0, 42, null);
-    	g.setColor(Color.WHITE);
-    	g.drawRect(19, 2, 101, 16);
-    	g.setColor(Color.RED);
-    	g.fillRect(20, 3, health, 15);
-    	g.setColor(Color.GRAY);
-    	g.fillRect(health+20, 3, 100-health, 15);
-    	g.setColor(Color.BLACK);
-    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-    	if(health>=100)
-    		g.drawString(health+"/" + totalHealth, 47, 15);
-    	else
-    		g.drawString(health+"/" + totalHealth, 50, 15);
-    	//mana
-    	g.setColor(Color.WHITE);
-    	g.drawRect(19, 22, 101, 16);
-    	g.setColor(Color.BLUE);
-    	g.fillRect(20, 23, 100, 15);
-    	//g.setColor(Color.GRAY);
-    	//g.fillRect(health+20, 23, 100-health, 15);
-    	g.setColor(Color.BLACK);
-    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-    	//if(health>=100)
-    		g.drawString(100+"/" + totalHealth, 45, 36);
-    	//else
-    		//g.drawString(health+"/" + totalHealth, 50, 36);
-    	//gun
-    	g.setColor(Color.WHITE);
-    	g.drawRect(19, 42, 101, 16);
-    	g.setColor(Color.YELLOW);
-    	g.fillRect(20, 43, 100, 15);
-    	//g.setColor(Color.GRAY);
-    	//g.fillRect(health+20, 43, 100-health, 15);
-    	g.setColor(Color.BLACK);
-    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-    	g.drawString(Character.toString((char) 8734), 62, 55);
-    	//q&e bar item
-    	g.setColor(Color.WHITE);
-    	g.fill3DRect(300, 2, 40, 40, true);
-    	g.fill3DRect(306, 45, 13, 13, true);
-    	g.fill3DRect(321, 45, 13, 13, true);
-    	g.setColor(Color.BLACK);
-    	g.drawString("Q", 307, 56);
-    	g.drawString("E", 322, 56);
-    	g.drawImage(potionIcon, 313, 12, null);
-    	g.drawString(Integer.toString(numHealthPotions), 330, 13);
-    	//gun bar item
-    	g.setColor(Color.WHITE);
-    	g.fill3DRect(400, 2, 40, 40, true);
-    	g.fill3DRect(400, 45, 12, 13, true);
-    	g.fill3DRect(414, 45, 12, 6, true);
-    	g.fill3DRect(414, 52, 12, 6, true);
-    	g.fill3DRect(428, 45, 12, 13, true);
-    	g.setColor(Color.BLACK);
-    	g.drawString("<", 401, 57);
-    	g.drawString(">", 430, 57);
-    	g.setFont(new Font("Windsor BT", Font.PLAIN, 10));
-    	g.drawString("^", 417, 53);
-    	g.setFont(new Font("Windsor BT", Font.PLAIN, 8));
-    	g.drawString("V", 417, 57);
-    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-    	g.drawImage(gunIcon, 412, 12, null);
-    	//Space bar item
-    	g.setColor(Color.GRAY);
-    	g.fill3DRect(500, 2, 40, 40, true);
-    	g.setColor(Color.WHITE);
-    	if(spacebarTime==-1||System.currentTimeMillis() - spacebarTime > 60000)
-    		spacebarItem = 40;
-    	else
-    		spacebarItem = (int) (((System.currentTimeMillis() - spacebarTime)/1000)/1.5);
-    	g.fill3DRect(500, 42-spacebarItem, 40, spacebarItem, true);
-    	g.fill3DRect(495, 45, 51, 13, true);
-    	g.setColor(Color.BLACK);
-    	g.drawString("SPACE", 496, 56);
-    	g.drawImage(bootIcon, 505, 12, null);
-    	
     	switch(walkWhichWay)
     	{
     	case 0:
@@ -420,13 +352,13 @@ public class Player extends Actor implements Runnable  {
             }if (e.getKeyCode() == e.VK_LEFT) {
             	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
-            	GamePanel.gun.createBullet('x', -1,playerRect.x, playerRect.y, bulletLife);
+            	GamePanel.gun.createBullet('x', -1,playerRect.x-10, playerRect.y+20, bulletLife);
             	}
 
             }if (e.getKeyCode() == e.VK_RIGHT) {
             	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
-            	GamePanel.gun.createBullet('x', 1,playerRect.x, playerRect.y, bulletLife );
+            	GamePanel.gun.createBullet('x', 1,playerRect.x+50, playerRect.y+20, bulletLife );
             	}
             }
             if (e.getKeyCode() == e.VK_Q||e.getKeyCode() == e.VK_E) {
@@ -489,6 +421,87 @@ public class Player extends Actor implements Runnable  {
     
     public boolean nextLevel(){
     	return moveLevels;
+    }
+    
+    public void drawTopMenuBar(Graphics g){
+    	//health
+    	g.drawImage(lifeIcon, 2, 2, null);
+    	g.drawImage(manaIcon, 2, 22, null);
+    	g.drawImage(ammoIcon, 0, 42, null);
+    	g.setColor(Color.WHITE);
+    	g.drawRect(19, 2, 101, 16);
+    	g.setColor(Color.RED);
+    	g.fillRect(20, 3, health, 15);
+    	g.setColor(Color.GRAY);
+    	g.fillRect(health+20, 3, 100-health, 15);
+    	g.setColor(Color.BLACK);
+    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+    	if(health>=100)
+    		g.drawString(health+"/" + totalHealth, 47, 15);
+    	else
+    		g.drawString(health+"/" + totalHealth, 50, 15);
+    	//mana
+    	g.setColor(Color.WHITE);
+    	g.drawRect(19, 22, 101, 16);
+    	g.setColor(Color.BLUE);
+    	g.fillRect(20, 23, 100, 15);
+    	//g.setColor(Color.GRAY);
+    	//g.fillRect(health+20, 23, 100-health, 15);
+    	g.setColor(Color.BLACK);
+    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+    	//if(health>=100)
+    		g.drawString(100+"/" + totalHealth, 45, 36);
+    	//else
+    		//g.drawString(health+"/" + totalHealth, 50, 36);
+    	//gun
+    	g.setColor(Color.WHITE);
+    	g.drawRect(19, 42, 101, 16);
+    	g.setColor(Color.YELLOW);
+    	g.fillRect(20, 43, 100, 15);
+    	//g.setColor(Color.GRAY);
+    	//g.fillRect(health+20, 43, 100-health, 15);
+    	g.setColor(Color.BLACK);
+    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+    	g.drawString(Character.toString((char) 8734), 62, 55);
+    	//q&e bar item
+    	g.setColor(Color.WHITE);
+    	g.fill3DRect(300, 2, 40, 40, true);
+    	g.fill3DRect(306, 45, 13, 13, true);
+    	g.fill3DRect(321, 45, 13, 13, true);
+    	g.setColor(Color.BLACK);
+    	g.drawString("Q", 307, 56);
+    	g.drawString("E", 322, 56);
+    	g.drawImage(potionIcon, 313, 12, null);
+    	g.drawString(Integer.toString(numHealthPotions), 330, 13);
+    	//gun bar item
+    	g.setColor(Color.WHITE);
+    	g.fill3DRect(400, 2, 40, 40, true);
+    	g.fill3DRect(400, 45, 12, 13, true);
+    	g.fill3DRect(414, 45, 12, 6, true);
+    	g.fill3DRect(414, 52, 12, 6, true);
+    	g.fill3DRect(428, 45, 12, 13, true);
+    	g.setColor(Color.BLACK);
+    	g.drawString("<", 401, 57);
+    	g.drawString(">", 430, 57);
+    	g.setFont(new Font("Windsor BT", Font.PLAIN, 10));
+    	g.drawString("^", 417, 53);
+    	g.setFont(new Font("Windsor BT", Font.PLAIN, 8));
+    	g.drawString("V", 417, 57);
+    	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+    	g.drawImage(gunIcon, 412, 12, null);
+    	//Space bar item
+    	g.setColor(Color.GRAY);
+    	g.fill3DRect(500, 2, 40, 40, true);
+    	g.setColor(Color.WHITE);
+    	if(spacebarTime==-1||System.currentTimeMillis() - spacebarTime > 60000)
+    		spacebarItem = 40;
+    	else
+    		spacebarItem = (int) (((System.currentTimeMillis() - spacebarTime)/1000)/1.5);
+    	g.fill3DRect(500, 42-spacebarItem, 40, spacebarItem, true);
+    	g.fill3DRect(495, 45, 51, 13, true);
+    	g.setColor(Color.BLACK);
+    	g.drawString("SPACE", 496, 56);
+    	g.drawImage(bootIcon, 505, 12, null);
     }
     
     public void run(){

@@ -27,12 +27,12 @@ public class Projectile extends Actor {
         startBulletTime = System.currentTimeMillis();
         isAlive = true;
         lifeSpan = life;
-        URL loc = this.getClass().getResource("/Resources/ball.png");
+        URL loc = this.getClass().getResource("/Resources/bullet.png");
         projectile = new ImageIcon(loc);
         
         projectileImage = projectile.getImage();
         
-        this.projectileRect = getRect(x, y, 20,20);
+        this.projectileRect = getRect(x, y, 8,8);
 
         this.setRect(projectileRect);
     }
