@@ -16,6 +16,8 @@ public class Level
 	private int minItems;
 	private int maxItems;
 	private int numItems;
+	private int rows = 16;
+	private int columns = 26;
 	private char[] items = null;
 	private int numDoors = 1;
 	private char nDoor = '#';
@@ -33,35 +35,36 @@ public class Level
 	protected Level east = null;
 	protected Level west = null;
 	protected char i;
-	protected char player = 'x';
-	protected char nplayer = '-';
-	protected char splayer = '-';
-	protected char eplayer = '-';
-	protected char wplayer = '-';
+	protected int player = 0;
+	protected int nplayer = 0;
+	protected int splayer = 0;
+	protected int eplayer = 0;
+	protected int wplayer = 0;
 	protected int yloc;
 	protected int xloc;
 	protected String level = null;
-//			"############"+nDoor+nDoor+"############"+'\n'+
-//			"#-----------"+nplayer+"------------#"+'\n'+
-//			"#------------------------#"+'\n'+
-//			"#--========----========--#"+'\n'+
-//			"#--====================--#"+'\n'+
-//			"#--====================--#"+'\n'+
-//			"#---==================---#"+'\n'+
-//			wDoor+wplayer+"--========"+player+"=========--"+eplayer+eDoor+'\n'+
-//			wDoor+"---==================---"+eDoor+'\n'+
-//			"#---==================---#"+'\n'+
-//			"#--====================--#"+'\n'+
-//			"#--====================--#"+'\n'+
-//			"#--========----========--#"+'\n'+
-//			"#------------------------#"+'\n'+
-//			"#-----------"+splayer+"------------#"+'\n'+
-//			"############"+sDoor+sDoor+"############"+'\n';
+//	26x16
+//	"############"+nDoor+nDoor+"############"+'\n'+
+//	"#-----------"+nplayer+"------------#"+'\n'+
+//	"#------------------------#"+'\n'+
+//	"#--========----========--#"+'\n'+
+//	"#--====================--#"+'\n'+
+//	"#--====================--#"+'\n'+
+//	"#---==================---#"+'\n'+
+//	wDoor+wplayer+"--========"+player+"=========--"+eplayer+eDoor+'\n'+
+//	wDoor+"---==================---"+eDoor+'\n'+
+//	"#---==================---#"+'\n'+
+//	"#--====================--#"+'\n'+
+//	"#--====================--#"+'\n'+
+//	"#--========----========--#"+'\n'+
+//	"#------------------------#"+'\n'+
+//	"#-----------"+splayer+"------------#"+'\n'+
+//	"############"+sDoor+sDoor+"############"+'\n';
 //	
-	//direction 0 = North
-	//direction 1 = East
-	//direction 2 = South
-	//direction 3 = West
+//	direction 0 = North
+//	direction 1 = East
+//	direction 2 = South
+//	direction 3 = West
 	
 	public Level(boolean first, int startDir, int minEmemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items)//determines if this is the first room where the player enters into the level.
 	{
@@ -168,20 +171,20 @@ public class Level
 		
 		this.level =
 				"############"+nDoor+nDoor+"############"+'\n'+
-				"#-----------"+nplayer+"------------#"+'\n'+
+				"#------------------------#"+'\n'+
 				"#------------------------#"+'\n'+
 				"#--========----========--#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#---==================---#"+'\n'+
-				wDoor+wplayer+"--========"+player+"=========--"+eplayer+eDoor+'\n'+
+				wDoor+"---=========x========---"+eDoor+'\n'+
 				wDoor+"---==================---"+eDoor+'\n'+
 				"#---==================---#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#--========----========--#"+'\n'+
 				"#------------------------#"+'\n'+
-				"#-----------"+splayer+"------------#"+'\n'+
+				"#------------------------#"+'\n'+
 				"############"+sDoor+sDoor+"############"+'\n';
 		
 		yloc = (yBounds/2) + 1;
@@ -344,20 +347,20 @@ public class Level
 		
 		this.level =
 				"############"+nDoor+nDoor+"############"+'\n'+
-				"#-----------"+nplayer+"------------#"+'\n'+
+				"#------------------------#"+'\n'+
 				"#------------------------#"+'\n'+
 				"#--========----========--#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#---==================---#"+'\n'+
-				wDoor+wplayer+"--========"+player+"=========--"+eplayer+eDoor+'\n'+
+				wDoor+"---==================---"+eDoor+'\n'+
 				wDoor+"---==================---"+eDoor+'\n'+
 				"#---==================---#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#--====================--#"+'\n'+
 				"#--========----========--#"+'\n'+
 				"#------------------------#"+'\n'+
-				"#-----------"+splayer+"------------#"+'\n'+
+				"#------------------------#"+'\n'+
 				"############"+sDoor+sDoor+"############"+'\n';
 		
 //START ENEMY RANDOM GENERATION//
@@ -384,18 +387,21 @@ public class Level
 		StringBuffer tempString= new StringBuffer(this.level);
 		i=0;
 		
-		while(stringPos < this.level.length() && i < numEnemies)
+		while(stringPos < tempString.length() && i < numEnemies)
 		{
-			switch(this.level.charAt(stringPos))
+			switch(tempString.charAt(stringPos))
 			{
-				 case '=':
-					 if(probRate > probability.randomDouble())
-					 {
-						 tempString.setCharAt(stringPos, 'y');
-						 tempString.insert(stringPos+1, 'a');
-						 i++;
-					 }
-					 break;
+				case '\n':
+					break;
+				case '=':
+					if(probRate > probability.randomDouble())
+					{
+						tempString.setCharAt(stringPos, 'y');
+						stringPos++;
+						tempString.insert(stringPos, 'a');
+						i++;
+					}
+					break;
 					 
 				 default:
 					 break;
@@ -431,15 +437,20 @@ public class Level
 		i = 0;
 		stringPos = 0;
 		
-		while(stringPos < level.length() && i < numItems)
+		while(stringPos < tempString.length() && i < numItems)
 		{
-			switch(level.charAt(stringPos))
+			switch(tempString.charAt(stringPos))
 			{
+				case '\n':
+					 break;
 				case '-':
-					if(probRate > probability.randomDouble())
+					if(tempString.charAt(stringPos+1) == '#')
+						break;
+					else if(probRate > probability.randomDouble())
 					{
 						tempString.setCharAt(stringPos, '$');
-						tempString.insert(stringPos+1, 'a');
+						stringPos++;
+						tempString.insert(stringPos, 'a');
 						i++;
 					}
 					break;
@@ -447,7 +458,8 @@ public class Level
 					if(probRate > probability.randomDouble())
 					{
 						tempString.setCharAt(stringPos, '$');
-						tempString.insert(stringPos+1, 'a');
+						stringPos++;
+						tempString.insert(stringPos, 'a');
 						i++;
 					}
 					break;
@@ -474,30 +486,81 @@ public class Level
 	//possible set incomingDirection to lower case?
 	public Level setPlayerEntrance(char incomingDirection) throws InvalidCharacterException
 	{
-		this.player = '=';
-		this.nplayer = '=';
-		this.splayer = '=';
-		this.eplayer = '=';
-		this.wplayer = '=';
+		StringBuffer tempString = new StringBuffer(this.level);
+		int stringPos = 0;
+		while(stringPos < tempString.length())
+		{
+			if(tempString.charAt(stringPos)=='x')
+				tempString.setCharAt(stringPos, ' ');
+			stringPos++;
 		
+		}
+		this.level = tempString.toString();
+		
+		int i;
+		int temp;
 		if(incomingDirection == 'n')
 		{
-			this.north.splayer = 'x';
+			tempString = new StringBuffer(this.north.level);
+			i=0;
+			temp = 0;
+			splayer = 15*columns;
+			while(tempString.charAt(splayer + i) != '\n')
+			{
+				temp++;
+				i++;
+			}
+			splayer += ((temp-1)/2);
+			tempString.setCharAt(splayer, 'x');
+			this.north.level = tempString.toString();
 			return this.north;
 		}
 		else if(incomingDirection == 's')
 		{
-			this.south.nplayer = 'x';
+			tempString = new StringBuffer(this.south.level);
+			i=0;
+			temp = 0;
+			nplayer = columns+1;
+			while(tempString.charAt(nplayer + i) != '\n')
+			{
+				temp++;
+				i++;
+			}
+			nplayer += ((temp-1)/2);
+			tempString.setCharAt(nplayer, 'x');
+			this.south.level = tempString.toString();
 			return this.south;
 		}
 		else if(incomingDirection == 'e')
 		{
-			this.east.wplayer = 'x';
+			tempString = new StringBuffer(this.east.level);
+			int numLines = 0;
+			i=0;
+			while(numLines < 7 && i < tempString.length())
+			{
+				if(tempString.charAt(i) == '\n')
+					numLines++;
+				i++;
+			}
+			wplayer = i + 1;
+			tempString.setCharAt(wplayer, 'x');
+			this.east.level = tempString.toString();
 			return this.east;
 		}
 		else if(incomingDirection == 'w')
 		{
-			this.west.eplayer = 'x';
+			tempString = new StringBuffer(this.west.level);
+			int numLines = 0;
+			i=0;
+			while(numLines < 8 && i < tempString.length())
+			{
+				if(tempString.charAt(i) == '\n')
+					numLines++;
+				i++;
+			}
+			eplayer = i - 3;
+			tempString.setCharAt(eplayer, 'x');
+			this.west.level = tempString.toString();
 			return this.west;
 		}
 		else throw new InvalidCharacterException();
