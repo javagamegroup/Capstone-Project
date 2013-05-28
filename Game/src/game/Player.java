@@ -201,21 +201,23 @@ public class Player extends Actor implements Runnable  {
             	}
             }
         }
+        //Items
         for(int i = 0;i<30;i++)
 			if(GamePanel.item.item[i] != null)
 				if (GamePanel.item.getRect(i).intersects(playerRect)) {
 					GamePanel.item.destroyItem(i);
 				}
+        //Obstacles
         for(int i = 0;i<30;i++)
 			if(GamePanel.obs.obs[i] != null)
 				if (GamePanel.obs.getRect(i).intersects(playerRect)) {
-	            	if(playerRect.x> GamePanel.obs.getRect(i).x+31 && xDirection >=1)
+	            	if(playerRect.x<= GamePanel.obs.getRect(i).x+31 && playerRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1)
             			this.xDirection = 0;
-	            	else if(playerRect.x+32< GamePanel.obs.getRect(i).x+1  && xDirection <=-1)
+	            	else if(playerRect.x+32>= GamePanel.obs.getRect(i).x  && playerRect.x+32<= GamePanel.obs.getRect(i).x+31 && xDirection >=1)
             			this.xDirection = 0;
-	            	else if(playerRect.y> GamePanel.obs.getRect(i).y+31 && yDirection >=1)
+	            	else if(playerRect.y+32>= GamePanel.obs.getRect(i).y && playerRect.y+32<= GamePanel.obs.getRect(i).y+31 && yDirection >=1)
             			this.yDirection = 0;
-	            	else if(playerRect.y< GamePanel.obs.getRect(i).y+1 && yDirection <=-1)
+	            	else if(playerRect.y<= GamePanel.obs.getRect(i).y+321 && playerRect.y>= GamePanel.obs.getRect(i).y && yDirection <=-1)
             			this.yDirection = 0;
 				}
         
