@@ -3,6 +3,8 @@ package game;
 import java.util.StringTokenizer;
 
 import Exceptions.InvalidCharacterException;
+import Exceptions.InvalidEnemyException;
+import Exceptions.InvalidItemException;
 
 public class Level
 {
@@ -77,7 +79,9 @@ public class Level
 		this.minItems = minItems;
 		this.maxItems = maxItems;
 		this.items = new char[items.length];
+		this.items = items;
 		this.enemies = new char[enemies.length];
+		this.enemies = enemies;
 		
 		for(int i = 0; i < items.length; i++)
 		{
@@ -201,12 +205,16 @@ public class Level
 	
 	private Level(boolean enemy, int minEnemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minDoors, int maxDoors, Level previous, int startDir, int y, int x)
 	{
+		RandomGen ranEnemies = new RandomGen(enemies);
+		RandomGen ranItems = new RandomGen(items);
 		this.enemy = enemy;
 		this.player = 'x';
 		this.minEnemies = minEnemies;
 		this.maxEnemies = maxEnemies;
 		this.items = new char[items.length];
+		this.items = items;
 		this.enemies = new char[enemies.length];
+		this.enemies = enemies;
 		
 		for(int i = 0; i < items.length; i++)
 		{
@@ -398,7 +406,7 @@ public class Level
 					{
 						tempString.setCharAt(stringPos, 'y');
 						stringPos++;
-						tempString.insert(stringPos, 'a');
+						tempString.insert(stringPos, ranEnemies.randomChar());
 						i++;
 					}
 					break;
@@ -450,7 +458,7 @@ public class Level
 					{
 						tempString.setCharAt(stringPos, '$');
 						stringPos++;
-						tempString.insert(stringPos, 'a');
+						tempString.insert(stringPos, ranItems.randomChar());
 						i++;
 					}
 					break;
@@ -459,7 +467,7 @@ public class Level
 					{
 						tempString.setCharAt(stringPos, '$');
 						stringPos++;
-						tempString.insert(stringPos, 'a');
+						tempString.insert(stringPos, ranItems.randomChar());
 						i++;
 					}
 					break;
@@ -480,6 +488,27 @@ public class Level
 		recursiveLevel();
 	}
 	
+	private void  recursiveLevel()
+	{
+		RandomGen numEnemies = null;
+		RandomGen maxDoors = null;
+		try
+		{
+			numEnemies = new RandomGen(0,10);
+			maxDoors = new RandomGen(0,3);
+		} catch (Exception e) {}
+		
+		
+		if(nBoolDoor)
+			this.north = new Level(true, this.minEnemies, this.maxEnemies, this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
+		if(eBoolDoor)
+			this.east = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
+		if(sBoolDoor)
+			this.south = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 2 , this.yloc + 1, this.xloc );
+		if(wBoolDoor)
+			this.west = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 3 , this.yloc, this.xloc - 1);
+	}
+
 	public String getLevel()
 	{	return this.level;	}
 	
@@ -498,19 +527,32 @@ public class Level
 		this.level = tempString.toString();
 		
 		int i;
-		int temp;
+		int lineNo;
+		int tempLine;
 		if(incomingDirection == 'n')
 		{
 			tempString = new StringBuffer(this.north.level);
 			i=0;
-			temp = 0;
-			splayer = 15*columns;
-			while(tempString.charAt(splayer + i) != '\n')
+			lineNo = 1;
+			tempLine = 0;
+			splayer = 0;
+			while(i < tempString.length())
 			{
-				temp++;
+				if(tempString.charAt(i) == '\n')
+					lineNo++;
+				else
+				{
+					if(lineNo == 15)
+						tempLine++;
+					if(lineNo == 16)
+						break;
+				}
 				i++;
-			}
-			splayer += ((temp-1)/2);
+			}	
+			if(tempLine % 2 == 0)
+				splayer = i - ((tempLine+4)/2);
+			else
+				splayer = i - ((tempLine - 3)/2);
 			tempString.setCharAt(splayer, 'x');
 			this.north.level = tempString.toString();
 			return this.north;
@@ -518,15 +560,27 @@ public class Level
 		else if(incomingDirection == 's')
 		{
 			tempString = new StringBuffer(this.south.level);
-			i=0;
-			temp = 0;
-			nplayer = columns+1;
-			while(tempString.charAt(nplayer + i) != '\n')
+			i = 0;
+			lineNo = 1;
+			tempLine = 0;
+			nplayer = 0;
+			while(i < tempString.length())
 			{
-				temp++;
+				if(tempString.charAt(i) == '\n')
+					lineNo++;
+				else
+				{
+					if(lineNo == 2)
+						tempLine++;
+					if(lineNo == 3)
+						break;
+				}
 				i++;
 			}
-			nplayer += ((temp-1)/2);
+			if(tempLine % 2 == 0)
+				nplayer = i - ((tempLine+4)/2);
+			else
+				nplayer = i - ((tempLine - 3)/2);
 			tempString.setCharAt(nplayer, 'x');
 			this.south.level = tempString.toString();
 			return this.south;
@@ -565,29 +619,46 @@ public class Level
 		}
 		else throw new InvalidCharacterException();
 	}
-
-	private void  recursiveLevel()
-	{
-		RandomGen numEnemies = null;
-		RandomGen maxDoors = null;
-		try
-		{
-			numEnemies = new RandomGen(0,10);
-			maxDoors = new RandomGen(0,3);
-		} catch (Exception e) {}
-		
-		
-		if(nBoolDoor)
-			this.north = new Level(true, this.minEnemies, this.maxEnemies, this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
-		if(eBoolDoor)
-			this.east = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
-		if(sBoolDoor)
-			this.south = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 2 , this.yloc + 1, this.xloc );
-		if(wBoolDoor)
-			this.west = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 3 , this.yloc, this.xloc - 1);
-	}
-
 	
+	public void killItem(int itemNo) throws InvalidItemException
+	{
+		StringBuffer tempString = new StringBuffer(this.level);
+		int charNum = 0;
+		int i = 0;
+		while(i < tempString.length())
+		{
+			if(tempString.charAt(i) == '$')
+				charNum++;
+			if(charNum == itemNo)
+			{
+				tempString.setCharAt(i, '-');
+				tempString.deleteCharAt(i+1);
+				break;
+			}
+			i++;
+		}
+		throw new InvalidItemException("Item # " + itemNo + " does not exist in the level");
+	}
+	
+	public void killEnemy(int enemyNo) throws InvalidItemException, InvalidEnemyException
+	{
+		StringBuffer tempString = new StringBuffer(this.level);
+		int charNum = 0;
+		int i = 0;
+		while(i < tempString.length())
+		{
+			if(tempString.charAt(i) == 'y')
+				charNum++;
+			if(charNum == enemyNo)
+			{
+				tempString.setCharAt(i, '-');
+				tempString.deleteCharAt(i+1);
+				break;
+			}
+			i++;
+		}
+		throw new InvalidEnemyException("Item # " + enemyNo + " does not exist in the level");
+	}
 	public void print()
 	{System.out.println(this.level);}
 	

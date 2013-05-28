@@ -3,6 +3,8 @@ package game;
 import java.lang.reflect.Array;
 import java.util.Random;
 
+import Exceptions.MinMaxException;
+
 /**@author Sean Ewing
  * This class creates a Random Generation object
  * TODO
@@ -18,37 +20,27 @@ public class RandomGen
 	protected int cpu;
 	private Random r;
 	private int min, max;
-	private int x1,x2,y1,y2 = 0;
-	private Array[] x;
+	private int x1, y1, x2, y2 = 0;
+	private char someChar;
+	private char[] xArr;
 	private int[] ranDirection;
 	/**
 	 * 
 	 * @param x
 	 */
-//	public RandomGen(Array[] x)
-//	{
-//		r = new Random();
-//		this.ranInt = 0;
-//		this.ranDouble = 0;
-//		this.ranLong = 0;
-//		this.max = x.length;
-//		this.min = 0;
-//		cpu = Runtime.getRuntime().availableProcessors();
-//		this.x = x;
-//		ranDirection =  new int[4];
-//		for(int i = 0; i < 4; i++)
-//			ranDirection[i] = i;
-//	}//end RandomGen(Array[] x)
-//	
-//	public RandomGen(int x1, int y1, int x2, int y2)
-//	{
-//		r = new Random();
-//		
-//		ranDirection =  new int[4];
-//		for(int i = 0; i < 4; i++)
-//			ranDirection[i] = i;
-//		
-//	}
+	public RandomGen(char[] x)
+	{
+		r = new Random();
+		this.ranInt = 0;
+		this.ranDouble = 0;
+		this.ranLong = 0;
+		this.max = x.length;
+		this.min = 0;
+		this.xArr = new char[x.length];
+		for(int i = 0; i < x.length; i++)
+			xArr[i] = x[i];
+		someChar = xArr[0];
+	}//end RandomGen(Array[] x)
 	
 	public RandomGen()
 	{
@@ -63,8 +55,25 @@ public class RandomGen
 		for(int i = 0; i < 4; i++)
 			ranDirection[i] = i;
 	}// end RandomGen()
+
+	public RandomGen(int x1, int x2, int y1, int y2) throws MinMaxException
+	{
+		r = new Random();
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+		ranDirection =  new int[2];
+		if(this.x1 > this.x2 || this.y1 > this.y2) 
+			throw new MinMaxException("Max must be greater than Min");
+		else
+		{
+			ranDirection[0] = Math.round((float)((this.x2 - this.x1) * r.nextDouble() + this.x1));
+			ranDirection[1] = Math.round((float)((this.y2 - this.y1) * r.nextDouble() + this.y1));
+		}
+	}
 	
-	public RandomGen(int min, int max) throws Exception
+	public RandomGen(int min, int max) throws MinMaxException
 	{
 		
 		r = new Random();
@@ -73,28 +82,34 @@ public class RandomGen
 		this.ranLong = 0;
 		this.max = max;
 		this.min = min;
-		
-		if(max >= min) randomize();
-		else throw new Exception("Max must be greater than Min");
-		
-		cpu = Runtime.getRuntime().availableProcessors();
 		ranDirection =  new int[4];
 		for(int i = 0; i < 4; i++)
 			ranDirection[i] = i;
+		if(max >= min) randomize();
+		else throw new MinMaxException("Max must be greater than Min");
+		
+		cpu = Runtime.getRuntime().availableProcessors();
 	}//end RandomGen(int min, int max)
 	
 	public void randomize()
 	{
 		this.ranInt = Math.round((float)((this.max - this.min) * r.nextDouble() + this.min));
 		this.ranDouble = (this.max - this.min) * r.nextDouble() + this.min;
-		this.ranLong = Math.round((this.max - this.min) * r.nextDouble() + this.min);
-		// filled in genRandom too
-		ranDirection =  new int[4];
-		for(int i = 0; i < 4; i++)
-			ranDirection[i] = i;
+		this.ranLong = Math.round((this.max - this.min) * r.nextDouble() + this.min);		
 		//array's
-		//coordinates
+		
 	}//end randomize
+	
+	public void randomizeChar()
+	{
+		this.someChar = xArr[r.nextInt(xArr.length)];
+	}//end randomizeCoord
+	
+	public void randomizeCoord()
+	{
+		this.ranDirection[0] = Math.round((float)((this.x2 - this.x1) * r.nextDouble() + this.x1));
+		this.ranDirection[1] = Math.round((float)((this.y2 - this.y1) * r.nextDouble() + this.y1));
+	}//end randomizeCoord
 	
 	public void setLimits(int min, int max) throws Exception
 	{
@@ -134,6 +149,10 @@ public class RandomGen
 	public double randomDouble(){randomize(); return ranDouble;}// end randomDouble
 	
 	public long randomLong(){randomize(); return ranLong;}//end randomLong
+	
+	public int[] randomCoordinates(){randomizeCoord(); return ranDirection;}
+	
+	public char randomChar(){randomizeChar(); return someChar;}
 	
 	public String toString()
 	{
