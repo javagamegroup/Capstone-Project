@@ -10,6 +10,9 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
+import Exceptions.InvalidEnemyException;
+import Exceptions.InvalidItemException;
+
 public class Gun implements Runnable  {
 	
 	Projectile bullet [] = new Projectile [30];
@@ -94,6 +97,15 @@ public class Gun implements Runnable  {
 								destroyBullet(j);
 								enemy.decreaseHealth(i, bulletDamage);
 								if (enemy.enemies[i] == null){
+									try {
+										GamePanel.map.level.killEnemy(i);
+									} catch (InvalidItemException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} catch (InvalidEnemyException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 									getAchieves.storeAchievement("Guns Loaded - Defeat your first enemy");
 								}
 							}

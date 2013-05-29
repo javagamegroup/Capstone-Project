@@ -57,6 +57,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     static Achievements getAchieves = new Achievements();
 	static String [] achivements = null;
 	static String [] earnedAchivements = null;
+	char[] enemychars;
+	char[] itemchars;
     
     /**
      * Game Objects
@@ -125,8 +127,11 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		this.fontColor = fontColor;
 		this.backColor = backColor;
 		this.buttonColor = buttonColor;
-		
-		map = new Map(1,10,new char['a'],1,10,new char['a']);
+		enemychars = new char[1];
+		enemychars[0] = 'a';
+		itemchars = new char[1];
+		itemchars[0] = 'a';
+		map = new Map(1,10,enemychars,1,10,itemchars);
     	
     	this.addKeyListener(new KeyHandler());
     	this.addMouseListener(new MouseHandler());
@@ -167,7 +172,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	}
     	enemies.killAllEnemies();
     	world.restartLevel();
-    	item.createItem(200, 200, 'a');
+    	//item.createItem(200, 200, 'a');
     	obs.createObs(400, 400, 'a');
     	player.setLevel(false);
     	
