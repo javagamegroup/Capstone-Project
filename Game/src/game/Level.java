@@ -623,17 +623,17 @@ public class Level
 	public void killItem(int itemNo) throws InvalidItemException
 	{
 		StringBuffer tempString = new StringBuffer(this.level);
-		int charNum = 0;
+		int charNum = -1;
 		int i = 0;
 		while(i < tempString.length())
 		{
-			if(tempString.charAt(i) == '$')
+			if(tempString.charAt(i) == '$' || tempString.charAt(i) == '?')
 				charNum++;
 			if(charNum == itemNo)
 			{
-				tempString.setCharAt(i, '-');
+				tempString.setCharAt(i, '?');
 				tempString.deleteCharAt(i+1);
-				break;
+				return;
 			}
 			i++;
 		}
@@ -643,21 +643,21 @@ public class Level
 	public void killEnemy(int enemyNo) throws InvalidItemException, InvalidEnemyException
 	{
 		StringBuffer tempString = new StringBuffer(this.level);
-		int charNum = 0;
+		int charNum = -1;
 		int i = 0;
 		while(i < tempString.length())
 		{
-			if(tempString.charAt(i) == 'y')
+			if(tempString.charAt(i) == 'y' || tempString.charAt(i) == '@')
 				charNum++;
 			if(charNum == enemyNo)
 			{
-				tempString.setCharAt(i, '-');
+				tempString.setCharAt(i, '@');
 				tempString.deleteCharAt(i+1);
-				break;
+				return;
 			}
 			i++;
 		}
-		throw new InvalidEnemyException("Item # " + enemyNo + " does not exist in the level");
+		throw new InvalidEnemyException("Enemy # " + enemyNo + " does not exist in the level");
 	}
 	public void print()
 	{System.out.println(this.level);}
