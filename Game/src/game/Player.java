@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 import Exceptions.InvalidCharacterException;
+import Exceptions.InvalidItemException;
 
 public class Player extends Actor implements Runnable  {
 	
@@ -206,6 +207,12 @@ public class Player extends Actor implements Runnable  {
 			if(GamePanel.item.item[i] != null)
 				if (GamePanel.item.getRect(i).intersects(playerRect)) {
 					GamePanel.item.destroyItem(i);
+					try {
+						GamePanel.map.level.killItem(i);
+					} catch (InvalidItemException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
         //Obstacles
         for(int i = 0;i<30;i++)
@@ -408,6 +415,10 @@ public class Player extends Actor implements Runnable  {
             }
         }
         public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == e.VK_K) {
+            	GamePanel.enemies.killAllEnemies();
+
+            }
                 if (e.getKeyCode() == e.VK_A) {
                 	moving = false;
                 	walkWhichWay = 0;
