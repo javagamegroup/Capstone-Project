@@ -529,6 +529,14 @@ public class Level
 						tempString.insert(stringPos, ranObs.randomChar());
 						i++;
 					}
+				case '-':
+					if(probRate > probability.randomDouble())
+					{
+						tempString.setCharAt(stringPos, '>');
+						stringPos++;
+						tempString.insert(stringPos, ranObs.randomChar());
+						i++;
+					}
 					break;
 					 
 				 default:
