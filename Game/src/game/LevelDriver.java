@@ -9,13 +9,17 @@ public class LevelDriver
 		char[] items = new char[2];
 		items[0] = 'a';
 		items[1] = 'b';
-		Map theMap = new Map(1,10, enemies, 1, 10, items);
-		try
-		{
-			System.out.println(Map.level.getLevel());
-			System.out.println(Map.level.north.getLevel());
-			System.out.println(Map.level.east.getLevel());
-			System.out.println(Map.level.west.getLevel());
-		}catch(Exception e){e.printStackTrace();}
+		char[] obs = new char[2];
+		obs[0] = 'a';
+		obs[1] = 'b';
+		
+		Map theMap = new Map(1,10, enemies, 1, 10, items, 1, 10, obs);
+//		try
+//		{
+//			System.out.println(Map.level.getLevel());
+//			System.out.println(Map.level.north.getLevel());
+//			System.out.println(Map.level.east.getLevel());
+//			System.out.println(Map.level.west.getLevel());
+//		}catch(Exception e){e.printStackTrace();}
 	}
 }

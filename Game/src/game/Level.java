@@ -10,6 +10,7 @@ public class Level
 {
 	private int xBounds = 7;
 	private int yBounds = 7;
+	
 	private int minEnemies;
 	private int maxEnemies;
 	private int numEnemies;
@@ -18,9 +19,15 @@ public class Level
 	private int minItems;
 	private int maxItems;
 	private int numItems;
+	private char[] items = null;
+	private int minObs;
+	private int maxObs;
+	private int numObs;
+	private char[] obs = null;
+	
 	private int rows = 16;
 	private int columns = 26;
-	private char[] items = null;
+
 	private int numDoors = 1;
 	private char nDoor = '#';
 	private char sDoor = '#';
@@ -68,7 +75,7 @@ public class Level
 //	direction 2 = South
 //	direction 3 = West
 	
-	public Level(boolean first, int startDir, int minEmemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items)//determines if this is the first room where the player enters into the level.
+	public Level(boolean first, int startDir, int minEmemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minObs, int maxObs, char[] obs)//determines if this is the first room where the player enters into the level.
 	{
 		this.player = 'x';
 		firstRoom = true;
@@ -82,6 +89,10 @@ public class Level
 		this.items = items;
 		this.enemies = new char[enemies.length];
 		this.enemies = enemies;
+		this.minObs = minObs;
+		this.maxObs = maxObs;
+		this.obs =  new char[obs.length];
+		this.obs = obs;
 		
 		for(int i = 0; i < items.length; i++)
 		{
@@ -203,10 +214,11 @@ public class Level
 		
 	}
 	
-	private Level(boolean enemy, int minEnemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minDoors, int maxDoors, Level previous, int startDir, int y, int x)
+	private Level(boolean enemy, int minEnemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minObs, int maxObs, char[] obs, int minDoors, int maxDoors, Level previous, int startDir, int y, int x)
 	{
 		RandomGen ranEnemies = new RandomGen(enemies);
 		RandomGen ranItems = new RandomGen(items);
+		RandomGen ranObs = new RandomGen(items);
 		this.enemy = enemy;
 		this.player = 'x';
 		this.minEnemies = minEnemies;
@@ -391,11 +403,11 @@ public class Level
 		}
 		
 		stringPos = 0;
-		double probRate = ((double)numEnemies/(double)validSpawn);
+		double probRate = ((double)this.numEnemies/(double)validSpawn);
 		StringBuffer tempString= new StringBuffer(this.level);
 		i=0;
 		
-		while(stringPos < tempString.length() && i < numEnemies)
+		while(stringPos < tempString.length() && i < this.numEnemies)
 		{
 			switch(tempString.charAt(stringPos))
 			{
@@ -440,12 +452,12 @@ public class Level
 			stringPos++;
 		}
 		
-		probRate = ((double)numItems/(double)validSpawn);
+		probRate = ((double)this.numItems/(double)validSpawn);
 		tempString = new StringBuffer(level);
 		i = 0;
 		stringPos = 0;
 		
-		while(stringPos < tempString.length() && i < numItems)
+		while(stringPos < tempString.length() && i < this.numItems)
 		{
 			switch(tempString.charAt(stringPos))
 			{
@@ -478,6 +490,55 @@ public class Level
 		}
 		this.level = tempString.toString();
 //END ITEM RANDOM GENERATION//	
+
+//START OBSTACLE RANDOM GENERATION//
+
+		try 
+		{
+			probability = new RandomGen(0,1);
+			rand = new RandomGen(minObs, maxObs);
+		} catch (Exception e) {}
+		
+		this.numObs = rand.randomInt();	
+		stringPos = 0;
+		validSpawn = 0;
+		
+		while(stringPos < this.level.length())
+		{
+			if(this.level.charAt(stringPos) == '=' || this.level.charAt(stringPos) == '-')
+				validSpawn ++;
+			stringPos++;
+		}
+		
+		stringPos = 0;
+		probRate = ((double)this.numObs/(double)validSpawn);
+		tempString= new StringBuffer(this.level);
+		i=0;
+		
+		while(stringPos < tempString.length() && i < this.numObs)
+		{
+			switch(tempString.charAt(stringPos))
+			{
+				case '\n':
+					break;
+				case '=':
+					if(probRate > probability.randomDouble())
+					{
+						tempString.setCharAt(stringPos, '>');
+						stringPos++;
+						tempString.insert(stringPos, ranObs.randomChar());
+						i++;
+					}
+					break;
+					 
+				 default:
+					 break;
+			}
+			stringPos++;
+		}
+		this.level = tempString.toString();
+
+//END OBSTACLE RANDOM GENERATION//
 		
 
 //Debugging Print check//
@@ -500,13 +561,17 @@ public class Level
 		
 		
 		if(nBoolDoor)
-			this.north = new Level(true, this.minEnemies, this.maxEnemies, this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
+			this.north = new Level(true, this.minEnemies, this.maxEnemies, this.enemies, this.minItems, this.maxItems, this.items, 
+					this.minObs, this.maxObs, this.obs, 0, maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
 		if(eBoolDoor)
-			this.east = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
+			this.east = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 
+					this.minObs, this.maxObs, this.obs, 0, maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
 		if(sBoolDoor)
-			this.south = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 2 , this.yloc + 1, this.xloc );
+			this.south = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 
+					this.minObs, this.maxObs, this.obs, 0, maxDoors.randomInt(), this, 2 , this.yloc + 1, this.xloc );
 		if(wBoolDoor)
-			this.west = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 0, maxDoors.randomInt(), this, 3 , this.yloc, this.xloc - 1);
+			this.west = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 
+					this.minObs, this.maxObs, this.obs, 0, maxDoors.randomInt(), this, 3 , this.yloc, this.xloc - 1);
 	}
 
 	public String getLevel()
