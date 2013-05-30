@@ -113,6 +113,16 @@ public class EnemyAI extends Actor{
             		setYDirection(0);
             }
         }
+        
+        for (int i = 0; i < GamePanel.obs.num; i++) {
+            if (this.enemyRect.intersects(GamePanel.obs.getRect(i))) {
+            	if(enemyRect.x<= GamePanel.obs.getRect(i).x+31 && enemyRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1)
+            	if(xDirection != 0)
+            		setXDirection(0);
+            	if(yDirection != 0)
+            		setYDirection(0);
+            }
+        }
        
     }
     
