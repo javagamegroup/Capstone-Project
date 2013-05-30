@@ -98,6 +98,12 @@ public class World {
             	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), GamePanel.player, item);
                 x += SPACE;
             }
+            else if (item == '>') {
+            	i++;
+            	item = level1.charAt(i);
+            	GamePanel.obs.createObs(x, y, item);;
+                x += SPACE;
+            }
             else{
                 x += SPACE;
             }

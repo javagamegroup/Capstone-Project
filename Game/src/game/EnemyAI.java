@@ -117,19 +117,19 @@ public class EnemyAI extends Actor{
         for (int i = 0; i < GamePanel.obs.num; i++)
 			if(GamePanel.obs.obs[i] != null)
 				if (GamePanel.obs.getRect(i).intersects(enemyRect)) {
-	            	if(enemyRect.x<= GamePanel.obs.getRect(i).x+31 && enemyRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1){
+	            	if(enemyRect.x<= GamePanel.obs.getRect(i).x+44 && enemyRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1){
             			this.xDirection = 0;
             			//this.setCoord(enemyRect.x, enemyRect.y+1);
 	            	}
-	            	else if(enemyRect.x+32>= GamePanel.obs.getRect(i).x  && enemyRect.x+32<= GamePanel.obs.getRect(i).x+31 && xDirection >=1){
+	            	if(enemyRect.x+44>= GamePanel.obs.getRect(i).x  && enemyRect.x+44<= GamePanel.obs.getRect(i).x+32 && xDirection >=1){
             			this.xDirection = 0;
 	            		//this.setCoord(enemyRect.x, enemyRect.y+1);
 	            	}
-	            	else if(enemyRect.y+32>= GamePanel.obs.getRect(i).y && enemyRect.y+32<= GamePanel.obs.getRect(i).y+31 && yDirection >=1){
+	            	if(enemyRect.y+54>= GamePanel.obs.getRect(i).y && enemyRect.y+54<= GamePanel.obs.getRect(i).y+32 && yDirection >=1){
             			this.yDirection = 0;
             			//this.setCoord(enemyRect.x+1, enemyRect.y);
 	            	}
-	            	else if(enemyRect.y<= GamePanel.obs.getRect(i).y+321 && enemyRect.y>= GamePanel.obs.getRect(i).y && yDirection <=-1){
+	            	if(enemyRect.y<= GamePanel.obs.getRect(i).y+54 && enemyRect.y>= GamePanel.obs.getRect(i).y && yDirection <=-1){
             			this.yDirection = 0;
 	            		//this.setCoord(enemyRect.x+1, enemyRect.y);
 	            	}

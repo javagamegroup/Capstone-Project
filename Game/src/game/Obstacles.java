@@ -32,12 +32,12 @@ public class Obstacles {
     	if(num ==30) num =0;
     }
     
-    public void destroyItem(int num){
+    public void destroyObs(int num){
     	obs[num] = null;
     	obsNums[num] = -1;
     }
     
-    public void destroyAllItems(){
+    public void destroyAllObs(){
     	for(int i = 0; i<30;i++){
     		obs[i] = null;
     		obsNums[i] = -1;
