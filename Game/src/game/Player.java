@@ -20,6 +20,7 @@ import Exceptions.InvalidItemException;
 
 public class Player extends Actor implements Runnable  {
 	
+	private static final Color Color_WHITE = null;
 	ImageIcon   theDude, player00, player01, player02, 
 				player10, player11, player12, 
 				player20, player21, player22, 
@@ -37,8 +38,10 @@ public class Player extends Actor implements Runnable  {
 	private static int numFramesPerPose = 4; // size of second dimension of player image array
 	
 	private boolean moving = false;
-	
+	public int [][] drawingMap = new int [7][7];
 	public int speed = 1;
+	int [] currentMap = new int [2];
+	boolean changedRoom = true;
 	int numHealthPotions = 5;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
@@ -68,6 +71,12 @@ public class Player extends Actor implements Runnable  {
 	
     public Player(int x, int y, Level level) {
         super(x, y);
+    	for(int i = 0; i < 7; i++)
+    		for(int j = 0; j<7; j++){
+    			drawingMap[i][j] = 0;
+    		}
+    	currentMap[0]= 3;
+    	currentMap[1]= 3;
         this.level = level;
         bulletLife = 2500;
         playerInit();
@@ -160,6 +169,8 @@ public class Player extends Actor implements Runnable  {
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
+	            			currentMap[0] +=1;
+	            			drawingMap[currentMap[0]][currentMap[1]] = 1;
 	            		}
 	            	}
 	            	else if(playerRect.x< 200 && xDirection <=-1)
@@ -169,6 +180,8 @@ public class Player extends Actor implements Runnable  {
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
+	            			currentMap[0] -=1;
+	            			drawingMap[currentMap[0]][currentMap[1]] = 1;
 	            		}
 	            	}
 	            	else if(playerRect.y> 500 && yDirection >=1)
@@ -178,6 +191,8 @@ public class Player extends Actor implements Runnable  {
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
+	            			currentMap[1] +=1;
+	            			drawingMap[currentMap[0]][currentMap[1]] = 1;
 	            		}
 	            	}
 	            	else if(playerRect.y< 200 && yDirection <=-1)
@@ -187,6 +202,8 @@ public class Player extends Actor implements Runnable  {
 	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
+	            			currentMap[1] -=1;
+	            			drawingMap[currentMap[0]][currentMap[1]] = 1;
 	            		}
 	            	}
             }
@@ -261,6 +278,20 @@ public class Player extends Actor implements Runnable  {
     }
     
     public void draw(Graphics g) {
+    	g.setColor(Color.WHITE);
+		g.fillOval(720+(3*7), 5+(3*7), 5, 5);
+    	for(int i = 0; i < 7; i++)
+    		for(int j = 0; j<7; j++){
+    			if(drawingMap[j][i]!=0){
+    				g.setColor(Color.WHITE);
+    				g.fillOval(720+(j*7), 5+(i*7), 5, 5);
+    			}
+    			if(i==currentMap[0]&& j == currentMap[1]){
+    				g.setColor(Color.RED);
+    				g.fillOval(720+(i*7), 5+(j*7), 5, 5);
+    			}
+    			
+    		}
     	switch(walkWhichWay)
     	{
     	case 0:
