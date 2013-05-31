@@ -41,7 +41,6 @@ public class Player extends Actor implements Runnable  {
 	public int [][] drawingMap = new int [7][7];
 	public int speed = 1;
 	int [] currentMap = new int [2];
-	boolean changedRoom = true;
 	int numHealthPotions = 5;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
@@ -60,6 +59,8 @@ public class Player extends Actor implements Runnable  {
 	int spacebarItem = 40;
 	double bulletLife;
 	int health = 100;
+	int mana = 100;
+	int totalMana = 100;
 	int totalHealth = 100;
 	public boolean paused = false;
 	private boolean moveLevels = false;
@@ -286,12 +287,9 @@ public class Player extends Actor implements Runnable  {
     				g.setColor(Color.WHITE);
     				g.fillOval(720+(j*7), 5+(i*7), 5, 5);
     			}
-    			if(i==currentMap[0]&& j == currentMap[1]){
-    				g.setColor(Color.RED);
-    				g.fillOval(720+(i*7), 5+(j*7), 5, 5);
-    			}
-    			
     		}
+		g.setColor(Color.RED);
+		g.fillOval(720+(currentMap[0]*7), 5+(currentMap[1]*7), 5, 5);
     	switch(walkWhichWay)
     	{
     	case 0:
@@ -447,7 +445,10 @@ public class Player extends Actor implements Runnable  {
         }
         public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == e.VK_K) {
-            	GamePanel.enemies.killAllEnemies();
+            	//if( mana>=100){
+            		GamePanel.enemies.killAllEnemies();
+            		mana = 0;
+            	//}
 
             }
                 if (e.getKeyCode() == e.VK_A) {
@@ -505,6 +506,25 @@ public class Player extends Actor implements Runnable  {
     	return moveLevels;
     }
     
+    public void reset(){
+    	health = 100;
+    	totalHealth = 100;
+    	mana = 100;
+    	totalMana = 100;
+    	numHealthPotions = 5;
+    	spacebarTime = -1;
+    	fireRate = 250;
+    	currentMap[0]= 3;
+    	currentMap[1]= 3;
+    	GamePanel.gun.bulletDamage = 2;
+    	for(int i = 0; i < 7; i++)
+    		for(int j = 0; j<7; j++){
+    			drawingMap[i][j] = 0;
+    		}
+    	speed = 1;
+    	
+    }
+    
     public void drawTopMenuBar(Graphics g){
     	//health
     	g.drawImage(lifeIcon, 2, 2, null);
@@ -516,7 +536,7 @@ public class Player extends Actor implements Runnable  {
     	g.fillRect(20, 3, health, 15);
     	g.setColor(Color.GRAY);
     	g.fillRect(health+20, 3, 100-health, 15);
-    	g.setColor(Color.BLACK);
+    	g.setColor(Color.WHITE);
     	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
     	if(health>=100)
     		g.drawString(health+"/" + totalHealth, 47, 15);
@@ -526,15 +546,15 @@ public class Player extends Actor implements Runnable  {
     	g.setColor(Color.WHITE);
     	g.drawRect(19, 22, 101, 16);
     	g.setColor(Color.BLUE);
-    	g.fillRect(20, 23, 100, 15);
+    	g.fillRect(20, 23, mana, 15);
     	//g.setColor(Color.GRAY);
     	//g.fillRect(health+20, 23, 100-health, 15);
-    	g.setColor(Color.BLACK);
+    	g.setColor(Color.WHITE);
     	g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-    	//if(health>=100)
-    		g.drawString(100+"/" + totalHealth, 45, 36);
-    	//else
-    		//g.drawString(health+"/" + totalHealth, 50, 36);
+    	if(mana>=100)
+    		g.drawString(mana+"/" + totalMana, 47, 36);
+    	else
+    		g.drawString(mana+"/" + totalMana, 50, 36);
     	//gun
     	g.setColor(Color.WHITE);
     	g.drawRect(19, 42, 101, 16);

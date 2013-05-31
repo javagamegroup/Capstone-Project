@@ -452,7 +452,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		g.fillRect(225, 95, 425, 60);
 		    g.setFont(new Font("Arial", Font.BOLD, 70));
 		    g.setColor(Color.WHITE);
-		    g.drawString("GAME OVER", 225, 150);		    
+		    g.drawString("GAME OVER", 225, 150);	
+		    player.reset();
+		    map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars);
 		}
     	else{
     		//Game drawings
@@ -716,6 +718,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
             		   gameStarted = false;
             		   pauseMenu = false;
             		   map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars);
+            		   player.reset();
             		   player.unpaused();
             		   enemies.unpaused();
             	   }
