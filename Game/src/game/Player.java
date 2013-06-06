@@ -41,7 +41,7 @@ public class Player extends Actor implements Runnable  {
 	public int [][] drawingMap = new int [7][7];
 	public int speed = 1;
 	int [] currentMap = new int [2];
-	int numHealthPotions = 5;
+	int numHealthPotions = 0;
 	ArrayList<Wall> walls;
 	private ArrayList areas;
 	Projectile bullet [] = new Projectile [30];
@@ -55,6 +55,7 @@ public class Player extends Actor implements Runnable  {
 	double animationStartTime = -1;
 	double drawTime = -1;
 	double enemyTime = -1;
+	double spikeTime = -1;
 	double spacebarTime = -1;
 	int spacebarItem = 40;
 	double bulletLife;
@@ -236,6 +237,7 @@ public class Player extends Actor implements Runnable  {
         for(int i = 0;i<30;i++)
 			if(GamePanel.obs.obs[i] != null)
 				if (GamePanel.obs.getRect(i).intersects(playerRect)) {
+					if(GamePanel.obs.getType(i)==0)
 	            	if(playerRect.x<= GamePanel.obs.getRect(i).x+31 && playerRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1)
             			this.xDirection = 0;
 	            	else if(playerRect.x+32>= GamePanel.obs.getRect(i).x  && playerRect.x+32<= GamePanel.obs.getRect(i).x+31 && xDirection >=1)
@@ -244,6 +246,11 @@ public class Player extends Actor implements Runnable  {
             			this.yDirection = 0;
 	            	else if(playerRect.y<= GamePanel.obs.getRect(i).y+321 && playerRect.y>= GamePanel.obs.getRect(i).y && yDirection <=-1)
             			this.yDirection = 0;
+					if(GamePanel.obs.getType(i)==1)
+		            	if(System.currentTimeMillis() - spikeTime > 1000 || spikeTime == -1){
+		                	spikeTime = System.currentTimeMillis();
+		                		health -= 5;
+		            	}
 				}
         
 		for(int i = 0; i<GamePanel.enemies.numEnemies;i++){

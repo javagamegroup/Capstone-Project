@@ -26,6 +26,11 @@ public class Items {
     		itemNums[num] = 0;
     		num ++;
     		break;
+    	case 'b': 
+    		item[num] = new HealthPotion(x, y);
+    		itemNums[num] = 1;
+    		num ++;
+    		break;
     	default:
     		break;
     	
@@ -38,6 +43,11 @@ public class Items {
     	{
     	case 0: 
     		GamePanel.gun.increaseDamage(1);
+    		break;
+    	case 1: 
+    		if(GamePanel.player.numHealthPotions<9)
+    			GamePanel.player.numHealthPotions+=1;
+    		break;
     	default:
     		break;
     	
@@ -57,6 +67,8 @@ public class Items {
     	{
     	case 0: 
     		return ((IncreasedBulletPickUp) item[x]).getRect();
+    	case 1: 
+    		return ((HealthPotion) item[x]).getRect();
     	default:
     		break;
     	
@@ -71,7 +83,10 @@ public class Items {
         	{
         	case 0: 
         			((IncreasedBulletPickUp) item[i]).draw(g);
-        		break;
+        			break;
+        	case 1: 
+    				((HealthPotion) item[i]).draw(g);
+    				break;
         	default:
         		break;
         	

@@ -25,6 +25,11 @@ public class Obstacles {
     		obsNums[num] = 0;
     		num ++;
     		break;
+    	case 'b': 
+    		obs[num] = new Spikes(x, y);
+    		obsNums[num] = 1;
+    		num ++;
+    		break;
     	default:
     		break;
     	
@@ -35,6 +40,10 @@ public class Obstacles {
     public void destroyObs(int num){
     	obs[num] = null;
     	obsNums[num] = -1;
+    }
+    
+    public int getType(int num){
+    	return obsNums[num];
     }
     
     public void destroyAllObs(){
@@ -50,6 +59,8 @@ public class Obstacles {
     	{
     	case 0: 
     		return ((Rock) obs[x]).getRect();
+    	case 1: 
+    		return ((Spikes) obs[x]).getRect();
     	default:
     		break;
     	
@@ -65,6 +76,9 @@ public class Obstacles {
         	case 0: 
         			((Rock) obs[i]).draw(g);
         		break;
+        	case 1: 
+    			((Spikes) obs[i]).draw(g);
+    			break;
         	default:
         		break;
         	

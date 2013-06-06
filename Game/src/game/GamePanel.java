@@ -130,10 +130,12 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		this.buttonColor = buttonColor;
 		enemychars = new char[1];
 		enemychars[0] = 'a';
-		itemchars = new char[1];
+		itemchars = new char[2];
 		itemchars[0] = 'a';
-		obschars = new char[1];
+		itemchars[1] = 'b';
+		obschars = new char[2];
 		obschars[0] = 'a';
+		obschars[1] = 'b';
 		map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars);
     	
     	this.addKeyListener(new KeyHandler());
