@@ -47,7 +47,7 @@ public class Player extends Actor implements Runnable  {
 	Projectile bullet [] = new Projectile [30];
 	int numBullets = 0;
 	int fireRate = 250;
-	int frameRate = 2;
+	int frameRate = 100;
 	int i = 0;
 	Timer timer = new Timer();
 	protected Rectangle playerRect;
@@ -82,24 +82,7 @@ public class Player extends Actor implements Runnable  {
         this.level = level;
         bulletLife = 2500;
         playerInit();
-        URL loc = this.getClass().getResource("/Resources/lifebar_image.png");
-        ImageIcon iia = new ImageIcon(loc);
-        lifeIcon = iia.getImage();
-        loc = this.getClass().getResource("/Resources/manabar_image.png");
-        iia = new ImageIcon(loc);
-        manaIcon = iia.getImage();
-        loc = this.getClass().getResource("/Resources/ammobar_image.png");
-        iia = new ImageIcon(loc);
-        ammoIcon = iia.getImage();
-        loc = this.getClass().getResource("/Resources/gun_image.png");
-        iia = new ImageIcon(loc);
-        gunIcon = iia.getImage();
-        loc = this.getClass().getResource("/Resources/potion_image.png");
-        iia = new ImageIcon(loc);
-        potionIcon = iia.getImage();
-        loc = this.getClass().getResource("/Resources/boot_image.png");
-        iia = new ImageIcon(loc);
-        bootIcon = iia.getImage();
+       
         this.playerRect = getRect(x, y, 32,32);
 
         this.setRect(playerRect);
@@ -109,7 +92,7 @@ public class Player extends Actor implements Runnable  {
     {
     	return "walkWhichWay: " + walkWhichWay;
     }
-    public static void playerInit()
+    public void playerInit()
     {
     	playerImage = new Image[numPoses][numFramesPerPose];
     	
@@ -119,7 +102,7 @@ public class Player extends Actor implements Runnable  {
 		
 		for(int d = 0; d < numFramesPerPose; d++)
 		{
-			path = "/Resources/theDude.png"; 
+			path = "/Resources/player00.png"; 
 			imgURL = Player.class.getResource(path);
 			playerIcon = new ImageIcon(imgURL);
 			playerImage[0][d] = playerIcon.getImage();
@@ -133,6 +116,25 @@ public class Player extends Actor implements Runnable  {
 				playerImage[i][j] = playerIcon.getImage();
 			}
 		}
+		
+		 URL loc = this.getClass().getResource("/Resources/lifebar_image.png");
+	        ImageIcon iia = new ImageIcon(loc);
+	        lifeIcon = iia.getImage();
+	        loc = this.getClass().getResource("/Resources/manabar_image.png");
+	        iia = new ImageIcon(loc);
+	        manaIcon = iia.getImage();
+	        loc = this.getClass().getResource("/Resources/ammobar_image.png");
+	        iia = new ImageIcon(loc);
+	        ammoIcon = iia.getImage();
+	        loc = this.getClass().getResource("/Resources/gun_image.png");
+	        iia = new ImageIcon(loc);
+	        gunIcon = iia.getImage();
+	        loc = this.getClass().getResource("/Resources/potion_image.png");
+	        iia = new ImageIcon(loc);
+	        potionIcon = iia.getImage();
+	        loc = this.getClass().getResource("/Resources/boot_image.png");
+	        iia = new ImageIcon(loc);
+	        bootIcon = iia.getImage();
     }
     
     public void collision(){
@@ -302,85 +304,90 @@ public class Player extends Actor implements Runnable  {
     	case 0:
     		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
-            	if(i != 3)
-            	{
-            		g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
-            		i++;
-            	}
-            	else
-            	{
-            		i = 0;
-            		g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
-            	}            		
-            }
+            	i++;
+    		}
+    		
+        	if(i != 3)
+        	{
+        		g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
+        	}
+        	else
+        	{
+        		i = 0;
+        		g.drawImage(playerImage[0][i], playerRect.x, playerRect.y, null);
+        	} 
     		break;
     	case 1:
     		if(moving == false)
     			g.drawImage(playerImage[1][0], playerRect.x, playerRect.y, null);
     		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
-            	if(i != 3)
-            	{
-            		g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
-            		i++;
-            	}
-            	else
-            	{
-            		i = 0;
-            		g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
-            	}            		
-			}
+            	i++;
+    		}
+            	
+            if(i != 3)
+        	{
+        		g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
+        	}
+        	else
+        	{
+        		i = 0;
+        		g.drawImage(playerImage[1][i], playerRect.x, playerRect.y, null);
+        	} 
     		break;
     	case 2:
     		if(moving == false)
     			g.drawImage(playerImage[2][0], playerRect.x, playerRect.y, null);
     		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
-            	if(i != 3)
-            	{
-            		g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
-            		i++;
-            	}
-            	else
-            	{
-            		i = 0;
-            		g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
-            	}            		
-            }
+            	i++;
+    		}	
+            	
+            if(i != 3)
+        	{
+        		g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
+        	}
+        	else
+        	{
+        		i = 0;
+        		g.drawImage(playerImage[2][i], playerRect.x, playerRect.y, null);
+        	}
     		break;
     	case 3:
     		if(moving == false)
     			g.drawImage(playerImage[3][0], playerRect.x, playerRect.y, null);
     		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
-            	if(i != 3)
-            	{
-            		g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
-            		i++;
-            	}
-            	else
-            	{
-            		i = 0;
-            		g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
-            	}            		
-            }
+            	i++;
+    		}
+            	
+            if(i != 3)
+        	{
+        		g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
+        	}
+        	else
+        	{
+        		i = 0;
+        		g.drawImage(playerImage[3][i], playerRect.x, playerRect.y, null);
+        	} 
     		break;
     	case 4:
     		if(moving == false)
     			g.drawImage(playerImage[4][0], playerRect.x, playerRect.y, null);
     		else if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
             	animationStartTime = System.currentTimeMillis();
-            	if(i != 3)
-            	{
-            		g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
-            		i++;
-            	}
-            	else
-            	{
-            		i = 0;
-            		g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
-            	}            		
-            }
+            	i++;
+    		}
+            	
+        	if(i != 3)
+        	{
+        		g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
+        	}
+        	else
+        	{
+        		i = 0;
+        		g.drawImage(playerImage[4][i], playerRect.x, playerRect.y, null);
+        	}   
 			break;
   //  	default:
   //  		System.out.println("walkWhichWay equals something besides 0 - 4");
@@ -460,29 +467,29 @@ public class Player extends Actor implements Runnable  {
             }
                 if (e.getKeyCode() == e.VK_A) {
                 	moving = false;
-                	walkWhichWay = 0;
+                	//walkWhichWay = 0;
                     setXDirection(0);
 
                 } if (e.getKeyCode() == e.VK_D) {
                 	moving = false;
-                	walkWhichWay = 0;
+                //	walkWhichWay = 0;
                     setXDirection(0);
 
                 }if (e.getKeyCode() == e.VK_W) {
                 	moving = false;
-                	walkWhichWay = 0;
+                //	walkWhichWay = 0;
                     setYDirection(0);
 
                 }if (e.getKeyCode() == e.VK_S) {
                 	moving = false;
-                	walkWhichWay = 0;
+                //	walkWhichWay = 0;
                     setYDirection(0);
 
                 }
-                if (e.getKeyCode() == e.VK_UP || e.getKeyCode() == e.VK_DOWN || e.getKeyCode() == e.VK_RIGHT || e.getKeyCode() == e.VK_LEFT)
-                {
-                	walkWhichWay = 0;
-                }
+//                if (e.getKeyCode() == e.VK_UP || e.getKeyCode() == e.VK_DOWN || e.getKeyCode() == e.VK_RIGHT || e.getKeyCode() == e.VK_LEFT)
+//                {
+//                	walkWhichWay = 0;
+//                }
 
         }
 

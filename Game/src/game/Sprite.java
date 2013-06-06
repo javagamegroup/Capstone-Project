@@ -14,7 +14,7 @@ public class Sprite {
 				            SA_ADDSPRITE = 2;
 	public static final int BA_STOP = 0,
 				            BA_WRAP = 1,
-				            BA_BOUncE = 2,
+				            BA_BOUNCE = 2,
 				            BA_DIE = 3;
 	protected Component     component;
 	protected static Image[]       image; 
@@ -199,7 +199,7 @@ public class Sprite {
 				pos.y = bounds.y - position.height; 
 		}
 		// Bounce?
-		else if (boundsAction == Sprite.BA_BOUncE) {
+		else if (boundsAction == Sprite.BA_BOUNCE) {
 			boolean bounce = false;
 			Point   vel = new Point(velocity.x, velocity.y);
 			if (pos.x < bounds.x) {

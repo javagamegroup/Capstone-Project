@@ -54,7 +54,7 @@ public class BabyTurtleDuck extends DirectionalSprite{
 		if (frame >= 5) {
 			action.set(Sprite.SA_KILL);
 			action.set(Sprite.SA_ADDSPRITE);
-			action.set(TurtleDuck.SA_ADDTURTLEDUCK);
+			action.set(SpriteTurtleDuck.SA_ADDTURTLEDUCK);
 			return action;
 		}
 		
@@ -66,8 +66,8 @@ public class BabyTurtleDuck extends DirectionalSprite{
 	
 	protected Sprite addSprite(BitSet action) {
 		// Add turtle duck corpse
-		if (action.get(TurtleDuck.SA_ADDTURTLEDUCK))
-			return new TurtleDuck(component, new Point(position.x, position.y));
+		if (action.get(SpriteTurtleDuck.SA_ADDTURTLEDUCK))
+			return new SpriteTurtleDuck(component, new Point(position.x, position.y));
 		return null;
 	}
 	

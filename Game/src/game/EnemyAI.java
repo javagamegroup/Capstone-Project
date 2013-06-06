@@ -8,7 +8,13 @@ import javax.swing.ImageIcon;
 public class EnemyAI extends Actor{
     
 	ImageIcon paul;
-	Image enemyImage;
+
+	public static Image[][] enemyImage;
+	private static int numPoses = 1; // size of first dimension of player image array
+	private static int numFramesPerPose = 8; // size of second dimension of player image array
+	
+	int frameRate = 250;
+	int i = 0;
 	Player target;
 	boolean resting = false;
 	private ArrayList areas;
@@ -19,6 +25,9 @@ public class EnemyAI extends Actor{
 	Event charE;
 	boolean started = false;
 	
+	private static int walkWhichWay = 0;
+	double animationStartTime = -1;
+	
 	int difficulty = 20;
 	
     public EnemyAI(int x, int y,ArrayList<Wall> walls, ArrayList<Area> arrayList, Player play) {
@@ -26,12 +35,32 @@ public class EnemyAI extends Actor{
         target = play;
         this.walls = walls;
         this.areas = arrayList;
-        URL paulLoc = this.getClass().getResource("/Resources/enemy.png");
-       	paul = new ImageIcon(paulLoc);
-        enemyImage = paul.getImage();
+//        URL paulLoc = this.getClass().getResource("/Resources/enemy.png");
+//       	paul = new ImageIcon(paulLoc);
+//        enemyImage = paul.getImage();
+        enemyInit();
         this.enemyRect = getRect(x, y, 44,54);
         this.setRect(enemyRect);
         charE = new Event(true, this.enemyRect);
+    }
+    
+    public static void enemyInit()
+    {
+    	enemyImage = new Image[numPoses][numFramesPerPose];
+    	
+    	java.net.URL imgURL;
+		ImageIcon enemyIcon;
+		String path;
+		
+		for(int i = 0; i < numPoses; i++) {
+			for(int j = 0; j < numFramesPerPose; j++) {
+				path = "/Resources/enemy" + i + j + ".png"; 
+				imgURL = Player.class.getResource(path);
+				enemyIcon = new ImageIcon(imgURL);
+				enemyImage[i][j] = enemyIcon.getImage();
+			}
+		}
+		
     }
     
     //Find a path to the target
@@ -138,7 +167,27 @@ public class EnemyAI extends Actor{
     }
     
     public void draw(Graphics g) {
-    	g.drawImage(enemyImage, this.rectx(), this.recty(), null);
+    	switch(walkWhichWay)
+    	{
+    	case 0:
+    		if(System.currentTimeMillis() - animationStartTime  > frameRate || animationStartTime == -1){
+            	animationStartTime = System.currentTimeMillis();
+            	i++;
+    		}
+    		
+        	if(i != 7)
+        	{
+        		g.drawImage(enemyImage[0][i], enemyRect.x, enemyRect.y, null);
+        		
+        	}
+        	else
+        	{
+        		i = 0;
+        		g.drawImage(enemyImage[0][i], enemyRect.x, enemyRect.y, null);
+        	}            		
+            
+    		break;
+    	}
     }
     
     

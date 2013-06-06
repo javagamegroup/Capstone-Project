@@ -1,5 +1,6 @@
 package collectionOfSprites;
 import game.DirectionalSprite;
+import game.RandomGen;
 import game.Sprite;
 
 import java.awt.Component;
@@ -13,7 +14,7 @@ import javax.swing.ImageIcon;
 
 
 
-public class TurtleDuck extends DirectionalSprite {
+public class SpriteTurtleDuck extends DirectionalSprite {
 
 	public static final int SA_ADDTURTLEDUCK = 3,
 							SA_ADDBABYTURTLEDUCK = 4,
@@ -21,8 +22,10 @@ public class TurtleDuck extends DirectionalSprite {
 	public static Image[][] image;
 	protected static Random rand = new Random(System.currentTimeMillis());
 	private static int direction = 0;
+	protected static RandomGen randG;
+	private static Point newPoint;
 	
-	public TurtleDuck(Component comp, Point pos)
+	public SpriteTurtleDuck(Component comp, Point pos)
 	{
 		super(comp, image, 0, 1, 2, pos, new Point(1, 1), 50, Sprite.BA_STOP, direction);
 	}
@@ -43,6 +46,10 @@ public class TurtleDuck extends DirectionalSprite {
 	 */
 	public static void initResources(MediaTracker tracker, int id)
 	{
+		try{
+			randG = new RandomGen(32, 768, 92, 448);
+			} catch (Exception e){}
+		newPoint = randPoint();
 		image = new Image[4][2];
 		java.net.URL imgURL;
 		ImageIcon turtleduck;
@@ -50,7 +57,7 @@ public class TurtleDuck extends DirectionalSprite {
 		for(int i = 0; i < 4; i++) {
 			for(int j = 0; j < 2; j++) {
 				path = "/Resources/turtleduck" + i + j + ".png"; 
-				imgURL = TurtleDuck.class.getResource(path);
+				imgURL = SpriteTurtleDuck.class.getResource(path);
 				turtleduck = new ImageIcon(imgURL);
 				image[i][j] = turtleduck.getImage();
 				tracker.addImage(image[i][j], id);
@@ -76,37 +83,51 @@ public class TurtleDuck extends DirectionalSprite {
 			setDirection(direction + rand.nextInt() % 2);
 		}
 		
+//		if(this.position.x == newPoint.x && this.position.y == newPoint.y)
+//		{
+//			newPoint = randPoint();
+//			super.setVelocity(newPoint);
+//		}
+//		else
+//			super.setVelocity(newPoint);
+		
 		// Call parent's update()
 		BitSet action = super.update();
 		
 		// Give birth?
-		if (rand.nextInt() % 250 == 0) {
-			action.set(Sprite.SA_ADDSPRITE);
-			action.set(TurtleDuck.SA_ADDBABYTURTLEDUCK);
-		}
+//		if (rand.nextInt() % 250 == 0) {
+//			action.set(Sprite.SA_ADDSPRITE);
+//			action.set(TurtleDuck.SA_ADDBABYTURTLEDUCK);
+//		}
 		
 		// Die?
-		if (rand.nextInt() % 250 == 0) {
-			action.set(Sprite.SA_KILL);
-			action.set(Sprite.SA_ADDSPRITE);
-			action.set(TurtleDuck.SA_ADDTURTLEDUCKCORPSE);
-		}
+//		if (rand.nextInt() % 250 == 0) {
+//			action.set(Sprite.SA_KILL);
+//			action.set(Sprite.SA_ADDSPRITE);
+//			action.set(TurtleDuck.SA_ADDTURTLEDUCKCORPSE);
+//		}
 		
 		incFrame();
 		
 		return action;
 	}
 	
+	public static Point randPoint()
+	{
+		int[] XYPoint = randG.randomCoordinates();
+		newPoint = new Point(XYPoint[0], XYPoint[1]);
+		return newPoint;
+	}
 	/**
 	 * Handles adding new sprites upon actions.
 	 */
 	protected Sprite addSprite(BitSet action) {
 		// Add baby turtle duck
-		if (action.get(TurtleDuck.SA_ADDBABYTURTLEDUCK))
+		if (action.get(SpriteTurtleDuck.SA_ADDBABYTURTLEDUCK))
 			return new BabyTurtleDuck(component, new Point(position.x, position.y));
 		
 		// Add Turtle Duck Corpse
-		else if (action.get(TurtleDuck.SA_ADDTURTLEDUCKCORPSE))
+		else if (action.get(SpriteTurtleDuck.SA_ADDTURTLEDUCKCORPSE))
 			return new TurtleDuckCorpse(component, new Point(position.x, position.y));
 		
 		return null;
