@@ -23,6 +23,7 @@ public class EnemyAI extends Actor{
 	boolean isAlive = true;
 	int health = 6;
 	Event charE;
+	double spikeTime = -1;
 	boolean started = false;
 	
 	private static int walkWhichWay = 0;
@@ -39,7 +40,7 @@ public class EnemyAI extends Actor{
 //       	paul = new ImageIcon(paulLoc);
 //        enemyImage = paul.getImage();
         enemyInit();
-        this.enemyRect = getRect(x, y, 44,54);
+        this.enemyRect = getRect(x, y, 22,27);
         this.setRect(enemyRect);
         charE = new Event(true, this.enemyRect);
     }
@@ -103,7 +104,7 @@ public class EnemyAI extends Actor{
     }
     
     public void setCoord(int x, int y){
-    	this.enemyRect = getRect(x, y, 20,20);
+    	this.enemyRect = getRect(x, y, 22,2);
     	this.setRect(enemyRect);
     }
     
@@ -146,22 +147,30 @@ public class EnemyAI extends Actor{
         for (int i = 0; i < GamePanel.obs.num; i++)
 			if(GamePanel.obs.obs[i] != null)
 				if (GamePanel.obs.getRect(i).intersects(enemyRect)) {
-	            	if(enemyRect.x<= GamePanel.obs.getRect(i).x+44 && enemyRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1){
-            			this.xDirection = 0;
-            			//this.setCoord(enemyRect.x, enemyRect.y+1);
-	            	}
-	            	if(enemyRect.x+44>= GamePanel.obs.getRect(i).x  && enemyRect.x+44<= GamePanel.obs.getRect(i).x+32 && xDirection >=1){
-            			this.xDirection = 0;
-	            		//this.setCoord(enemyRect.x, enemyRect.y+1);
-	            	}
-	            	if(enemyRect.y+54>= GamePanel.obs.getRect(i).y && enemyRect.y+54<= GamePanel.obs.getRect(i).y+32 && yDirection >=1){
-            			this.yDirection = 0;
-            			//this.setCoord(enemyRect.x+1, enemyRect.y);
-	            	}
-	            	if(enemyRect.y<= GamePanel.obs.getRect(i).y+54 && enemyRect.y>= GamePanel.obs.getRect(i).y && yDirection <=-1){
-            			this.yDirection = 0;
-	            		//this.setCoord(enemyRect.x+1, enemyRect.y);
-	            	}
+					if(GamePanel.obs.getType(i)==0){
+		            	if(enemyRect.x<= GamePanel.obs.getRect(i).x+44 && enemyRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1){
+	            			this.xDirection = 0;
+	            			//this.setCoord(enemyRect.x, enemyRect.y+1);
+		            	}
+		            	if(enemyRect.x+44>= GamePanel.obs.getRect(i).x  && enemyRect.x+44<= GamePanel.obs.getRect(i).x+32 && xDirection >=1){
+	            			this.xDirection = 0;
+		            		//this.setCoord(enemyRect.x, enemyRect.y+1);
+		            	}
+		            	if(enemyRect.y+54>= GamePanel.obs.getRect(i).y && enemyRect.y+54<= GamePanel.obs.getRect(i).y+32 && yDirection >=1){
+	            			this.yDirection = 0;
+	            			//this.setCoord(enemyRect.x+1, enemyRect.y);
+		            	}
+		            	if(enemyRect.y<= GamePanel.obs.getRect(i).y+54 && enemyRect.y>= GamePanel.obs.getRect(i).y && yDirection <=-1){
+	            			this.yDirection = 0;
+		            		//this.setCoord(enemyRect.x+1, enemyRect.y);
+		            	}
+					}
+					if(GamePanel.obs.getType(i)==1)
+			        	if(System.currentTimeMillis() - spikeTime > 1000 || spikeTime == -1)
+			        	{
+			            	spikeTime = System.currentTimeMillis();
+			            		health -= 2;
+			        	}
 				}
        
     }

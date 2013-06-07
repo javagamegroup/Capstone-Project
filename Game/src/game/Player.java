@@ -83,7 +83,7 @@ public class Player extends Actor implements Runnable  {
         bulletLife = 2500;
         playerInit();
        
-        this.playerRect = getRect(x, y, 32,32);
+        this.playerRect = getRect(x, y, 50,50);
 
         this.setRect(playerRect);
     }
@@ -151,7 +151,7 @@ public class Player extends Actor implements Runnable  {
             			this.xDirection = 0;
             	}
             	if(playerRect.intersects(wall.objectRect) && yDirection >=1)
-            		if(this.playerRect.y<507){}
+            		if(this.playerRect.y<490){}
             		else
             			this.yDirection = 0;
             	if(playerRect.intersects(wall.objectRect) && yDirection <=-1)
@@ -216,7 +216,7 @@ public class Player extends Actor implements Runnable  {
 	            			this.xDirection = 0;
 	            	else if(playerRect.x< 200  && xDirection <=-1)
 	            			this.xDirection = 0;
-	            	else if(playerRect.y> 500 && yDirection >=1)
+	            	else if(playerRect.y> 450 && yDirection >=1)
 	            			this.yDirection = 0;
 	            	else if(playerRect.y< 200 && yDirection <=-1)
 	            			this.yDirection = 0;
@@ -242,9 +242,9 @@ public class Player extends Actor implements Runnable  {
 					if(GamePanel.obs.getType(i)==0)
 	            	if(playerRect.x<= GamePanel.obs.getRect(i).x+31 && playerRect.x>= GamePanel.obs.getRect(i).x && xDirection <=-1)
             			this.xDirection = 0;
-	            	else if(playerRect.x+32>= GamePanel.obs.getRect(i).x  && playerRect.x+32<= GamePanel.obs.getRect(i).x+31 && xDirection >=1)
+	            	else if(playerRect.x+50>= GamePanel.obs.getRect(i).x  && playerRect.x+32<= GamePanel.obs.getRect(i).x+31 && xDirection >=1)
             			this.xDirection = 0;
-	            	else if(playerRect.y+32>= GamePanel.obs.getRect(i).y && playerRect.y+32<= GamePanel.obs.getRect(i).y+31 && yDirection >=1)
+	            	else if(playerRect.y+50>= GamePanel.obs.getRect(i).y && playerRect.y+32<= GamePanel.obs.getRect(i).y+31 && yDirection >=1)
             			this.yDirection = 0;
 	            	else if(playerRect.y<= GamePanel.obs.getRect(i).y+321 && playerRect.y>= GamePanel.obs.getRect(i).y && yDirection <=-1)
             			this.yDirection = 0;
@@ -276,6 +276,7 @@ public class Player extends Actor implements Runnable  {
  		   GamePanel.enemies.paused();
            GamePanel.gameOver = true;
  		   health = 100;
+ 		   totalHealth = 100;
         }
         if(System.currentTimeMillis() - spacebarTime > 5000)
         	speed = 1;
@@ -283,7 +284,7 @@ public class Player extends Actor implements Runnable  {
     
  
     public void setCoord(int x, int y){
-    	this.playerRect = getRect(x, y, 32,32);
+    	this.playerRect = getRect(x, y, 50,50);
     	this.setRect(playerRect);
     }
     
@@ -419,14 +420,14 @@ public class Player extends Actor implements Runnable  {
             	walkWhichWay = 4;
             	if(System.currentTimeMillis() - startTime  > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
-                GamePanel.gun.createBullet('y', -1,playerRect.x, playerRect.y, bulletLife );
+                GamePanel.gun.createBullet('y', -1,playerRect.x+10, playerRect.y-5, bulletLife );
             	}
 
             } if (e.getKeyCode() == e.VK_DOWN) {
             	walkWhichWay = 2;
             	if(System.currentTimeMillis() - startTime > fireRate || startTime == -1){
             	startTime = System.currentTimeMillis();
-            	GamePanel.gun.createBullet('y', 1,playerRect.x, playerRect.y, bulletLife);
+            	GamePanel.gun.createBullet('y', 1,playerRect.x+25, playerRect.y+40, bulletLife);
             	}
 
             }if (e.getKeyCode() == e.VK_LEFT) {
@@ -495,6 +496,8 @@ public class Player extends Actor implements Runnable  {
 
     public void increaseHealth(){
     	health += 10;
+    	if(health>=totalHealth)
+    		health =totalHealth;
     }
     public void decreaseHealth(){
     	health -= 10;

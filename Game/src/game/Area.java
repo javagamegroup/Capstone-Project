@@ -13,11 +13,11 @@ public class Area extends Actor {
 	public Area(int x, int y) {
         super(x, y);
 
-        URL loc = this.getClass().getResource("/Resources/door.png");
+        URL loc = this.getClass().getResource("/Resources/open_door.png");
         ImageIcon iia = new ImageIcon(loc);
         imageOpenDoor = iia.getImage();
         this.setImage(imageOpenDoor);
-        loc = this.getClass().getResource("/Resources/firstdoor.png");
+        loc = this.getClass().getResource("/Resources/lock_door.png");
         iia = new ImageIcon(loc);
         imageCloseDoor = iia.getImage();
         this.setImage(imageCloseDoor);
