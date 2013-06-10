@@ -140,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		obschars = new char[2];
 		obschars[0] = 'a';
 		obschars[1] = 'b';
-		map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars, true);
+		map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars, true, npcchars);
     	
     	this.addKeyListener(new KeyHandler());
     	this.addMouseListener(new MouseHandler());
@@ -467,7 +467,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		    g.setColor(Color.WHITE);
 		    g.drawString("GAME OVER", 225, 150);	
 		    player.reset();
-		    map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars, true);
+		    map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars, true, npcchars);
 		}
     	else{
     		//Game drawings
@@ -748,7 +748,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
    	            		my > menuButton.y && my < menuButton.y+menuButton.height){
             		   gameStarted = false;
             		   pauseMenu = false;
-            		   map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars, true);
+            		   map = new Map(1,10,enemychars,1,10,itemchars, 1,10,obschars, true, npcchars);
             		   player.reset();
             		   player.unpaused();
             		   enemies.unpaused();
