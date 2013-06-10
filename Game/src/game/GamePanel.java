@@ -72,15 +72,17 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 //    static IncreasedBulletPickUp item = null;
     static Player player = new Player(200, 200,map.level);
     static Enemies enemies = new Enemies(70, 70,player);
+    static NPC npc = new NPC(70, 70,player);
     static Vendor vendor = new Vendor(100, 100, World.walls, World.getAreas());
-    static TurtleDuck tDuck = new TurtleDuck(400, 400, World.walls, World.getAreas());
+    //static TurtleDuck tDuck = new TurtleDuck(400, 400, World.walls, World.getAreas());
     static EnemyAI enemy = null;
 //    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
     static Gun gun = new Gun(200, 200, World.walls, World.getAreas(), enemies, 2, getAchieves);
     private Thread p1 = new Thread(player);
-    private Thread npc = new Thread(enemies);
+    private Thread enemyThread = new Thread(enemies);
+    private Thread npcThread = new Thread(npc);
     private Thread vendi = new Thread(vendor);
-    private Thread tDuckThread = new Thread(tDuck);
+    //private Thread tDuckThread = new Thread(tDuck);
     private Thread weapon = new Thread(gun);
     private Thread animate;
     private int num = 1;
@@ -180,10 +182,12 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		}
     	}
     	enemies.killAllEnemies();
+    	npc.killAllNPC();
     	item.destroyAllItems();
     	obs.destroyAllObs();
     	world.restartLevel();
     	player.setLevel(false);
+    	npc.createNPC(100, 100, World.walls, World.getAreas(), GamePanel.player, 'a');
     	
     }
 
@@ -410,10 +414,11 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		world.buildWorld(g);
     		player.draw(g);
     		enemies.draw(g);
+    		npc.draw(g);
     		vendor.setStarted(true);
     		vendor.draw(g);
-    		tDuck.setStarted(true);
-    		tDuck.draw(g);
+    		//tDuck.setStarted(true);
+    		//tDuck.draw(g);
     		gun.draw(g);
 		    g.setFont(new Font("Arial", Font.BOLD, 26));
 		    g.setColor(Color.GRAY);
@@ -503,10 +508,11 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     			world.buildWorld(g);
 	    		player.draw(g);
 	    		enemies.draw(g);
+	    		npc.draw(g);
 	    		vendor.setStarted(true);
 	    		vendor.draw(g);
-	    		tDuck.setStarted(true);
-	    		tDuck.draw(g);
+	    		//tDuck.setStarted(true);
+	    		//tDuck.draw(g);
 	    		gun.draw(g);
 	    		
     		}
@@ -564,9 +570,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 			game = new Thread(this);
 			p1.start();
 			weapon.start();
-			npc.start();
+			enemyThread.start();
+			npcThread.start();
 			vendi.start();
-			tDuckThread.start();
+			//tDuckThread.start();
 			game.start();
 			running = true;
 		}
@@ -594,8 +601,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
                 pauseMenu = true;
             	player.paused();
             	enemies.paused();
+            	npc.paused();
             	vendor.paused();
-            	tDuck.paused();
+            	//tDuck.paused();
             }
         }
         @Override
@@ -701,8 +709,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		            	initialize();
 	            		   player.unpaused();
 	            		   enemies.unpaused();
+	            		   npc.unpaused();
 	            		   vendor.unpaused();
-	            		   tDuck.unpaused();
+	            		   //tDuck.unpaused();
 		            	getAchieves.storeAchievement("I'm Awesome - Start your first game");}
 		            
 		            if(mx > quitButton.x && mx < quitButton.x+quitButton.width &&
@@ -732,8 +741,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
    	            		my > resumeButton.y && my < resumeButton.y+resumeButton.height){
             		   player.unpaused();
             		   enemies.unpaused();
+            		   npc.unpaused();
             		   vendor.unpaused();
-            		   tDuck.unpaused();
+            		   //tDuck.unpaused();
             		   pauseMenu = false;
             	   }
             	   if(mx > menuButton.x && mx < menuButton.x+menuButton.width &&
@@ -744,8 +754,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
             		   player.reset();
             		   player.unpaused();
             		   enemies.unpaused();
+            		   npc.unpaused();
             		   vendor.unpaused();
-            		   tDuck.unpaused();
+            		   //tDuck.unpaused();
             	   }
             }
             

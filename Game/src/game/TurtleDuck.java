@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 import Exceptions.MinMaxException;
 
-public class TurtleDuck extends Actor implements Runnable{
+public class TurtleDuck extends Actor{
     
 	
 	public static Image[][] turtleDuckImage;
@@ -22,7 +22,7 @@ public class TurtleDuck extends Actor implements Runnable{
 	private static int walkWhichWay = 0;
 	
 	URL theDudeLoc;
-	Point target;
+	Point target = null;
 	boolean resting = false;
 	private ArrayList areas;
 	Rectangle turtleDuckRect;
@@ -80,7 +80,7 @@ public class TurtleDuck extends Actor implements Runnable{
     
   //Find a path to the target
     public void findPathToTarget() {
-    	if((turtleDuckRect.x-target.x<75&&turtleDuckRect.x-target.x>-75)&&(turtleDuckRect.y-target.y<75&&turtleDuckRect.y-target.y>-75)||started){
+    	//if((turtleDuckRect.x-target.x<75&&turtleDuckRect.x-target.x>-75)&&(turtleDuckRect.y-target.y<75&&turtleDuckRect.y-target.y>-75)||started){
 	    	started = true;
     		if(turtleDuckRect.x < target.x) {
 	    		setXDirection(1); 
@@ -96,14 +96,10 @@ public class TurtleDuck extends Actor implements Runnable{
 	    		walkWhichWay = 3; }
 	    	if(turtleDuckRect.x == target.x) 
 	    		setXDirection(0);
-	    	if(turtleDuckRect.x == target.x) 
-	    		setXDirection(0);
 	    	if(turtleDuckRect.y == target.y) 
 	    		setYDirection(0);
-	    	if(turtleDuckRect.y == target.y) 
-	    		setYDirection(0);
-	    	if(GamePanel.tDuck.turtleDuckRect.contains(target)){findNewTarget();}
-    	}
+	    	if(turtleDuckRect.y == target.y && turtleDuckRect.x == target.x){findNewTarget();}
+    	//}
     }
     
     //Move in that direction
@@ -171,7 +167,8 @@ public class TurtleDuck extends Actor implements Runnable{
     public void update(){
     	findNewTarget();
 		findPathToTarget();
-    	collision();
+    	//collision();
+    	move();
     }
     
     public Rectangle getRect(){
@@ -191,8 +188,6 @@ public class TurtleDuck extends Actor implements Runnable{
     
     public void collision(){
     	
-       
-        
         for (int i = 0; i < areas.size(); i++) {
             Area area = (Area) areas.get(i);
             if (this.turtleDuckRect.intersects(area.areaRect)) {
@@ -277,21 +272,21 @@ public class TurtleDuck extends Actor implements Runnable{
     	}
     }
     
-    public void run(){
-        try{
-            while(true){
-            	if(paused==false){
-            		update();
-	                move();
-	                Thread.sleep(30);
-            	}
-                else{Thread.sleep(30);}
-            }
-        }catch(Exception ex){
-        	ex.printStackTrace();
-            System.err.println(ex.getMessage());
-        }
-    }
-    
+//    public void run(){
+//        try{
+//            while(true){
+//            	if(paused==false){
+//            		update();
+//	                move();
+//	                Thread.sleep(30);
+//            	}
+//                else{Thread.sleep(30);}
+//            }
+//        }catch(Exception ex){
+//        	ex.printStackTrace();
+//            System.err.println(ex.getMessage());
+//        }
+//    }
+//    
     
 }
