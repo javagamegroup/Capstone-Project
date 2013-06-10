@@ -5,9 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
 import javax.swing.ImageIcon;
 
 public class Projectile extends Actor {
@@ -15,6 +12,7 @@ public class Projectile extends Actor {
 	ImageIcon projectile;
 	Image projectileImage;
 	ArrayList<Wall> walls;
+	@SuppressWarnings({ "rawtypes", "unused" })
 	private ArrayList areas;
 	long startBulletTime;
 	boolean isAlive;

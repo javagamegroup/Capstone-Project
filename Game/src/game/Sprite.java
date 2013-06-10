@@ -85,7 +85,7 @@ public class Sprite {
 	
 	public void setImage(Image[] img)
 	{
-		this.image = img;
+		Sprite.image = img;
 	}
 	public Point getVelocity() {
 		return velocity;

@@ -10,14 +10,14 @@ import javax.swing.ImageIcon;
 
 import Exceptions.MinMaxException;
 
-public class Vendor extends Actor implements Runnable{
+public class Vendor extends Actor{
     
 	ImageIcon theDude;
 	Image vendorImage;
 	URL theDudeLoc;
 	Point target;
 	boolean resting = false;
-	private ArrayList areas;
+	private ArrayList<Area> areas;
 	Rectangle vendorRect;
 	ArrayList<Wall> walls;
 	boolean isAlive = true;
@@ -53,7 +53,7 @@ public class Vendor extends Actor implements Runnable{
     
     //Find a path to the target
     public void findPathToTarget() {
-    	if((vendorRect.x-target.x<75&&vendorRect.x-target.x>-75)&&(vendorRect.y-target.y<75&&vendorRect.y-target.y>-75)||started){
+    	//if((vendorRect.x-target.x<75&&vendorRect.x-target.x>-75)&&(vendorRect.y-target.y<75&&vendorRect.y-target.y>-75)||started){
 	    	started = true;
     		if(vendorRect.x < target.x) 
 	    		setXDirection(1);
@@ -65,14 +65,9 @@ public class Vendor extends Actor implements Runnable{
 	    		setYDirection(-1);
 	    	if(vendorRect.x == target.x) 
 	    		setXDirection(0);
-	    	if(vendorRect.x == target.x) 
-	    		setXDirection(0);
 	    	if(vendorRect.y == target.y) 
 	    		setYDirection(0);
-	    	if(vendorRect.y == target.y) 
-	    		setYDirection(0);
-	    	if(GamePanel.vendor.vendorRect.contains(target)){findNewTarget();}
-    	}
+	    	if(vendorRect.y == target.y && vendorRect.x == target.x){findNewTarget();}
     }
     //Move in that direction
     public void move(){
@@ -140,6 +135,7 @@ public class Vendor extends Actor implements Runnable{
     	findNewTarget();
     	findPathToTarget();
     	collision();
+    	move();
     }
     
     public Rectangle getRect(){
@@ -177,21 +173,21 @@ public class Vendor extends Actor implements Runnable{
     	g.drawImage(vendorImage, this.rectx(), this.recty(), null);
     }
     
-    public void run(){
-        try{
-            while(true){
-            	if(paused==false){
-            		update();
-	                move();
-	                Thread.sleep(30);
-            	}
-                else{Thread.sleep(30);}
-            }
-        }catch(Exception ex){
-        	ex.printStackTrace();
-            System.err.println(ex.getMessage());
-        }
-    }
+//    public void run(){
+//        try{
+//            while(true){
+//            	if(paused==false){
+//            		update();
+//	                move();
+//	                Thread.sleep(30);
+//            	}
+//                else{Thread.sleep(30);}
+//            }
+//        }catch(Exception ex){
+//        	ex.printStackTrace();
+//            System.err.println(ex.getMessage());
+//        }
+//    }
     
     
 }

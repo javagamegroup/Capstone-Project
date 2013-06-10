@@ -7,25 +7,12 @@ public class World {
 
     private final int OFFSET = 60;
     private final int SPACE = 32;
-    private final int LEFT_COLLISION = 1;
-    private final int RIGHT_COLLISION = 2;
-    private final int TOP_COLLISION = 3;
-    private final int BOTTOM_COLLISION = 4;
-    private int numEnemies = 0;
-    
     static ArrayList<Wall> walls = new ArrayList<Wall>();
     private ArrayList<Baggage> baggs = new ArrayList<Baggage>();
     private static ArrayList<Area> areas = new ArrayList<Area>();
-    private String[] levels = new String[4];
-    
     private int w = 0;
     private int h = 0;
     String level;
-    
-    private boolean completed = false;
-    
-    private Player player;
-    private Enemies enemies;
     
     public World(Player player, Enemies enemy) {
     	initWorld();
@@ -56,12 +43,11 @@ public class World {
     
     public final void initWorld() {
 
-        String level1 =GamePanel.map.level.getLevel();
+        String level1 =Map.level.getLevel();
         int x = 0;
         int y = OFFSET;
         
         Wall wall;
-        Baggage b;
         Area a;
         for (int i = 0; i < level1.length(); i++) {
 
@@ -98,6 +84,12 @@ public class World {
             	GamePanel.enemies.createEnemy(x, y, World.walls, World.getAreas(), GamePanel.player, item);
                 x += SPACE;
             }
+            else if (item == '&') {
+            	i++;
+            	item = level1.charAt(i);
+            	GamePanel.npc.createNPC(x, y, World.walls, World.getAreas(), GamePanel.player, item);
+                x += SPACE;
+            }
             else if (item == '>') {
             	i++;
             	item = level1.charAt(i);
@@ -126,7 +118,7 @@ public class World {
 	}
 
 	public void setAreas(ArrayList<Area> areas) {
-		this.areas = areas;
+		World.areas = areas;
 	}
 
 }

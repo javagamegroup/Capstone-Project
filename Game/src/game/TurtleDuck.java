@@ -24,7 +24,7 @@ public class TurtleDuck extends Actor{
 	URL theDudeLoc;
 	Point target = null;
 	boolean resting = false;
-	private ArrayList areas;
+	private ArrayList<Area> areas;
 	Rectangle turtleDuckRect;
 	ArrayList<Wall> walls;
 	boolean isAlive = true;

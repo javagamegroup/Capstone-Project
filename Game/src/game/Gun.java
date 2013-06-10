@@ -1,15 +1,7 @@
 package game;
 
-import java.awt.Image;
-import java.net.URL;
 import java.util.ArrayList;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-import javax.swing.ImageIcon;
-
 import Exceptions.InvalidEnemyException;
 import Exceptions.InvalidItemException;
 
@@ -20,7 +12,8 @@ public class Gun implements Runnable  {
 	int speed = 5;
 	ArrayList<Wall> walls;
 	Enemies enemy;
-	private ArrayList areas;
+	@SuppressWarnings("unused")
+	private ArrayList<Area> areas;
 	int bulletLife = 4;
 	int bulletDamage;
 	Achievements getAchieves = null;
@@ -98,7 +91,7 @@ public class Gun implements Runnable  {
 								enemy.decreaseHealth(i, bulletDamage);
 								if (enemy.enemies[i] == null){
 									try {
-										GamePanel.map.level.killEnemy(i);
+										Map.level.killEnemy(i);
 									} catch (InvalidItemException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();

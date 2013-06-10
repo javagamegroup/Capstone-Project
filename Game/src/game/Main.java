@@ -38,6 +38,7 @@ public final class Main extends JFrame {
 
 
     public static void main(String[] args) {
-		Main sokoban = new Main();
+		@SuppressWarnings("unused")
+		Main Game = new Main();
     }
 }

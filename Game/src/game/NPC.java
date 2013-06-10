@@ -1,20 +1,13 @@
 package game;
 
-import java.awt.Image;
-import java.net.URL;
 import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-import javax.swing.ImageIcon;
 
 public class NPC implements Runnable  {
 	
 	Player target;
 	ArrayList<Wall> walls;
-	private ArrayList areas;
 	Achievements getAchieves = null;
 	Object [] npc = new Object[10];
 	int [] npcNums = new int[10];
@@ -37,8 +30,14 @@ public class NPC implements Runnable  {
     	switch(z)
     	{
     	case 'a': 
-    		npc[num] = new TurtleDuck(400, 400, World.walls, World.getAreas());
+    		npc[num] = new TurtleDuck(x, y, World.walls, World.getAreas());
     		npcNums[num] = 0;
+    		num ++;
+        	totalNpc ++;
+    		break;
+    	case 'b': 
+    		npc[num] = new Vendor(x, y, World.walls, World.getAreas());
+    		npcNums[num] = 1;
     		num ++;
         	totalNpc ++;
     		break;
@@ -67,6 +66,12 @@ public class NPC implements Runnable  {
         		if(npc[i]!=null){
         			((TurtleDuck) npc[i]).draw(g);
         		}
+        		break;
+        	case 1: 
+        		if(npc[i]!=null){
+        			((Vendor) npc[i]).draw(g);
+        		}
+        		break;
         	default:
         		break;
         	
@@ -102,6 +107,8 @@ public class NPC implements Runnable  {
     	{
     	case 0: 
     		return ((TurtleDuck) npc[x]).getRect();
+    	case 1: 
+    		return ((Vendor) npc[x]).getRect();
     	default:
     		break;
     	
@@ -146,6 +153,11 @@ public class NPC implements Runnable  {
 	    		        	case 0: 
 	    		        		if(npc[i]!=null)
 	    		        			((TurtleDuck) npc[i]).update();
+	    		        		break;
+	    		        	case 1: 
+	    		        		if(npc[i]!=null)
+	    		        			((Vendor) npc[i]).update();
+	    		        		break;
 	    		        	default:
 	    		        		break;
 	    		        	

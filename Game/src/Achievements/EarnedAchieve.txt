@@ -1,2 +1,5 @@
 I'm Awesome - Start your first game
+Feel the Power - Find a weapon upgrade
+Slayer - kill entire room with one blow
 Guns Loaded - Defeat your first enemy
+I'm Alive - Use your first health potion

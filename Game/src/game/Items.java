@@ -2,7 +2,6 @@ package game;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 public class Items {
 	Object [] item= new Object [30];
@@ -43,6 +42,7 @@ public class Items {
     	{
     	case 0: 
     		GamePanel.gun.increaseDamage(1);
+    			GamePanel.getAchieves.storeAchievement("Feel the Power - Find a weapon upgrade");
     		break;
     	case 1: 
     		if(GamePanel.player.numHealthPotions<9)

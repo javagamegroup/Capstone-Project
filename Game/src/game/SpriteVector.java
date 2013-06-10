@@ -8,8 +8,9 @@ import java.util.Random;
 import java.util.Vector;
 
 
-public class SpriteVector extends Vector{
+public class SpriteVector extends Vector<Object>{
 
+	private static final long serialVersionUID = 1L;
 	protected ImageBackground Imagebackground;
 	protected Background background;
 	
@@ -130,7 +131,7 @@ public class SpriteVector extends Vector{
 	 */
 	public void update() {
 		
-		Sprite s, sHit;
+		Sprite s;
 		Rectangle lastPos;
 		for (int i = 0; i < size(); ) {
 			// Update the sprite

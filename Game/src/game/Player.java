@@ -3,14 +3,11 @@ package game;
 import java.awt.Image;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Timer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.MediaTracker;
 import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -20,7 +17,6 @@ import Exceptions.InvalidItemException;
 
 public class Player extends Actor implements Runnable  {
 	
-	private static final Color Color_WHITE = null;
 	ImageIcon   theDude, player00, player01, player02, 
 				player10, player11, player12, 
 				player20, player21, player22, 
@@ -43,7 +39,6 @@ public class Player extends Actor implements Runnable  {
 	int [] currentMap = new int [2];
 	int numHealthPotions = 0;
 	ArrayList<Wall> walls;
-	private ArrayList areas;
 	Projectile bullet [] = new Projectile [30];
 	int numBullets = 0;
 	int fireRate = 250;
@@ -170,7 +165,7 @@ public class Player extends Actor implements Runnable  {
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
-	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			try {Map.level = Map.level.setPlayerEntrance('e');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
 	            			currentMap[0] +=1;
@@ -181,7 +176,7 @@ public class Player extends Actor implements Runnable  {
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
-	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			try {Map.level = Map.level.setPlayerEntrance('w');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
 	            			currentMap[0] -=1;
@@ -192,7 +187,7 @@ public class Player extends Actor implements Runnable  {
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
-	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			try {Map.level = Map.level.setPlayerEntrance('s');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
 	            			currentMap[1] +=1;
@@ -203,7 +198,7 @@ public class Player extends Actor implements Runnable  {
 	            	{
 	            		if(System.currentTimeMillis() - drawTime  > 500 || drawTime == -1){
 	            			drawTime = System.currentTimeMillis();
-	            			try {GamePanel.map.level = GamePanel.map.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
+	            			try {Map.level = Map.level.setPlayerEntrance('n');} catch (InvalidCharacterException e) {e.printStackTrace();}
 	            			Main.gp.initialize();
 	            			GamePanel.gun.destroyallBullets();
 	            			currentMap[1] -=1;
@@ -229,7 +224,7 @@ public class Player extends Actor implements Runnable  {
 				if (GamePanel.item.getRect(i).intersects(playerRect)) {
 					GamePanel.item.destroyItem(i);
 					try {
-						GamePanel.map.level.killItem(i);
+						Map.level.killItem(i);
 					} catch (InvalidItemException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -395,7 +390,8 @@ public class Player extends Actor implements Runnable  {
     	}
     }
     
-        public void keyPressed(KeyEvent e) {
+        @SuppressWarnings("static-access")
+		public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == e.VK_A) {
             	moving = true;
             	walkWhichWay = 3;
@@ -446,6 +442,7 @@ public class Player extends Actor implements Runnable  {
             }
             if (e.getKeyCode() == e.VK_Q || e.getKeyCode() == e.VK_E) {
             	if(numHealthPotions>0){
+            		GamePanel.getAchieves.storeAchievement("I'm Alive - Use your first health potion");
             		if(health<totalHealth)
             			increaseHealth();
             		numHealthPotions --;
@@ -458,9 +455,11 @@ public class Player extends Actor implements Runnable  {
             	}
             }
         }
-        public void keyReleased(KeyEvent e) {
+        @SuppressWarnings("static-access")
+		public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == e.VK_K) {
             	//if( mana>=100){
+            		GamePanel.getAchieves.storeAchievement("Slayer - kill entire room with one blow");
             		GamePanel.enemies.killAllEnemies();
             		mana = 0;
             	//}
@@ -528,7 +527,7 @@ public class Player extends Actor implements Runnable  {
     	totalHealth = 100;
     	mana = 100;
     	totalMana = 100;
-    	numHealthPotions = 5;
+    	numHealthPotions = 0;
     	spacebarTime = -1;
     	fireRate = 250;
     	currentMap[0]= 3;

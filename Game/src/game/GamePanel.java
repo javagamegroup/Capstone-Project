@@ -31,9 +31,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	private long period = 6*1000000; // miliseconds -> nano
 	private static final int DELAYS_BEFORE_YIELD = 10;
     private Random rand = new Random();
-    private double gameOverTime = -1;
-	
-	// Double buffering
+    // Double buffering
     private Image dbImage, Imagebackground;
     private Graphics dbg;
     
@@ -41,9 +39,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     private Image[][] turtleDuck = new Image[4][2];
     private Image[][] babyTurtleDuck = new Image[4][2];
     private ImageIcon backIcon;
-    
-    // position to draw sprite
-    private Point pos;
     
     // number of sprites you want
     private int numTDuckSprites = 0;
@@ -60,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	char[] enemychars;
 	char[] itemchars;
 	char[] obschars;
+	char[] npcchars;
     
     /**
      * Game Objects
@@ -70,10 +66,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	static Items item = new Items();
 	static Obstacles obs = new Obstacles();
 //    static IncreasedBulletPickUp item = null;
-    static Player player = new Player(200, 200,map.level);
+    static Player player = new Player(200, 200,Map.level);
     static Enemies enemies = new Enemies(70, 70,player);
     static NPC npc = new NPC(70, 70,player);
-    static Vendor vendor = new Vendor(100, 100, World.walls, World.getAreas());
+    //static Vendor vendor = new Vendor(100, 100, World.walls, World.getAreas());
     //static TurtleDuck tDuck = new TurtleDuck(400, 400, World.walls, World.getAreas());
     static EnemyAI enemy = null;
 //    static EnemyAI enemy = new EnemyAI(70, 70, World.walls, World.getAreas(), player);
@@ -81,10 +77,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     private Thread p1 = new Thread(player);
     private Thread enemyThread = new Thread(enemies);
     private Thread npcThread = new Thread(npc);
-    private Thread vendi = new Thread(vendor);
+    //private Thread vendi = new Thread(vendor);
     //private Thread tDuckThread = new Thread(tDuck);
     private Thread weapon = new Thread(gun);
-    private Thread animate;
     private int num = 1;
     
     // spriteVector
@@ -139,6 +134,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 		itemchars = new char[2];
 		itemchars[0] = 'a';
 		itemchars[1] = 'b';
+		npcchars = new char[2];
+		npcchars[0] = 'a';
+		npcchars[1] = 'b';
 		obschars = new char[2];
 		obschars[0] = 'a';
 		obschars[1] = 'b';
@@ -187,7 +185,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     	obs.destroyAllObs();
     	world.restartLevel();
     	player.setLevel(false);
-    	npc.createNPC(100, 100, World.walls, World.getAreas(), GamePanel.player, 'a');
     	
     }
 
@@ -232,7 +229,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 			// If the sleep time is between 0 and the period, we can happily sleep
 			if(sleepTime < period && sleepTime > 0) {
 				try {
-					game.sleep(sleepTime / 1000000L);
+					Thread.sleep(sleepTime / 1000000L);
 					overSleepTime = 0;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -245,7 +242,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 			}
 			// Accumulate the amount of delays, and eventually yeild. 
 			else if(++delays >= DELAYS_BEFORE_YIELD){
-				game.yield();
+				Thread.yield();
 				delays = 0; 
 				overSleepTime = 0;
 			}
@@ -415,8 +412,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     		player.draw(g);
     		enemies.draw(g);
     		npc.draw(g);
-    		vendor.setStarted(true);
-    		vendor.draw(g);
+    		//vendor.setStarted(true);
+    		//vendor.draw(g);
     		//tDuck.setStarted(true);
     		//tDuck.draw(g);
     		gun.draw(g);
@@ -509,8 +506,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	    		player.draw(g);
 	    		enemies.draw(g);
 	    		npc.draw(g);
-	    		vendor.setStarted(true);
-	    		vendor.draw(g);
+	    		//vendor.setStarted(true);
+	    		//vendor.draw(g);
 	    		//tDuck.setStarted(true);
 	    		//tDuck.draw(g);
 	    		gun.draw(g);
@@ -572,7 +569,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 			weapon.start();
 			enemyThread.start();
 			npcThread.start();
-			vendi.start();
+			//vendi.start();
 			//tDuckThread.start();
 			game.start();
 			running = true;
@@ -589,7 +586,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     
 ////////EVENT LISTENER CLASSES/////////
     public class KeyHandler extends KeyAdapter {
-        @Override
+        @SuppressWarnings("static-access")
+		@Override
         public void keyPressed(KeyEvent e){
             player.keyPressed(e);
             if(achievementsStarted == true)
@@ -602,7 +600,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
             	player.paused();
             	enemies.paused();
             	npc.paused();
-            	vendor.paused();
+            	//vendor.paused();
             	//tDuck.paused();
             }
         }
@@ -710,7 +708,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
 	            		   player.unpaused();
 	            		   enemies.unpaused();
 	            		   npc.unpaused();
-	            		   vendor.unpaused();
+	            		   //vendor.unpaused();
 	            		   //tDuck.unpaused();
 		            	getAchieves.storeAchievement("I'm Awesome - Start your first game");}
 		            
@@ -742,7 +740,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
             		   player.unpaused();
             		   enemies.unpaused();
             		   npc.unpaused();
-            		   vendor.unpaused();
+            		   //vendor.unpaused();
             		   //tDuck.unpaused();
             		   pauseMenu = false;
             	   }
@@ -755,7 +753,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
             		   player.unpaused();
             		   enemies.unpaused();
             		   npc.unpaused();
-            		   vendor.unpaused();
+            		   //vendor.unpaused();
             		   //tDuck.unpaused();
             	   }
             }
@@ -766,11 +764,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable{
     ///////END EVENT LISTENER CLASSES/////
 
     
-    private void log(String s) {
-		System.out.println(s);
-	}
-
-	    /************************** Create Sprite Methods ***********************/
+    /************************** Create Sprite Methods ***********************/
     /************************************************************************/
     
     public DirectionalSprite createTurtleDuck(Point pos, int i, int zOrder)

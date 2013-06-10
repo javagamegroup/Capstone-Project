@@ -1,6 +1,5 @@
 package game;
 import java.awt.*;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -17,7 +16,7 @@ public class EnemyAI extends Actor{
 	int i = 0;
 	Player target;
 	boolean resting = false;
-	private ArrayList areas;
+	private ArrayList<Area> areas;
 	Rectangle enemyRect;
 	ArrayList<Wall> walls;
 	boolean isAlive = true;

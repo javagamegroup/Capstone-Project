@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 
 public class Actor {
 
-    private final int SPACE = 20;
     protected int xDirection, yDirection;
     private int x;
     private int y;
