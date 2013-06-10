@@ -424,7 +424,7 @@ public class Level
 						tempString.setCharAt(stringPos, '&');
 						stringPos++;
 						i++;
-						spawnVender = false;
+						this.spawnVender = false;
 					}
 					break;
 				case '=':
@@ -433,7 +433,7 @@ public class Level
 						tempString.setCharAt(stringPos, '&');
 						stringPos++;
 						i++;
-						spawnVender = false;
+						this.spawnVender = false;
 					}
 					break;
 				 default:
