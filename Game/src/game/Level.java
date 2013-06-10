@@ -24,7 +24,8 @@ public class Level
 	private int maxObs;
 	private int numObs;
 	private char[] obs = null;
-	private boolean spawnVender;
+	private boolean friendlyNPC;
+	private char[] npcFriendly = null;
 	
 	private int rows = 16;
 	private int columns = 26;
@@ -76,11 +77,14 @@ public class Level
 //	direction 2 = South
 //	direction 3 = West
 	
-	public Level(boolean first, int startDir, int minEmemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minObs, int maxObs, char[] obs, boolean vender)//determines if this is the first room where the player enters into the level.
+	public Level(boolean first, int startDir, int minEmemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minObs, int maxObs, char[] obs, boolean vender, char[] npcFriendly)//determines if this is the first room where the player enters into the level.
 	{
 		firstRoom = true;
 		this.player = 'x';
-		spawnVender = vender;
+		
+		this.friendlyNPC = vender;
+		this.npcFriendly = new char[npcFriendly.length];
+		this.npcFriendly = npcFriendly;
 		
 		this.numEnemies = 0;
 		this.numItems = 0;
@@ -219,12 +223,15 @@ public class Level
 		
 	}
 	
-	private Level(boolean enemy, int minEnemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minObs, int maxObs, char[] obs, boolean spawnVender, int minDoors, int maxDoors, Level previous, int startDir, int y, int x)
+	private Level(boolean enemy, int minEnemies, int maxEnemies, char[] enemies, int minItems, int maxItems, char[] items, int minObs, int maxObs, char[] obs, boolean friendlyNPC, char[] npcFriendly, int minDoors, int maxDoors, Level previous, int startDir, int y, int x)
 	{
 		RandomGen ranEnemies = new RandomGen(enemies);
 		RandomGen ranItems = new RandomGen(items);
 		RandomGen ranObs = new RandomGen(items);
-		this.spawnVender = spawnVender;
+		RandomGen ranNPCs = new RandomGen(npcFriendly);
+		this.friendlyNPC = friendlyNPC;
+		this.npcFriendly = new char[npcFriendly.length];
+		this.npcFriendly = npcFriendly;
 		this.enemy = enemy;
 		this.player = 'x';
 		this.minEnemies = minEnemies;
@@ -388,7 +395,7 @@ public class Level
 				"#------------------------#"+'\n'+
 				"############"+sDoor+sDoor+"############"+'\n';
 
-//START VENDER RANDOM GENERATION//
+//START npcFriendly RANDOM GENERATION//
 		
 		int stringPos = 0;
 		int validSpawn = 0;
@@ -401,7 +408,6 @@ public class Level
 		}
 
 		RandomGen probability = null;
-		RandomGen varProbability = null;
 		try 
 		{
 			probability = new RandomGen(0,1);
@@ -412,7 +418,7 @@ public class Level
 		StringBuffer tempString= new StringBuffer(this.level);
 		i=0;
 		
-		while(stringPos < tempString.length() && this.spawnVender == true)
+		while(stringPos < tempString.length() && this.friendlyNPC == true)
 		{
 			switch(tempString.charAt(stringPos))
 			{
@@ -424,7 +430,8 @@ public class Level
 						tempString.setCharAt(stringPos, '&');
 						stringPos++;
 						i++;
-						this.spawnVender = false;
+						tempString.insert(stringPos, ranNPCs.randomChar());
+						this.friendlyNPC = false;
 					}
 					break;
 				case '=':
@@ -432,8 +439,9 @@ public class Level
 					{
 						tempString.setCharAt(stringPos, '&');
 						stringPos++;
+						tempString.insert(stringPos, ranNPCs.randomChar());
 						i++;
-						this.spawnVender = false;
+						this.friendlyNPC = false;
 					}
 					break;
 				 default:
@@ -443,7 +451,7 @@ public class Level
 		}
 		this.level = tempString.toString();
 
-//END VENDER RANDOM GENERATION//
+//END npcFriendly RANDOM GENERATION//
 				
 //START ENEMY RANDOM GENERATION//
 			
@@ -632,16 +640,16 @@ public class Level
 		
 		if(nBoolDoor)
 			this.north = new Level(true, this.minEnemies, this.maxEnemies, this.enemies, this.minItems, this.maxItems, this.items, 
-					this.minObs, this.maxObs, this.obs, this.spawnVender, 0, maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
+					this.minObs, this.maxObs, this.obs, this.friendlyNPC, this.npcFriendly, 0, maxDoors.randomInt(), this, 0 , this.yloc - 1, this.xloc );
 		if(eBoolDoor)
 			this.east = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 
-					this.minObs, this.maxObs, this.obs, this.spawnVender, 0, maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
+					this.minObs, this.maxObs, this.obs, this.friendlyNPC, this.npcFriendly, 0, maxDoors.randomInt(), this, 1 , this.yloc, this.xloc + 1 );
 		if(sBoolDoor)
 			this.south = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 
-					this.minObs, this.maxObs, this.obs, this.spawnVender, 0, maxDoors.randomInt(), this, 2 , this.yloc + 1, this.xloc );
+					this.minObs, this.maxObs, this.obs, this.friendlyNPC, this.npcFriendly, 0, maxDoors.randomInt(), this, 2 , this.yloc + 1, this.xloc );
 		if(wBoolDoor)
 			this.west = new Level(true, this.minEnemies, this.maxEnemies,  this.enemies, this.minItems, this.maxItems, this.items, 
-					this.minObs, this.maxObs, this.obs, this.spawnVender, 0, maxDoors.randomInt(), this, 3 , this.yloc, this.xloc - 1);
+					this.minObs, this.maxObs, this.obs, this.friendlyNPC, this.npcFriendly, 0, maxDoors.randomInt(), this, 3 , this.yloc, this.xloc - 1);
 	}
 
 	public String getLevel()

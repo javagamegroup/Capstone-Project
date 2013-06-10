@@ -12,8 +12,11 @@ public class LevelDriver
 		char[] obs = new char[2];
 		obs[0] = 'a';
 		obs[1] = 'b';
+		char[] npc = new char[2];
+		npc[0] = 'a';
+		npc[1] = 'b';
 		
-		Map theMap = new Map(1,10, enemies, 1, 10, items, 1, 10, obs, true);
+		Map theMap = new Map(1,10, enemies, 1, 10, items, 1, 10, obs, true, npc);
 //		try
 //		{
 //			System.out.println(Map.level.getLevel());
