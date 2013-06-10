@@ -791,6 +791,7 @@ public class Level
 				tempString.setCharAt(i, '@');
 				tempString.deleteCharAt(i+1);
 				this.level = tempString.toString();
+				this.print();
 				return;
 			}
 			i++;
