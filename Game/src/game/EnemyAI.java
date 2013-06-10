@@ -39,7 +39,7 @@ public class EnemyAI extends Actor{
 //       	paul = new ImageIcon(paulLoc);
 //        enemyImage = paul.getImage();
         enemyInit();
-        this.enemyRect = getRect(x, y, 22,27);
+        this.enemyRect = getRect(x, y, 44,54);
         this.setRect(enemyRect);
         charE = new Event(true, this.enemyRect);
     }
@@ -103,7 +103,7 @@ public class EnemyAI extends Actor{
     }
     
     public void setCoord(int x, int y){
-    	this.enemyRect = getRect(x, y, 22,2);
+    	this.enemyRect = getRect(x, y, 44,54);
     	this.setRect(enemyRect);
     }
     
